@@ -1,0 +1,6 @@
+{
+  "name": "TinPath - Ôn Thi Tin Học THPT",
+  "description": "Nền tảng ôn thi tốt nghiệp THPT môn Tin học chuẩn cấu trúc Bộ GD&ĐT 2018 với AI cá nhân hóa và tích hợp bộ công cụ Google.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

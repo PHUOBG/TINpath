@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1E40AF" />
+    </linearGradient>
+    <clipPath id="t-clip">
+      <path d="M42 66 H158 C164 66 168 70 168 76 V108 C168 114 163 118 157 118 H132 V168 C132 174 127 178 121 178 H79 C73 178 68 174 68 168 V118 H42 C36 118 32 114 32 108 V76 C32 70 36 66 42 66 Z" />
+    </clipPath>
+  </defs>
+  <path d="M42 66 H158 C164 66 168 70 168 76 V108 C168 114 163 118 157 118 H132 V168 C132 174 127 178 121 178 H79 C73 178 68 174 68 168 V118 H42 C36 118 32 114 32 108 V76 C32 70 36 66 42 66 Z" fill="url(#g1)" />
+  <g clip-path="url(#t-clip)">
+    <path d="M68 180 C68 140 82 120 102 102 C120 86 142 75 168 70 V105 C146 109 130 119 116 132 C104 144 98 160 98 180 Z" fill="#FFFFFF" />
+    <path d="M83 178 C83 166 84 154 87 146" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" />
+    <path d="M92 135 C95 127 100 120 106 114" stroke="#F59E0B" stroke-width="5.5" stroke-linecap="round" />
+    <path d="M115 106 C122 100 130 95 138 92" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" />
+  </g>
+  <g stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M143 89 L137 94.5 L143 100" />
+    <path d="M149 87 L144 102" />
+    <path d="M150 89 L156 94.5 L150 100" />
+  </g>
+  <path d="M58 46 C58 46 80 58 100 58 C120 58 142 46 142 46 V55 C142 66 120 74 100 74 C80 74 58 66 58 55 Z" fill="#1E3A8A" />
+  <polygon points="100,16 166,36 100,56 34,36" fill="#2563EB" stroke="#1D4ED8" stroke-width="1.5" />
+  <ellipse cx="100" cy="36" rx="4" ry="3" fill="#1E3A8A" />
+  <path d="M100 36 C118 36 138 41 146 47 C148 50 149 55 149 60" stroke="#EAB308" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <circle cx="149" cy="62" r="3" fill="#EAB308" />
+  <path d="M146 65 L145 79 C145 80 153 80 153 79 L152 65 Z" fill="#EAB308" />
+</svg>

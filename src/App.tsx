@@ -1,0 +1,459 @@
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/layout/Navbar';
+import { Footer } from './components/layout/Footer';
+import { StudentDashboard } from './components/student/StudentDashboard';
+import { TopicLearning } from './components/student/TopicLearning';
+import { ExamPractice } from './components/student/ExamPractice';
+import { ExamTakingModal } from './components/student/ExamTakingModal';
+import { PersonalizedAI } from './components/student/PersonalizedAI';
+import { Leaderboard } from './components/student/Leaderboard';
+import { TeacherDashboard } from './components/teacher/TeacherDashboard';
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { GoogleToolsHub } from './components/google/GoogleToolsHub';
+import { AuthModal } from './components/auth/AuthModal';
+import { RegisterModal } from './components/auth/RegisterModal';
+import { LandingPage } from './components/landing/LandingPage';
+
+import {
+  UserProfile,
+  UserRole,
+  SubjectTopicId,
+  Exam,
+  ExamAttempt,
+} from './types';
+import { storageService } from './services/storageService';
+import { OFFICIAL_EXAMS, DAILY_CHALLENGE_POOL } from './data/officialExamsData';
+import { initAuth, googleSignIn, logout } from './services/firebaseAuth';
+import { verifyServerXP } from './services/geminiClient';
+
+export default function App() {
+  // Theme state (mặc định giao diện sáng)
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => storageService.getThemeMode());
+
+  // User & role state
+  const [user, setUser] = useState<UserProfile>(() => storageService.getUserProfile());
+
+  // Auth state: true if user has completed login/registration flow
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    const saved = storageService.getUserProfile();
+    return saved.onboardingCompleted === true;
+  });
+
+  // Register/Auth modal state
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('register');
+
+  const handleOpenAuth = (mode: 'login' | 'register' = 'register') => {
+    setAuthModalMode(mode);
+    setIsRegisterModalOpen(true);
+  };
+
+  // Navigation state (Mặc định vào dashboard sau khi đăng nhập)
+  const [currentTab, setCurrentTab] = useState<string>('home');
+  const [activeTopicId, setActiveTopicId] = useState<SubjectTopicId>('12B');
+
+  // Completed topics record
+  const [completedTopics, setCompletedTopics] = useState<Record<SubjectTopicId, boolean>>(() =>
+    storageService.getCompletedTopics()
+  );
+
+  // Classrooms and assignments for teacher/student
+  const [classrooms, setClassrooms] = useState(() => storageService.getClassrooms());
+  const [assignments, setAssignments] = useState(() => storageService.getAssignments());
+  const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>(() =>
+    storageService.getExamAttempts()
+  );
+
+  // Modals state
+  const [activeExam, setActiveExam] = useState<Exam | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isGoogleHubOpen, setIsGoogleHubOpen] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+
+  // Google Firebase Auth state
+  const [isGoogleLoggedIn, setIsGoogleLoggedIn] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
+  // Initialize theme
+  useEffect(() => {
+    storageService.setThemeMode(themeMode);
+  }, [themeMode]);
+
+  // Initialize Firebase Auth listener
+  useEffect(() => {
+    const unsubscribe = initAuth(
+      (firebaseUser, token) => {
+        setIsGoogleLoggedIn(true);
+        if (firebaseUser.email) {
+          setUser((prev) => {
+            const updated = {
+              ...prev,
+              email: firebaseUser.email || prev.email,
+              displayName: firebaseUser.displayName || prev.displayName,
+            };
+            storageService.saveUserProfile(updated);
+            return updated;
+          });
+        }
+      },
+      () => {
+        setIsGoogleLoggedIn(false);
+      }
+    );
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
+  }, []);
+
+  // Theme toggle
+  const handleToggleTheme = () => {
+    const next = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(next);
+  };
+
+  // Google sign in trigger
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsSigningIn(true);
+      const res = await googleSignIn();
+      if (res) {
+        setIsGoogleLoggedIn(true);
+        setUser((prev) => {
+          const updated = {
+            ...prev,
+            email: res.user.email || prev.email,
+            displayName: res.user.displayName || prev.displayName,
+          };
+          storageService.saveUserProfile(updated);
+          return updated;
+        });
+      }
+    } catch (err: any) {
+      alert(`Đăng nhập Google thất bại: ${err.message || 'Lỗi không xác định'}`);
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await logout();
+    setIsGoogleLoggedIn(false);
+  };
+
+  // Handle successful login/registration from RegisterModal
+  const handleLoginSuccess = (loggedInUser: UserProfile) => {
+    setUser(loggedInUser);
+    setIsLoggedIn(true);
+    if (loggedInUser.role === 'student') setCurrentTab('home');
+    else if (loggedInUser.role === 'teacher') setCurrentTab('teacher_overview');
+    else if (loggedInUser.role === 'admin') setCurrentTab('admin_dashboard');
+  };
+
+  // Handle logout - return to landing
+  const handleLogout = async () => {
+    await logout();
+    setIsGoogleLoggedIn(false);
+    setIsLoggedIn(false);
+    // Reset profile so next visit starts fresh
+    const resetUser = storageService.getUserProfile();
+    resetUser.onboardingCompleted = false;
+    storageService.saveUserProfile({ ...resetUser, onboardingCompleted: false });
+    setUser({ ...resetUser, onboardingCompleted: false });
+  };
+
+  // Role switch handler
+  const handleSwitchRole = (newRole: UserRole) => {
+    const updated = storageService.updateRole(newRole);
+    setUser(updated);
+    if (newRole === 'student') setCurrentTab('home');
+    else if (newRole === 'teacher') setCurrentTab('teacher_overview');
+    else if (newRole === 'admin') setCurrentTab('admin_dashboard');
+  };
+
+  // Save profile
+  const handleSaveProfile = (updated: UserProfile) => {
+    setUser(updated);
+    storageService.saveUserProfile(updated);
+  };
+
+  // Toggle completed topic
+  const handleToggleCompleteTopic = (topicId: SubjectTopicId) => {
+    storageService.toggleTopicCompleted(topicId);
+    setCompletedTopics(storageService.getCompletedTopics());
+    setUser(storageService.getUserProfile());
+  };
+
+  // Start Exam by ID
+  const handleStartExam = (examId: string) => {
+    const found = OFFICIAL_EXAMS.find((e) => e.id === examId) || OFFICIAL_EXAMS[0];
+    setActiveExam(found);
+  };
+
+  // Start Daily 10 Challenge
+  const handleStartDailyChallenge = () => {
+    const dailyExam: Exam = {
+      id: `daily_${new Date().toISOString().split('T')[0]}`,
+      title: 'Thử thách 10 câu trắc nghiệm hằng ngày',
+      source: 'Ngân hàng câu hỏi TinPath GDPT 2018',
+      durationMinutes: 15,
+      year: 2025,
+      difficulty: 'Trung bình',
+      description: 'Luyện 10 câu trắc nghiệm mỗi ngày để nhận điểm thưởng XP và bảo vệ chuỗi ngày học liên tục.',
+      totalScore: 10,
+      baseXP: 30,
+      part1Questions: DAILY_CHALLENGE_POOL,
+      part2Questions: [], // Daily challenge focuses on Part 1
+    };
+    setActiveExam(dailyExam);
+  };
+
+  // Start Topic Custom Quiz
+  const handleStartTopicQuiz = (topicId: SubjectTopicId, count: number, level: string) => {
+    const pool = OFFICIAL_EXAMS[0].part1Questions.filter((q) => q.topicId === topicId);
+    const questionsToUse = pool.length > 0 ? pool.slice(0, count) : OFFICIAL_EXAMS[0].part1Questions.slice(0, count);
+
+    const topicQuiz: Exam = {
+      id: `quiz_${topicId}_${Date.now()}`,
+      title: `Bài luyện tập chuyên đề: ${topicId}`,
+      source: 'Ngân hàng chuyên đề TinPath GDPT 2018',
+      durationMinutes: Math.round(count * 1.5),
+      year: 2025,
+      difficulty: 'Cơ bản',
+      description: `Luyện tập chuyên sâu ${count} câu hỏi chủ đề ${topicId}.`,
+      totalScore: 10,
+      baseXP: 40,
+      part1Questions: questionsToUse,
+      part2Questions: [],
+    };
+    setActiveExam(topicQuiz);
+  };
+
+  // Submit Exam Attempt
+  const handleSubmitAttempt = async (attempt: ExamAttempt) => {
+    if (attempt.examId.startsWith('daily_')) {
+      // Server-side XP verification
+      try {
+        const verifyRes = await verifyServerXP({
+          type: 'daily_challenge',
+          correctCount: attempt.correctPart1Count,
+          totalQuestions: 10,
+        });
+        storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, verifyRes.awardedXP || 80);
+      } catch {
+        storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, 80);
+      }
+    } else {
+      // Full exam attempt
+      storageService.saveExamAttempt(attempt);
+    }
+
+    setExamAttempts(storageService.getExamAttempts());
+    setUser(storageService.getUserProfile());
+  };
+
+  // Continue topic from dashboard
+  const handleContinueTopic = (topicId: string) => {
+    setActiveTopicId(topicId as SubjectTopicId);
+    setCurrentTab('learning');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#f6f8fa] dark:bg-[#121212] text-[#202020] dark:text-[#E0E0E0] transition-colors">
+      {/* ── UNAUTHENTICATED: Show Landing Page ── */}
+      {!isLoggedIn && (
+        <>
+          <LandingPage
+            user={user}
+            onNavigateTab={setCurrentTab}
+            onOpenAuth={handleOpenAuth}
+            onStartDailyChallenge={() => handleOpenAuth('register')}
+            onTakeExam={() => handleOpenAuth('register')}
+          />
+          <RegisterModal
+            isOpen={isRegisterModalOpen}
+            onClose={() => setIsRegisterModalOpen(false)}
+            onLoginSuccess={handleLoginSuccess}
+            initialMode={authModalMode}
+          />
+        </>
+      )}
+
+      {/* ── AUTHENTICATED: Show App Shell ── */}
+      {isLoggedIn && (
+        <>
+          {/* Top Navigation */}
+          <Navbar
+            currentTab={currentTab}
+            onSelectTab={setCurrentTab}
+            user={user}
+            themeMode={themeMode}
+            onToggleTheme={handleToggleTheme}
+            onOpenProfile={() => setIsAuthModalOpen(true)}
+            onSwitchRole={handleSwitchRole}
+            onOpenGoogleHub={() => setIsGoogleHubOpen(true)}
+            onOpenAuth={() => setIsAuthModalOpen(true)}
+            isGoogleAuthenticated={isGoogleLoggedIn}
+            onSignOut={handleLogout}
+          />
+
+      {/* Main View Area: Mở rộng tràn 2 bên trái phải */}
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6">
+        {/* STUDENT VIEWS */}
+        {user.role === 'student' && (
+          <>
+            {currentTab === 'home' && (
+              <StudentDashboard
+                user={user}
+                assignments={assignments}
+                examAttempts={examAttempts}
+                onStartDailyChallenge={handleStartDailyChallenge}
+                onContinueTopic={handleContinueTopic}
+                onTakeExam={handleStartExam}
+                onNavigateTab={setCurrentTab}
+                onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
+              />
+            )}
+
+            {currentTab === 'learning' && (
+              <TopicLearning
+                initialTopicId={activeTopicId}
+                completedTopics={completedTopics}
+                onToggleCompleteTopic={handleToggleCompleteTopic}
+                onPracticeTopicQuiz={(tId) => handleStartTopicQuiz(tId, 10, 'all')}
+              />
+            )}
+
+            {currentTab === 'practice' && (
+              <ExamPractice
+                onStartExam={handleStartExam}
+                onStartDailyChallenge={handleStartDailyChallenge}
+                onStartTopicQuiz={handleStartTopicQuiz}
+                completedDailyToday={user.completedDailyToday}
+                streakDays={user.streakDays}
+                examAttempts={examAttempts}
+              />
+            )}
+
+            {currentTab === 'personalized_ai' && (
+              <PersonalizedAI
+                user={user}
+                examAttempts={examAttempts}
+                onUpdateUser={setUser}
+                onNavigateTopic={handleContinueTopic}
+              />
+            )}
+
+            {currentTab === 'leaderboard' && (
+              <Leaderboard currentUser={user} onClose={() => setCurrentTab('home')} />
+            )}
+          </>
+        )}
+
+        {/* TEACHER VIEWS */}
+        {user.role === 'teacher' && (
+          <TeacherDashboard
+            currentTab={currentTab}
+            classrooms={classrooms}
+            assignments={assignments}
+            onAddClassroom={(cls) => {
+              storageService.addClassroom(cls);
+              setClassrooms(storageService.getClassrooms());
+            }}
+            onAddAssignment={(assign) => {
+              storageService.addAssignment(assign);
+              setAssignments(storageService.getAssignments());
+            }}
+          />
+        )}
+
+        {/* ADMIN VIEWS */}
+        {user.role === 'admin' && <AdminDashboard />}
+      </main>
+
+      <Footer
+        onOpenGoogleHub={() => setIsGoogleHubOpen(true)}
+        onOpenPrivacy={() => setIsPrivacyOpen(true)}
+      />
+
+      {/* MODALS */}
+
+      {/* 1. Exam Taking Workspace */}
+      {activeExam && (
+        <ExamTakingModal
+          isOpen={Boolean(activeExam)}
+          onClose={() => setActiveExam(null)}
+          exam={activeExam}
+          track={user.track}
+          onSubmitAttempt={handleSubmitAttempt}
+          userId={user.id}
+        />
+      )}
+
+      {/* 2. Profile & Quảng Ngãi School Selection Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        user={user}
+        onSaveProfile={handleSaveProfile}
+        onGoogleSignIn={handleGoogleSignIn}
+        isSigningIn={isSigningIn}
+        isLoggedIn={isGoogleLoggedIn}
+      />
+
+      {/* 3. Google Ecosystem Hub Modal */}
+      <GoogleToolsHub
+        isOpen={isGoogleHubOpen}
+        onClose={() => setIsGoogleHubOpen(false)}
+        user={user}
+        isLoggedIn={isGoogleLoggedIn}
+        onGoogleSignIn={handleGoogleSignIn}
+      />
+
+      {/* 4. Privacy & Terms Modal */}
+      {isPrivacyOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#1E1E1E] rounded-lg max-w-md w-full p-6 border border-gray-200 dark:border-[#333] shadow-2xl text-xs space-y-3">
+            <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+              Chính sách Quyền riêng tư & Bảo vệ Dữ liệu TinPath
+            </h3>
+            <div className="space-y-2 text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p>
+                1. <strong>Bảo mật thông tin:</strong> TinPath cam kết không chia sẻ địa chỉ email, số điện thoại hay kết quả bài kiểm tra riêng tư của học sinh cho bên thứ ba.
+              </p>
+              <p>
+                2. <strong>Bảng xếp hạng công khai:</strong> Chỉ hiển thị tên gọi, trường THPT, điểm XP và chuỗi ngày học để tạo động lực thi đua học tập lành mạnh.
+              </p>
+              <p>
+                3. <strong>Tích hợp Google:</strong> Mọi thao tác lưu trữ Google Drive, xuất Google Sheets hay gửi Gmail đều chỉ thực hiện khi có sự xác nhận rõ ràng của người dùng.
+              </p>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setIsPrivacyOpen(false)}
+                className="px-4 py-1.5 rounded bg-[#2878C8] text-white font-bold"
+              >
+                Đã hiểu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. Detailed Ranking & Organization Modal */}
+      {isLeaderboardOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+          <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl max-w-6xl w-full p-4 sm:p-6 border border-gray-200 dark:border-[#333] shadow-2xl max-h-[92vh] overflow-y-auto">
+            <Leaderboard
+              currentUser={user}
+              onClose={() => setIsLeaderboardOpen(false)}
+              isModal={true}
+            />
+          </div>
+        </div>
+      )}
+        </>
+      )}
+    </div>
+  );
+}

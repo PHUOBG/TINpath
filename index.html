@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>TinPath - Ôn Thi Tin Học THPT - Giáo Dục Quảng Ngãi</title>
+    <meta name="description" content="Nền tảng ôn thi tốt nghiệp THPT môn Tin học chuẩn cấu trúc Bộ GD&ĐT 2018 với AI cá nhân hóa và tích hợp bộ công cụ Google." />
+    <meta property="og:title" content="TinPath - Ôn Thi Tin Học THPT" />
+    <meta property="og:description" content="Nền tảng ôn thi tốt nghiệp THPT môn Tin học chuẩn cấu trúc Bộ GD&ĐT 2018 với AI cá nhân hóa và tích hợp bộ công cụ Google." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+      // Đảm bảo mặc định là chế độ sáng (Light mode)
+      try {
+        const theme = localStorage.getItem('tinpath_theme_mode');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="bg-[#f6f8fa] text-[#202020] antialiased selection:bg-[#2878C8] selection:text-white dark:bg-[#121212] dark:text-[#E0E0E0]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
