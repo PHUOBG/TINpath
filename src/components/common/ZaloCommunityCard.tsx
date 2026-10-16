@@ -10,27 +10,27 @@ export const ZaloCommunityCard: React.FC<ZaloCommunityCardProps> = ({ compact = 
 
   return (
     <>
-      <div className="bg-white dark:bg-[#1E1E1E] rounded-lg border border-gray-200 dark:border-[#333] shadow-xs overflow-hidden flex flex-col">
+      <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] shadow-xs overflow-hidden flex flex-col">
         {/* Header styled like VNOI dark title box */}
-        <div className="bg-[#202020] text-white px-3 py-2 flex items-center justify-between text-xs font-bold">
-          <div className="flex items-center gap-1.5">
-            <span className="w-5 h-5 rounded bg-[#0068FF] text-white font-extrabold flex items-center justify-center text-[10px] tracking-tight">
+        <div className="bg-[#202020] text-white px-4 py-2.5 flex items-center justify-between text-sm font-bold">
+          <div className="flex items-center gap-2">
+            <span className="w-5 h-5 rounded bg-[#0068FF] text-white font-extrabold flex items-center justify-center text-[11px] tracking-tight">
               Z
             </span>
             <span className="uppercase tracking-wide">Nhóm Zalo thảo luận</span>
           </div>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#0068FF]/30 text-blue-300 font-mono flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-xs px-2 py-0.5 rounded bg-[#0068FF]/30 text-blue-300 font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             1.4k+ online
           </span>
         </div>
 
         {/* Content body */}
-        <div className="p-3.5 flex flex-col items-center text-center space-y-2.5">
-          <p className="text-xs font-bold text-gray-900 dark:text-white leading-snug">
+        <div className="p-4 flex flex-col items-center text-center space-y-3">
+          <p className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
             Cộng đồng Ôn thi Tin học GDPT 2018 Quảng Ngãi
           </p>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">
+          <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
             Nơi thầy cô & thủ khoa hỗ trợ giải đáp câu hỏi trắc nghiệm, bài tập SQL, Python 24/7.
           </p>
 
@@ -142,19 +142,19 @@ export const ZaloCommunityCard: React.FC<ZaloCommunityCardProps> = ({ compact = 
               </text>
             </svg>
 
-            <span className="absolute bottom-1 right-1 text-[9px] px-1 py-0.2 bg-blue-50 text-blue-700 font-mono rounded">
+            <span className="absolute bottom-1 right-1 text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-700 font-mono rounded">
               🔍 Phóng to
             </span>
           </div>
 
-          <div className="w-full pt-1">
+          <div className="w-full pt-1 space-y-1.5">
             <button
               onClick={() => setIsZoomOpen(true)}
-              className="w-full py-1.5 px-3 rounded-md bg-[#0068FF] hover:bg-[#0052cc] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              className="w-full py-2 px-3 rounded-lg bg-[#0068FF] hover:bg-[#0052cc] text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
-              <ExternalLink className="w-3.5 h-3.5" /> Tham gia nhóm Zalo
+              <ExternalLink className="w-4 h-4" /> Tham gia nhóm Zalo
             </button>
-            <span className="text-[10px] text-gray-400 mt-1 block">
+            <span className="text-xs text-gray-500 dark:text-gray-400 block">
               Mở ứng dụng Zalo trên điện thoại & quét mã
             </span>
           </div>

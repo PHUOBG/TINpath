@@ -70,20 +70,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#1E1E1E] rounded-lg max-w-lg w-full border border-gray-200 dark:border-[#333333] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-3 sm:p-5">
+      <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl max-w-xl w-full border border-gray-200 dark:border-[#333333] shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="px-6 py-4 bg-[#202020] text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <TinPathLogo
-              size={36}
+              size={38}
               textColor="text-white"
               subtextColor="text-blue-300 font-medium"
             />
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="p-1 rounded text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -91,14 +91,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         <form onSubmit={handleSave} className="p-6 space-y-4 text-sm text-[#202020] dark:text-[#E0E0E0]">
           {/* Google Sign-in Section */}
-          <div className="p-4 rounded-lg bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333333]">
-            <div className="flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333333]">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="font-semibold text-xs text-gray-900 dark:text-white flex items-center gap-1.5">
+                <p className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-[#22A06B]" />
                   Tài khoản Google & Dịch vụ liên kết
                 </p>
-                <p className="text-[11px] text-gray-700 dark:text-gray-400 mt-0.5">
+                <p className="text-xs text-gray-700 dark:text-gray-400 mt-0.5">
                   {isLoggedIn
                     ? `Đã đăng nhập: ${user.email}`
                     : 'Đăng nhập Google để đồng bộ Drive, Sheets, Docs, Calendar'}
@@ -110,7 +110,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="button"
                   onClick={onGoogleSignIn}
                   disabled={isSigningIn}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white text-gray-700 dark:bg-[#1A1A1A] dark:text-gray-200 border border-gray-300 dark:border-[#444] rounded text-xs font-medium hover:bg-gray-100 transition-colors shadow-sm"
+                  className="flex items-center gap-2 px-3.5 py-2 bg-white text-gray-700 dark:bg-[#1A1A1A] dark:text-gray-200 border border-gray-300 dark:border-[#444] rounded-lg text-xs sm:text-sm font-semibold hover:bg-gray-100 transition-colors shadow-sm shrink-0"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24">
                     <path
@@ -133,7 +133,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   {isSigningIn ? 'Đang kết nối...' : 'Đăng nhập Google'}
                 </button>
               ) : (
-                <span className="text-[11px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-medium">
+                <span className="text-xs px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-semibold shrink-0">
                   Đã kết nối
                 </span>
               )}
@@ -142,34 +142,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* Full Name */}
           <div>
-            <label className="block text-xs font-semibold mb-1">Họ và tên hiển thị</label>
+            <label className="block text-sm font-semibold mb-1.5">Họ và tên hiển thị</label>
             <input
               type="text"
               required
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8]"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm"
               placeholder="Nguyễn Văn A"
             />
           </div>
 
           {/* Province & District (Dependent selection) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-semibold mb-1">Tỉnh / Thành phố</label>
+              <label className="block text-sm font-semibold mb-1.5">Tỉnh / Thành phố</label>
               <input
                 type="text"
                 disabled
                 value={PROVINCE_NAME}
-                className="w-full px-3 py-2 rounded border border-gray-200 dark:border-[#333] bg-gray-100 dark:bg-[#1A1A1A] text-gray-500 cursor-not-allowed text-xs font-medium"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-100 dark:bg-[#1A1A1A] text-gray-500 cursor-not-allowed text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Quận / Huyện</label>
+              <label className="block text-sm font-semibold mb-1.5">Quận / Huyện</label>
               <select
                 value={district}
                 onChange={(e) => handleDistrictChange(e.target.value)}
-                className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm"
               >
                 {QUANG_NGAI_DISTRICTS.map((d) => (
                   <option key={d} value={d}>
@@ -182,11 +182,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* School (Dynamically dependent on District) */}
           <div>
-            <label className="block text-xs font-semibold mb-1">Trường THPT ({availableSchools.length} trường)</label>
+            <label className="block text-sm font-semibold mb-1.5">Trường THPT ({availableSchools.length} trường)</label>
             <select
               value={schoolId}
               onChange={(e) => setSchoolId(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm font-medium"
             >
               {availableSchools.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -195,20 +195,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               ))}
             </select>
             {availableSchools.find((s) => s.id === schoolId)?.address && (
-              <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-1 italic">
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1.5 italic">
                 Địa chỉ: {availableSchools.find((s) => s.id === schoolId)?.address}
               </p>
             )}
           </div>
 
           {/* Grade and Track */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-semibold mb-1">Khối lớp</label>
+              <label className="block text-sm font-semibold mb-1.5">Khối lớp</label>
               <select
                 value={grade}
                 onChange={(e) => setGrade(e.target.value as any)}
-                className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm"
               >
                 <option value="12">Lớp 12 (Thi Tốt Nghiệp)</option>
                 <option value="11">Lớp 11</option>
@@ -216,11 +216,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Định hướng thi</label>
+              <label className="block text-sm font-semibold mb-1.5">Định hướng thi</label>
               <select
                 value={track}
                 onChange={(e) => setTrack(e.target.value as any)}
-                className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs font-medium"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm font-semibold"
               >
                 <option value="CS">Khoa học máy tính (CS)</option>
                 <option value="ICT">Tin học ứng dụng (ICT)</option>
@@ -229,16 +229,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
 
           {/* Target Score & Daily Study Minutes */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-semibold mb-1 flex items-center gap-1">
-                <Target className="w-3.5 h-3.5 text-[#2878C8]" />
+              <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+                <Target className="w-4 h-4 text-[#2878C8]" />
                 Mục tiêu điểm thi
               </label>
               <select
                 value={targetScore}
                 onChange={(e) => setTargetScore(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs font-bold text-[#2878C8]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm font-bold text-[#2878C8]"
               >
                 <option value="10.0">10.0 Điểm (Thủ khoa)</option>
                 <option value="9.5">9.5 Điểm</option>
@@ -251,14 +251,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#FFC928]" />
+              <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-[#FFC928]" />
                 Thời gian học / ngày
               </label>
               <select
                 value={dailyMinutes}
                 onChange={(e) => setDailyMinutes(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-xs"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#121212] focus:outline-none focus:border-[#2878C8] text-sm"
               >
                 <option value="15">15 phút / ngày</option>
                 <option value="30">30 phút / ngày</option>
@@ -271,14 +271,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* Role selection */}
           <div>
-            <label className="block text-xs font-semibold mb-1">Vai trò hệ thống</label>
-            <div className="flex gap-2">
+            <label className="block text-sm font-semibold mb-1.5">Vai trò hệ thống</label>
+            <div className="flex gap-2.5">
               <button
                 type="button"
                 onClick={() => setRole('student')}
-                className={`flex-1 py-1.5 px-3 rounded text-xs font-medium border ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold border transition-colors ${
                   role === 'student'
-                    ? 'bg-[#2878C8] text-white border-[#2878C8]'
+                    ? 'bg-[#2878C8] text-white border-[#2878C8] shadow-xs'
                     : 'border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -287,9 +287,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <button
                 type="button"
                 onClick={() => setRole('teacher')}
-                className={`flex-1 py-1.5 px-3 rounded text-xs font-medium border ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold border transition-colors ${
                   role === 'teacher'
-                    ? 'bg-[#2878C8] text-white border-[#2878C8]'
+                    ? 'bg-[#2878C8] text-white border-[#2878C8] shadow-xs'
                     : 'border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -298,9 +298,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <button
                 type="button"
                 onClick={() => setRole('admin')}
-                className={`flex-1 py-1.5 px-3 rounded text-xs font-medium border ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold border transition-colors ${
                   role === 'admin'
-                    ? 'bg-[#2878C8] text-white border-[#2878C8]'
+                    ? 'bg-[#2878C8] text-white border-[#2878C8] shadow-xs'
                     : 'border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -310,17 +310,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
 
           {/* Buttons */}
-          <div className="pt-3 flex items-center justify-end gap-2 border-t border-gray-200 dark:border-[#333]">
+          <div className="pt-3.5 flex items-center justify-end gap-3 border-t border-gray-200 dark:border-[#333]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#2A2A2A]"
+              className="px-4.5 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#2A2A2A]"
             >
               Đóng
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded text-xs font-bold text-white bg-[#2878C8] hover:bg-[#2068B0] transition-colors shadow-sm"
+              className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-[#2878C8] hover:bg-[#2068B0] transition-colors shadow-xs"
             >
               Lưu thiết lập
             </button>

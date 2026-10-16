@@ -61,43 +61,43 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
   return (
     <div className="space-y-6">
       {/* Header and Search */}
-      <div className="bg-white dark:bg-[#1E1E1E] rounded-lg border border-gray-200 dark:border-[#333] p-5 shadow-xs">
+      <div className="bg-white dark:bg-[#1E1E1E] rounded-lg border border-gray-200 dark:border-[#333] p-4 sm:p-5 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-[#202020] dark:text-white flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-bold text-[#202020] dark:text-white flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-[#2878C8]" />
               Học tập kiến thức Tin học THPT
             </h2>
-            <p className="text-xs text-gray-700 dark:text-gray-300 mt-1">
+            <p className="text-[13px] text-gray-600 dark:text-gray-400 mt-1">
               Hệ thống hóa toàn bộ kiến thức theo chuẩn chương trình GDPT 2018 (Lớp 10, 11, 12)
             </p>
           </div>
 
           {/* Search bar */}
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+          <div className="relative w-full md:w-96">
+            <Search className="w-4.5 h-4.5 absolute left-3.5 top-3 text-gray-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tra cứu bài học, khái niệm (SQL, TCP, AI...)"
-              className="w-full pl-9 pr-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] text-xs focus:outline-none focus:border-[#2878C8]"
+              className="w-full pl-10 pr-3.5 py-2 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] text-sm focus:outline-none focus:border-[#2878C8]"
             />
           </div>
         </div>
 
-        {/* Filter Segmented Controls (Anti-slop clean buttons) */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-[#2C2C2C] flex flex-wrap items-center justify-between gap-3 text-xs">
+        {/* Filter Segmented Controls */}
+        <div className="mt-5 pt-4 border-t border-gray-100 dark:border-[#2C2C2C] flex flex-wrap items-center justify-between gap-3 text-sm">
           {/* Grade filter */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1 rounded">
-            <span className="text-[11px] text-gray-600 dark:text-gray-400 px-2 font-medium">Khối:</span>
+          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1.5 rounded-lg">
+            <span className="text-xs text-gray-600 dark:text-gray-400 px-2.5 font-medium">Khối:</span>
             {(['all', '12', '11', '10'] as const).map((g) => (
               <button
                 key={g}
                 onClick={() => setGradeFilter(g)}
-                className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-colors ${
                   gradeFilter === g
-                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white font-bold shadow-xs'
+                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -107,8 +107,8 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
           </div>
 
           {/* Track filter */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1 rounded">
-            <span className="text-[11px] text-gray-600 dark:text-gray-400 px-2 font-medium">Định hướng:</span>
+          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1.5 rounded-lg">
+            <span className="text-xs text-gray-600 dark:text-gray-400 px-2.5 font-medium">Định hướng:</span>
             {[
               { id: 'all', label: 'Tất cả' },
               { id: 'ALL', label: 'Chung (80%)' },
@@ -118,9 +118,9 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
               <button
                 key={t.id}
                 onClick={() => setTrackFilter(t.id as any)}
-                className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-colors ${
                   trackFilter === t.id
-                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white font-bold shadow-xs'
+                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -133,14 +133,14 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
 
       {/* Main Learning Workspace: Left Catalog List & Right Detail View */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Side: Topic Index (4 cols) */}
-        <div className="lg:col-span-4 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold px-1 text-gray-600 dark:text-gray-400">
+        {/* Left Side: Topic Index (4 cols, 3 on 2xl) */}
+        <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-3 space-y-2.5">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-1 text-gray-600 dark:text-gray-400">
             <span>DANH SÁCH CHỦ ĐỀ ({filteredTopics.length})</span>
             <span>Trạng thái</span>
           </div>
 
-          <div className="space-y-1.5 max-h-[750px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-[780px] overflow-y-auto pr-1">
             {filteredTopics.map((topic) => {
               const isSelected = topic.id === selectedTopicId;
               const completed = Boolean(completedTopics[topic.id]);
@@ -148,36 +148,36 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                 <button
                   key={topic.id}
                   onClick={() => setSelectedTopicId(topic.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-all flex items-start justify-between gap-2 ${
+                  className={`w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-start justify-between gap-3 ${
                     isSelected
-                      ? 'bg-blue-50/90 dark:bg-blue-950/40 border-[#2878C8] shadow-xs'
+                      ? 'bg-blue-50/90 dark:bg-blue-950/40 border-[#2878C8] shadow-xs ring-1 ring-[#2878C8]/20'
                       : 'bg-white dark:bg-[#1E1E1E] border-gray-200 dark:border-[#333] hover:border-gray-300 dark:hover:border-[#444]'
                   }`}
                 >
                   <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-mono">
                       <span className="font-bold text-[#2878C8]">{topic.code}</span>
                       <span className="text-gray-400">·</span>
-                      <span className="text-gray-500">Lớp {topic.grade}</span>
+                      <span className="text-gray-500 font-medium">Lớp {topic.grade}</span>
                       {topic.track && topic.track !== 'ALL' && (
-                        <span className="px-1 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[9px] font-bold">
+                        <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-xs font-bold">
                           {topic.track}
                         </span>
                       )}
                     </div>
-                    <h4 className="text-xs font-bold text-gray-900 dark:text-white truncate mt-0.5">
+                    <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white truncate mt-1">
                       {topic.title}
                     </h4>
-                    <p className="text-[11px] text-gray-600 dark:text-gray-400 line-clamp-1 mt-0.5">
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-1 mt-0.5">
                       {topic.summary}
                     </p>
                   </div>
 
                   <div className="shrink-0 mt-0.5">
                     {completed ? (
-                      <CheckCircle2 className="w-4 h-4 text-[#22A06B]" />
+                      <CheckCircle2 className="w-5 h-5 text-[#22A06B]" />
                     ) : (
-                      <Circle className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      <Circle className="w-5 h-5 text-gray-300 dark:text-gray-600" />
                     )}
                   </div>
                 </button>
@@ -186,24 +186,24 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
           </div>
         </div>
 
-        {/* Right Side: Topic Detail View (8 cols) */}
-        <div className="lg:col-span-8 bg-white dark:bg-[#1E1E1E] rounded-lg border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-6">
+        {/* Right Side: Topic Detail View (8 cols, 9 on 2xl) */}
+        <div className="lg:col-span-8 xl:col-span-8 2xl:col-span-9 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 sm:p-8 shadow-xs space-y-6">
           {/* Header of Detail */}
-          <div className="border-b border-gray-200 dark:border-[#333] pb-4">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs font-mono">
-                <span className="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-[#2878C8] font-bold">
+          <div className="border-b border-gray-200 dark:border-[#333] pb-5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm font-mono">
+                <span className="px-2.5 py-1 rounded-md bg-blue-100 dark:bg-blue-900/50 text-[#2878C8] font-bold">
                   {activeTopic.code}
                 </span>
-                <span className="text-gray-600 dark:text-gray-400">Khối Lớp {activeTopic.grade}</span>
+                <span className="text-gray-600 dark:text-gray-400 font-semibold">Khối Lớp {activeTopic.grade}</span>
                 <span className="text-gray-400">·</span>
-                <span className="text-gray-600 dark:text-gray-400">{activeTopic.examWeight}</span>
+                <span className="text-gray-600 dark:text-gray-400 font-medium">{activeTopic.examWeight}</span>
               </div>
 
               {/* Complete Toggle Button */}
               <button
                 onClick={() => onToggleCompleteTopic(activeTopic.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
                   isCompleted
                     ? 'bg-emerald-50 text-[#22A06B] border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-800'
                     : 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-200'
@@ -211,31 +211,31 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
               >
                 {isCompleted ? (
                   <>
-                    <CheckCircle className="w-4 h-4 text-[#22A06B]" /> Đã hoàn thành (+20 XP)
+                    <CheckCircle className="w-4.5 h-4.5 text-[#22A06B]" /> Đã hoàn thành (+20 XP)
                   </>
                 ) : (
                   <>
-                    <Circle className="w-4 h-4" /> Đánh dấu đã học xong
+                    <Circle className="w-4.5 h-4.5" /> Đánh dấu đã học xong
                   </>
                 )}
               </button>
             </div>
 
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white mt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-3">
               {activeTopic.title}
             </h1>
-            <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
               {activeTopic.summary}
             </p>
           </div>
 
           {/* 1. Yêu cầu cần đạt chuẩn Bộ GD&ĐT */}
           <div>
-            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#2878C8]" />
+            <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-2.5 flex items-center gap-2">
+              <CheckCircle2 className="w-4.5 h-4.5 text-[#2878C8]" />
               Yêu cầu cần đạt chuẩn chương trình
             </h3>
-            <ul className="space-y-1.5 text-xs text-gray-700 dark:text-gray-300 list-disc pl-5">
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 list-disc pl-5">
               {activeTopic.requirements.map((req, idx) => (
                 <li key={idx} className="leading-relaxed">
                   {req}
@@ -246,22 +246,22 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
 
           {/* 2. Khái niệm cốt lõi & Ví dụ */}
           <div>
-            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Lightbulb className="w-4 h-4 text-[#FFC928]" />
+            <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5 flex items-center gap-2">
+              <Lightbulb className="w-4.5 h-4.5 text-[#FFC928]" />
               Các khái niệm trọng tâm
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {activeTopic.keyConcepts.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded border border-gray-200 dark:border-[#333] bg-gray-50/70 dark:bg-[#252525]"
+                  className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/70 dark:bg-[#252525]"
                 >
-                  <h4 className="text-xs font-bold text-[#2878C8]">{item.term}</h4>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mt-1 leading-relaxed">
+                  <h4 className="text-sm sm:text-base font-bold text-[#2878C8]">{item.term}</h4>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 mt-1.5 leading-relaxed">
                     {item.definition}
                   </p>
                   {item.example && (
-                    <div className="mt-2 pt-1.5 border-t border-gray-200/50 dark:border-[#333] text-[11px] text-gray-600 dark:text-gray-400 italic">
+                    <div className="mt-2.5 pt-2 border-t border-gray-200/50 dark:border-[#333] text-xs text-gray-600 dark:text-gray-400 italic">
                       Ví dụ: {item.example}
                     </div>
                   )}
@@ -272,22 +272,22 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
 
           {/* 3. Chi tiết lý thuyết & Minh họa Code */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Code className="w-4 h-4 text-[#2878C8]" />
+            <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+              <Code className="w-4.5 h-4.5 text-[#2878C8]" />
               Nội dung kiến thức & Minh họa
             </h3>
             {activeTopic.theorySections.map((sec, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-lg border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] space-y-2"
+                className="p-5 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] space-y-2.5"
               >
-                <h4 className="text-xs font-bold text-gray-900 dark:text-white">{sec.title}</h4>
-                <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed">
+                <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">{sec.title}</h4>
+                <p className="text-sm sm:text-[15px] text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed">
                   {sec.content}
                 </p>
 
                 {sec.codeSnippet && (
-                  <pre className="p-3 rounded bg-[#202020] text-gray-200 font-mono text-[11px] overflow-x-auto border border-[#333] mt-2">
+                  <pre className="p-4 rounded-xl bg-[#202020] text-gray-200 font-mono text-xs sm:text-sm overflow-x-auto border border-[#333] mt-2.5 leading-relaxed">
                     <code>{sec.codeSnippet}</code>
                   </pre>
                 )}
@@ -297,22 +297,22 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
 
           {/* 4. Lưu ý phòng tránh bẫy câu hỏi thi */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-3.5 rounded bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40">
-              <h4 className="text-xs font-bold text-[#22A06B] flex items-center gap-1.5 mb-2">
-                <Lightbulb className="w-4 h-4" /> Kinh nghiệm làm bài
+            <div className="p-4.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40">
+              <h4 className="text-sm sm:text-base font-bold text-[#22A06B] flex items-center gap-2 mb-2">
+                <Lightbulb className="w-4.5 h-4.5" /> Kinh nghiệm làm bài
               </h4>
-              <ul className="space-y-1 text-xs text-gray-700 dark:text-gray-300 list-disc pl-4">
+              <ul className="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-disc pl-4.5 leading-relaxed">
                 {activeTopic.practicalTips.map((tip, i) => (
                   <li key={i}>{tip}</li>
                 ))}
               </ul>
             </div>
 
-            <div className="p-3.5 rounded bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
-              <h4 className="text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5 mb-2">
-                <AlertTriangle className="w-4 h-4" /> Bẫy đề thi hay nhầm lẫn
+            <div className="p-4.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
+              <h4 className="text-sm sm:text-base font-bold text-amber-700 dark:text-amber-400 flex items-center gap-2 mb-2">
+                <AlertTriangle className="w-4.5 h-4.5" /> Bẫy đề thi hay nhầm lẫn
               </h4>
-              <ul className="space-y-1 text-xs text-gray-700 dark:text-gray-300 list-disc pl-4">
+              <ul className="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-disc pl-4.5 leading-relaxed">
                 {activeTopic.commonPitfalls.map((pitfall, i) => (
                   <li key={i}>{pitfall}</li>
                 ))}
@@ -321,20 +321,20 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
           </div>
 
           {/* Footer Actions: Practice Quiz & Next Topic */}
-          <div className="pt-4 border-t border-gray-200 dark:border-[#333] flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-5 border-t border-gray-200 dark:border-[#333] flex flex-wrap items-center justify-between gap-3">
             <button
               onClick={() => onPracticeTopicQuiz(activeTopic.id)}
-              className="px-4 py-2 rounded bg-[#2878C8] text-white text-xs font-bold hover:bg-[#2068B0] transition-colors flex items-center gap-1.5 shadow-sm"
+              className="px-5 py-2.5 rounded-lg bg-[#2878C8] text-white text-sm font-bold hover:bg-[#2068B0] transition-colors flex items-center gap-2 shadow-sm"
             >
-              Luyện trắc nghiệm chủ đề này <ArrowRight className="w-3.5 h-3.5" />
+              Luyện trắc nghiệm chủ đề này <ArrowRight className="w-4 h-4" />
             </button>
 
             {nextTopicId && (
               <button
                 onClick={() => setSelectedTopicId(nextTopicId)}
-                className="px-4 py-2 rounded border border-gray-300 dark:border-[#444] text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#252525] flex items-center gap-1"
+                className="px-4.5 py-2.5 rounded-lg border border-gray-300 dark:border-[#444] text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#252525] flex items-center gap-1.5"
               >
-                Chuyển sang {TOPIC_LESSONS[nextTopicId].code} <ChevronRight className="w-3.5 h-3.5" />
+                Chuyển sang {TOPIC_LESSONS[nextTopicId].code} <ChevronRight className="w-4 h-4" />
               </button>
             )}
           </div>

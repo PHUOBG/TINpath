@@ -277,9 +277,9 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           >
             <X className="w-5 h-5" />
           </button>
-          <div>
-            <h3 className="font-bold text-sm truncate max-w-md">{exam.title}</h3>
-            <span className="text-[11px] text-gray-400">
+          <div className="flex-1 min-w-0 pr-4">
+            <h3 className="font-bold text-base sm:text-lg truncate">{exam.title}</h3>
+            <span className="text-xs text-gray-400">
               Định hướng: <strong>{track === 'CS' ? 'Khoa học máy tính' : 'Tin học ứng dụng'}</strong> · 28 câu hỏi
             </span>
           </div>
@@ -290,31 +290,31 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           {!isSubmitted ? (
             <>
               <div
-                className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-bold ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-mono font-bold ${
                   secondsRemaining < 300
                     ? 'bg-red-950/80 text-red-400 border border-red-800 animate-pulse'
                     : 'bg-[#2A2A2A] text-amber-400 border border-[#444]'
                 }`}
               >
                 <Clock className="w-4 h-4" />
-                <span className="tabular-nums text-sm">{formatTime(secondsRemaining)}</span>
+                <span className="tabular-nums text-sm font-bold">{formatTime(secondsRemaining)}</span>
               </div>
 
               <button
                 onClick={() => setShowConfirmSubmit(true)}
-                className="px-4 py-1.5 rounded bg-[#22A06B] text-white text-xs font-bold hover:bg-[#1B8055] transition-colors shadow"
+                className="px-5 py-2 rounded-lg bg-[#22A06B] text-white text-sm font-bold hover:bg-[#1B8055] transition-colors shadow"
               >
                 Nộp bài
               </button>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-xs px-3 py-1 rounded bg-[#22A06B] text-white font-bold font-mono">
+            <div className="flex items-center gap-3">
+              <span className="text-sm px-3.5 py-1.5 rounded-lg bg-[#22A06B] text-white font-bold font-mono">
                 Đã nộp bài · {completedAttempt?.totalScore.toFixed(2)} / 10 điểm
               </span>
               <button
                 onClick={onClose}
-                className="px-3 py-1 rounded bg-[#2878C8] text-white text-xs font-bold hover:bg-[#2068B0]"
+                className="px-4 py-1.5 rounded-lg bg-[#2878C8] text-white text-sm font-bold hover:bg-[#2068B0]"
               >
                 Đóng
               </button>
@@ -326,10 +326,10 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
       {/* Main Workspace Body */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Side: Question Presentation Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50 dark:bg-[#151515] text-[#202020] dark:text-[#E0E0E0]">
-          <div className="max-w-3xl mx-auto space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-[#151515] text-[#202020] dark:text-[#E0E0E0]">
+          <div className="w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[92vw] mx-auto space-y-6">
             {/* Question Header & Meta */}
-            <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-[#333] pb-2">
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-[#333] pb-3">
               <div className="flex items-center gap-2 font-mono">
                 <span className="font-bold text-[#2878C8]">
                   {currentItem.part === 1 ? 'PHẦN I — Câu trắc nghiệm (D1)' : 'PHẦN II — Trắc nghiệm đúng/sai (D2)'}
@@ -387,17 +387,17 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
             )}
 
             {/* Question Card */}
-            <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-lg border border-gray-200 dark:border-[#333] shadow-xs space-y-4">
+            <div className="bg-white dark:bg-[#1E1E1E] p-6 sm:p-7 rounded-xl border border-gray-200 dark:border-[#333] shadow-xs space-y-5">
               {/* PART 1: Single Choice Question */}
               {currentItem.part === 1 ? (
                 <>
-                  <div className="text-sm font-semibold text-gray-900 dark:text-white leading-relaxed">
-                    <span className="font-mono text-[#2878C8] mr-1">Câu {currentQuestionIndex + 1}.</span>
+                  <div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-relaxed">
+                    <span className="font-mono text-[#2878C8] mr-2">Câu {currentQuestionIndex + 1}.</span>
                     {(currentQ as SingleChoiceQuestion).content}
                   </div>
 
                   {/* Options List */}
-                  <div className="space-y-2.5 pt-2">
+                  <div className="space-y-3 pt-2">
                     {(['A', 'B', 'C', 'D'] as const).map((optKey) => {
                       const sq = currentQ as SingleChoiceQuestion;
                       const optText = sq.options[optKey];
@@ -406,7 +406,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
                       let itemStyle = 'border-gray-200 dark:border-[#333] hover:border-[#2878C8] bg-white dark:bg-[#1A1A1A]';
                       if (isSelected) {
-                        itemStyle = 'border-[#2878C8] bg-blue-50/70 dark:bg-blue-950/40 font-semibold';
+                        itemStyle = 'border-[#2878C8] bg-blue-50/70 dark:bg-blue-950/40 font-semibold ring-1 ring-[#2878C8]/20';
                       }
 
                       if (isSubmitted) {
@@ -422,10 +422,10 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                           key={optKey}
                           onClick={() => handleSelectOption(sq.id, optKey)}
                           disabled={isSubmitted}
-                          className={`w-full text-left p-3.5 rounded-lg border transition-colors flex items-start gap-3 text-xs ${itemStyle}`}
+                          className={`w-full text-left p-4 rounded-xl border transition-colors flex items-start gap-3.5 text-sm sm:text-base ${itemStyle}`}
                         >
                           <span
-                            className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
+                            className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${
                               isSelected
                                 ? 'bg-[#2878C8] text-white'
                                 : 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300'
@@ -433,7 +433,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                           >
                             {optKey}
                           </span>
-                          <span className="leading-relaxed mt-0.5">{optText}</span>
+                          <span className="leading-relaxed">{optText}</span>
                         </button>
                       );
                     })}
@@ -441,8 +441,8 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
                   {/* Explanation shown after submission */}
                   {isSubmitted && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-xs space-y-1">
-                      <span className="font-bold text-[#22A06B] block flex items-center gap-1 font-mono">
+                    <div className="p-4.5 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-sm space-y-1.5">
+                      <span className="font-bold text-[#22A06B] flex items-center gap-1.5 font-mono">
                         <CheckCircle2 className="w-4 h-4" /> Đáp án đúng: {(currentQ as SingleChoiceQuestion).correctAnswer}
                       </span>
                       <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -454,24 +454,24 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               ) : (
                 /* PART 2: True / False Group Question */
                 <>
-                  <div className="text-xs text-[#2878C8] font-bold uppercase tracking-wider">
+                  <div className="text-sm text-[#2878C8] font-bold uppercase tracking-wider">
                     Dạng 2: Trắc nghiệm Đúng/Sai (Mỗi lệnh hỏi tính điểm riêng)
                   </div>
 
-                  <div className="text-xs text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed bg-gray-50 dark:bg-[#252525] p-3.5 rounded border border-gray-200 dark:border-[#333]">
+                  <div className="text-sm sm:text-base text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed bg-gray-50 dark:bg-[#252525] p-4.5 rounded-xl border border-gray-200 dark:border-[#333]">
                     {(currentQ as TrueFalseGroupQuestion).context}
                   </div>
 
                   {/* Statements a, b, c, d */}
-                  <div className="space-y-3 pt-2">
+                  <div className="space-y-3.5 pt-2">
                     {(currentQ as TrueFalseGroupQuestion).statements.map((stmt) => {
                       const selectedVal = answers[currentQ.id]?.trueFalseSelections?.[stmt.id];
                       return (
                         <div
                           key={stmt.id}
-                          className="p-3 rounded-lg border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                          className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm sm:text-base"
                         >
-                          <div className="flex items-start gap-2 max-w-lg">
+                          <div className="flex items-start gap-2.5 flex-1 pr-2">
                             <span className="font-mono font-bold text-[#2878C8] uppercase shrink-0">
                               {stmt.id})
                             </span>
@@ -479,12 +479,12 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                           </div>
 
                           {/* True / False Toggle buttons */}
-                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
                             <button
                               type="button"
                               onClick={() => handleSelectTrueFalse(currentQ.id, stmt.id, true)}
                               disabled={isSubmitted}
-                              className={`px-3 py-1.5 rounded text-xs font-bold border transition-colors ${
+                              className={`px-4 py-2 rounded-lg text-sm font-bold border transition-colors ${
                                 selectedVal === true
                                   ? 'bg-[#2878C8] text-white border-[#2878C8]'
                                   : 'border-gray-300 dark:border-[#444] text-gray-700 dark:text-gray-300 hover:bg-gray-100'
@@ -496,7 +496,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                               type="button"
                               onClick={() => handleSelectTrueFalse(currentQ.id, stmt.id, false)}
                               disabled={isSubmitted}
-                              className={`px-3 py-1.5 rounded text-xs font-bold border transition-colors ${
+                              className={`px-4 py-2 rounded-lg text-sm font-bold border transition-colors ${
                                 selectedVal === false
                                   ? 'bg-rose-600 text-white border-rose-600'
                                   : 'border-gray-300 dark:border-[#444] text-gray-700 dark:text-gray-300 hover:bg-gray-100'
@@ -512,11 +512,11 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
                   {/* Part 2 Post-submission Explanations */}
                   {isSubmitted && (
-                    <div className="space-y-2 pt-2">
+                    <div className="space-y-2.5 pt-2">
                       {(currentQ as TrueFalseGroupQuestion).statements.map((stmt) => (
                         <div
                           key={stmt.id}
-                          className="p-3 rounded bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-xs"
+                          className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-sm"
                         >
                           <span className="font-mono font-bold mr-2 uppercase">
                             {stmt.id}) Đáp án chuẩn: {stmt.isCorrect ? 'ĐÚNG' : 'SAI'}
@@ -535,9 +535,9 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               <button
                 onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
                 disabled={currentQuestionIndex === 0}
-                className="px-4 py-2 rounded border border-gray-300 dark:border-[#444] text-xs font-medium text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-white dark:hover:bg-[#252525] flex items-center gap-1"
+                className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] text-sm font-semibold text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-white dark:hover:bg-[#252525] flex items-center gap-1.5 transition-colors"
               >
-                <ArrowLeft className="w-3.5 h-3.5" /> Câu trước
+                <ArrowLeft className="w-4 h-4" /> Câu trước
               </button>
 
               <button
@@ -545,27 +545,27 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                   setCurrentQuestionIndex((prev) => Math.min(allQuestions.length - 1, prev + 1))
                 }
                 disabled={currentQuestionIndex === allQuestions.length - 1}
-                className="px-4 py-2 rounded border border-gray-300 dark:border-[#444] text-xs font-medium text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-white dark:hover:bg-[#252525] flex items-center gap-1"
+                className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] text-sm font-semibold text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-white dark:hover:bg-[#252525] flex items-center gap-1.5 transition-colors"
               >
-                Câu sau <ArrowRight className="w-3.5 h-3.5" />
+                Câu sau <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Right Side: Question Navigation Palette (VNOI Style) */}
-        <div className="w-64 border-l border-gray-200 dark:border-[#333] bg-white dark:bg-[#1E1E1E] p-4 flex flex-col justify-between shrink-0 overflow-y-auto">
+        <div className="w-72 border-l border-gray-200 dark:border-[#333] bg-white dark:bg-[#1E1E1E] p-5 flex flex-col justify-between shrink-0 overflow-y-auto">
           <div>
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-2">
+            <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">
               Bảng câu hỏi ({allQuestions.length})
             </h4>
 
             {/* Part 1 Palette */}
-            <div className="mb-4">
-              <span className="text-[11px] font-semibold text-gray-500 block mb-1.5">
+            <div className="mb-5">
+              <span className="text-xs font-semibold text-gray-500 block mb-2">
                 Phần I: 24 câu (0.25đ/câu)
               </span>
-              <div className="grid grid-cols-4 gap-1.5">
+              <div className="grid grid-cols-4 gap-2">
                 {exam.part1Questions.map((q, idx) => {
                   const isAnswered = Boolean(answers[q.id]?.selectedOption);
                   const isFlagged = Boolean(flaggedQuestions[q.id]);
@@ -580,7 +580,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                     <button
                       key={q.id}
                       onClick={() => setCurrentQuestionIndex(idx)}
-                      className={`h-7 rounded text-xs font-mono transition-colors flex items-center justify-center ${bg}`}
+                      className={`h-8 rounded-lg text-sm font-mono transition-colors flex items-center justify-center ${bg}`}
                     >
                       {idx + 1}
                     </button>
@@ -591,10 +591,10 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
             {/* Part 2 Palette */}
             <div>
-              <span className="text-[11px] font-semibold text-gray-500 block mb-1.5">
+              <span className="text-xs font-semibold text-gray-500 block mb-2">
                 Phần II: 4 câu đúng/sai (1.0đ/câu)
               </span>
-              <div className="grid grid-cols-4 gap-1.5">
+              <div className="grid grid-cols-4 gap-2">
                 {part2Filtered.map((q, idx) => {
                   const globalIdx = exam.part1Questions.length + idx;
                   const selections = answers[q.id]?.trueFalseSelections || {};
@@ -609,7 +609,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                     <button
                       key={q.id}
                       onClick={() => setCurrentQuestionIndex(globalIdx)}
-                      className={`h-7 rounded text-xs font-mono transition-colors flex items-center justify-center ${bg}`}
+                      className={`h-8 rounded-lg text-sm font-mono transition-colors flex items-center justify-center ${bg}`}
                     >
                       {idx + 1}
                     </button>
@@ -620,31 +620,31 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           </div>
 
           {/* Submit Action Box */}
-          <div className="pt-4 border-t border-gray-200 dark:border-[#333]">
+          <div className="pt-5 border-t border-gray-200 dark:border-[#333]">
             {!isSubmitted ? (
               <button
                 onClick={() => setShowConfirmSubmit(true)}
-                className="w-full py-2.5 rounded bg-[#22A06B] text-white text-xs font-bold hover:bg-[#1B8055] transition-colors shadow-sm"
+                className="w-full py-3 rounded-xl bg-[#22A06B] text-white text-sm font-bold hover:bg-[#1B8055] transition-colors shadow-sm"
               >
                 Nộp bài & Chấm điểm
               </button>
             ) : (
-              <div className="space-y-2">
-                <div className="text-center p-3 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300">
+              <div className="space-y-2.5">
+                <div className="text-center p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300">
                   <span className="text-xs font-bold text-[#22A06B] block">Kết quả hoàn thành</span>
-                  <span className="text-lg font-bold font-mono text-emerald-800 dark:text-emerald-300">
+                  <span className="text-xl font-bold font-mono text-emerald-800 dark:text-emerald-300">
                     {completedAttempt?.totalScore.toFixed(2)}đ
                   </span>
-                  <span className="text-[11px] text-gray-600 dark:text-gray-400 block mt-0.5">
+                  <span className="text-xs text-gray-600 dark:text-gray-400 block mt-0.5">
                     +{completedAttempt?.xpEarned} XP
                   </span>
                 </div>
 
                 <button
                   onClick={() => setIsCommentModalOpen(true)}
-                  className="w-full py-2 rounded border border-gray-300 dark:border-[#444] hover:bg-gray-50 dark:hover:bg-[#252525] text-gray-800 dark:text-gray-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+                  className="w-full py-2.5 rounded-xl border border-gray-300 dark:border-[#444] hover:bg-gray-50 dark:hover:bg-[#252525] text-gray-800 dark:text-gray-200 text-sm font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 text-blue-500" />
+                  <MessageSquare className="w-4 h-4 text-blue-500" />
                   <span>Thảo luận đề thi ({storageService.getComments(exam.id).length})</span>
                 </button>
               </div>

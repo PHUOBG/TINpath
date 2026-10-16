@@ -67,7 +67,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           ? 'bg-[#10355f]/95 backdrop-blur-md shadow-lg border-b border-cyan-400/20'
           : 'bg-[#123966]/90 backdrop-blur-md border-b border-cyan-400/15'
       }`}>
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex items-center justify-between h-14">
 
             {/* Logo */}
@@ -171,7 +171,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-400/30 rounded-full blur-[130px] pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-sky-400/20 rounded-full blur-[150px] pointer-events-none" />
 
-        <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
 
             {/* ── Left Column: Content, CTAs & Tech Support ── */}
@@ -404,7 +404,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         <div className="absolute top-1/2 -right-32 w-[600px] h-[600px] bg-blue-400/15 rounded-full blur-[160px] pointer-events-none" />
         <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-sky-400/15 rounded-full blur-[160px] pointer-events-none" />
 
-        <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-10 py-16 space-y-20 relative z-10">
+        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 space-y-20 relative z-10">
 
           {/* 2. ABOUT TINPATH (Giới thiệu nền tảng) */}
           <section className="flex flex-col py-2" id="about-tinpath">

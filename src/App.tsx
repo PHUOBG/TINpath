@@ -297,8 +297,8 @@ export default function App() {
             onSignOut={handleLogout}
           />
 
-      {/* Main View Area: Mở rộng tràn 2 bên trái phải */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6">
+      {/* Main View Area: Tràn rộng sang 2 bên trái phải theo yêu cầu người dùng */}
+      <main className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-8 xl:px-8 2xl:px-10 py-6">
         {/* STUDENT VIEWS */}
         {user.role === 'student' && (
           <>
@@ -413,11 +413,11 @@ export default function App() {
       {/* 4. Privacy & Terms Modal */}
       {isPrivacyOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#1E1E1E] rounded-lg max-w-md w-full p-6 border border-gray-200 dark:border-[#333] shadow-2xl text-xs space-y-3">
-            <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-[#1E1E1E] rounded-xl max-w-lg w-full p-6 sm:p-7 border border-gray-200 dark:border-[#333] shadow-2xl text-sm space-y-4">
+            <h3 className="font-bold text-base text-gray-900 dark:text-white">
               Chính sách Quyền riêng tư & Bảo vệ Dữ liệu TinPath
             </h3>
-            <div className="space-y-2 text-gray-700 dark:text-gray-300 leading-relaxed">
+            <div className="space-y-2.5 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
               <p>
                 1. <strong>Bảo mật thông tin:</strong> TinPath cam kết không chia sẻ địa chỉ email, số điện thoại hay kết quả bài kiểm tra riêng tư của học sinh cho bên thứ ba.
               </p>
@@ -431,7 +431,7 @@ export default function App() {
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => setIsPrivacyOpen(false)}
-                className="px-4 py-1.5 rounded bg-[#2878C8] text-white font-bold"
+                className="px-5 py-2 rounded-lg bg-[#2878C8] hover:bg-[#2068B0] text-white font-bold text-sm shadow-xs transition-colors"
               >
                 Đã hiểu
               </button>
@@ -442,8 +442,8 @@ export default function App() {
 
       {/* 5. Detailed Ranking & Organization Modal */}
       {isLeaderboardOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
-          <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl max-w-6xl w-full p-4 sm:p-6 border border-gray-200 dark:border-[#333] shadow-2xl max-h-[92vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto">
+          <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl w-full max-w-7xl 2xl:max-w-[95vw] p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-[#333] shadow-2xl max-h-[94vh] overflow-y-auto">
             <Leaderboard
               currentUser={user}
               onClose={() => setIsLeaderboardOpen(false)}

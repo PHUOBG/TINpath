@@ -225,36 +225,36 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   return (
     <div className={`space-y-5 text-[#202020] dark:text-[#E0E0E0] ${isModal ? 'p-1' : ''}`}>
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-200 dark:border-[#333] gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-            <Trophy className="w-5 h-5" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-200 dark:border-[#333] gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-xl bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+            <Trophy className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
               Bảng xếp hạng & Thi đua học tập
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-[13px] text-gray-600 dark:text-gray-400 mt-0.5">
               Phong trào thi đua học tập và ôn thi tốt nghiệp THPT môn Tin học tỉnh Quảng Ngãi
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-3 self-start sm:self-auto">
           {/* Switch Tab buttons */}
-          <div className="inline-flex rounded-md p-1 bg-gray-100 dark:bg-[#252525] border border-gray-200 dark:border-[#383838]">
+          <div className="inline-flex rounded-lg p-1.5 bg-gray-100 dark:bg-[#252525] border border-gray-200 dark:border-[#383838]">
             <button
               onClick={() => {
                 setActiveTab('organizations');
                 setSearchQuery('');
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'organizations'
                   ? 'bg-white dark:bg-[#1E1E1E] text-emerald-600 dark:text-emerald-400 shadow-xs'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              <Building2 className="w-3.5 h-3.5" />
+              <Building2 className="w-4 h-4" />
               Tổ chức (Trường học)
             </button>
             <button
@@ -262,13 +262,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 setActiveTab('individual');
                 setSearchQuery('');
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'individual'
                   ? 'bg-white dark:bg-[#1E1E1E] text-emerald-600 dark:text-emerald-400 shadow-xs'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
+              <Users className="w-4 h-4" />
               Cá nhân học sinh
             </button>
           </div>
@@ -277,7 +277,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           {onClose && (
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg border border-gray-200 dark:border-[#3A3A3A] text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#2A2A2A] transition-colors"
+              className="p-2 rounded-lg border border-gray-200 dark:border-[#3A3A3A] text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#2A2A2A] transition-colors"
               title="Đóng bảng xếp hạng"
             >
               <X className="w-5 h-5" />
@@ -290,52 +290,52 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       {/* TAB 1: TỔ CHỨC (TRƯỜNG HỌC) */}
       {/* ========================================================================= */}
       {activeTab === 'organizations' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Highlight card for User's School */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/30 dark:border-emerald-500/20">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-5 sm:p-6 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/30 dark:border-emerald-500/20">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-600 text-white font-mono">
+                <div className="flex items-center gap-2.5">
+                  <span className="px-2.5 py-1 rounded text-xs font-bold bg-emerald-600 text-white font-mono">
                     HẠNG #{userSchool.rank} TOÀN TỈNH
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-semibold">
                     Trường của bạn
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-1.5">
                   {userSchool.name}
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
                   Địa bàn: {userSchool.district} · Tỉnh Quảng Ngãi
                 </p>
               </div>
 
               {/* School Quick Stats */}
-              <div className="grid grid-cols-3 gap-4 pt-2 md:pt-0 border-t md:border-t-0 border-emerald-500/20 text-center sm:text-right">
-                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-2.5 rounded-lg border border-emerald-500/20">
-                  <span className="text-[11px] text-gray-500 dark:text-gray-400 block font-medium">
+              <div className="grid grid-cols-3 gap-4 pt-3 md:pt-0 border-t md:border-t-0 border-emerald-500/20 text-center sm:text-right">
+                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-3 rounded-xl border border-emerald-500/20">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Số học sinh
                   </span>
-                  <span className="text-base font-bold font-mono text-gray-900 dark:text-white tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold font-mono text-gray-900 dark:text-white tabular-nums">
                     {userSchool.studentCount.toLocaleString()}
                   </span>
                 </div>
 
-                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-2.5 rounded-lg border border-emerald-500/20">
-                  <span className="text-[11px] text-gray-500 dark:text-gray-400 block font-medium">
+                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-3 rounded-xl border border-emerald-500/20">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Tổng số điểm
                   </span>
-                  <span className="text-base font-bold font-mono text-emerald-600 dark:text-emerald-400 tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 tabular-nums">
                     {userSchool.totalPoints.toLocaleString()} đ
                   </span>
                 </div>
 
-                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-2.5 rounded-lg border border-emerald-500/20">
-                  <span className="text-[11px] text-gray-500 dark:text-gray-400 block font-medium">
+                <div className="bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xs p-3 rounded-xl border border-emerald-500/20">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Điểm TB thi thử
                   </span>
-                  <span className="text-base font-bold font-mono text-blue-600 dark:text-blue-400 tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold font-mono text-blue-600 dark:text-blue-400 tabular-nums">
                     {userSchool.avgScore.toFixed(2)} / 10
                   </span>
                 </div>
@@ -344,27 +344,27 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           </div>
 
           {/* Search & District Filter Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             {/* Search Input */}
-            <div className="relative flex-1 sm:max-w-xs">
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+            <div className="relative flex-1 sm:max-w-sm">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm trường THPT hoặc huyện..."
-                className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-xs text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                className="w-full pl-10 pr-3.5 py-2 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-sm text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500"
               />
             </div>
 
             {/* District dropdown filter */}
-            <div className="flex items-center gap-2 text-xs">
-              <Filter className="w-3.5 h-3.5 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-400 shrink-0">Huyện/Thị xã:</span>
+            <div className="flex items-center gap-2 text-sm">
+              <Filter className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-600 dark:text-gray-400 shrink-0 font-medium">Huyện/Thị xã:</span>
               <select
                 value={selectedDistrict}
                 onChange={(e) => setSelectedDistrict(e.target.value)}
-                className="px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-emerald-500"
+                className="px-3 py-2 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:border-emerald-500"
               >
                 <option value="all">Tất cả huyện/thị (Toàn tỉnh Quảng Ngãi)</option>
                 {QUANG_NGAI_DISTRICTS.map((d) => (
@@ -379,15 +379,15 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           {/* School Rankings Table */}
           <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] shadow-xs overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#202020] text-white font-semibold text-[11px] uppercase tracking-wider">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-[#202020] text-white font-semibold text-xs uppercase tracking-wider">
                   <tr>
-                    <th className="py-3 px-3 w-16 text-center">Hạng</th>
-                    <th className="py-3 px-4">Tổ chức (Trường THPT)</th>
-                    <th className="py-3 px-4 text-center w-36">Số học sinh</th>
-                    <th className="py-3 px-4 text-right w-36">Tổng số điểm</th>
-                    <th className="py-3 px-4 text-center w-28">Điểm TB</th>
-                    <th className="py-3 px-4 text-right w-32">Số bài thi</th>
+                    <th className="py-3.5 px-4 w-16 text-center">Hạng</th>
+                    <th className="py-3.5 px-5">Tổ chức (Trường THPT)</th>
+                    <th className="py-3.5 px-5 text-center w-36">Số học sinh</th>
+                    <th className="py-3.5 px-5 text-right w-40">Tổng số điểm</th>
+                    <th className="py-3.5 px-5 text-center w-32">Điểm TB</th>
+                    <th className="py-3.5 px-5 text-right w-36">Số bài thi</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-[#2A2A2A]">
@@ -406,9 +406,9 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                         }`}
                       >
                         {/* Rank Badge */}
-                        <td className="py-3 px-3 text-center">
+                        <td className="py-3.5 px-4 text-center">
                           <span
-                            className={`inline-flex items-center justify-center w-6 h-6 rounded-full font-mono font-bold text-xs ${
+                            className={`inline-flex items-center justify-center w-7 h-7 rounded-full font-mono font-bold text-xs sm:text-sm ${
                               isTop1
                                 ? 'bg-amber-400 text-amber-950 shadow-xs'
                                 : isTop2
@@ -423,39 +423,39 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                         </td>
 
                         {/* School Name & District */}
-                        <td className="py-3 px-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                            <span className="font-bold text-gray-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                        <td className="py-3.5 px-5">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5">
+                            <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                               {item.name}
                             </span>
-                            <span className="text-[11px] text-gray-500 dark:text-gray-400">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
                               ({item.district})
                             </span>
                             {item.isUserSchool && (
-                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-semibold font-mono">
-                                <CheckCircle2 className="w-3 h-3" /> Trường bạn
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-semibold font-mono">
+                                <CheckCircle2 className="w-3.5 h-3.5" /> Trường bạn
                               </span>
                             )}
                           </div>
                         </td>
 
                         {/* Student Count */}
-                        <td className="py-3 px-4 text-center font-mono font-medium text-gray-700 dark:text-gray-300 tabular-nums">
+                        <td className="py-3.5 px-5 text-center font-mono font-medium text-gray-700 dark:text-gray-300 tabular-nums">
                           {item.studentCount.toLocaleString()} em
                         </td>
 
                         {/* Total Points */}
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
+                        <td className="py-3.5 px-5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
                           {item.totalPoints.toLocaleString()} đ
                         </td>
 
                         {/* Avg Score */}
-                        <td className="py-3 px-4 text-center font-mono font-medium text-blue-600 dark:text-blue-400 tabular-nums">
+                        <td className="py-3.5 px-5 text-center font-mono font-semibold text-blue-600 dark:text-blue-400 tabular-nums">
                           {item.avgScore.toFixed(2)}
                         </td>
 
                         {/* Exams Taken */}
-                        <td className="py-3 px-4 text-right font-mono text-gray-600 dark:text-gray-400 tabular-nums">
+                        <td className="py-3.5 px-5 text-right font-mono text-gray-600 dark:text-gray-400 tabular-nums">
                           {item.examsTaken.toLocaleString()}
                         </td>
                       </tr>
@@ -472,20 +472,20 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       {/* TAB 2: CÁ NHÂN HỌC SINH */}
       {/* ========================================================================= */}
       {activeTab === 'individual' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Search student */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="relative flex-1 sm:max-w-xs">
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+            <div className="relative flex-1 sm:max-w-sm">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm username, họ tên hoặc trường..."
-                className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-xs text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                className="w-full pl-10 pr-3.5 py-2 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1A1A1A] text-sm text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500"
               />
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
               Điểm được xác thực độc lập từ các bài thi thử và thử thách hàng ngày
             </p>
           </div>
@@ -493,14 +493,14 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           {/* Student Table */}
           <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] shadow-xs overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#202020] text-white font-semibold text-[11px] uppercase tracking-wider">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-[#202020] text-white font-semibold text-xs uppercase tracking-wider">
                   <tr>
-                    <th className="py-3 px-3 w-16 text-center">Hạng</th>
-                    <th className="py-3 px-3 w-24 text-center">Rating</th>
-                    <th className="py-3 px-4">Học sinh</th>
-                    <th className="py-3 px-4 text-right w-28">Điểm</th>
-                    <th className="py-3 px-4 text-right w-24">Số bài giải</th>
+                    <th className="py-3.5 px-4 w-16 text-center">Hạng</th>
+                    <th className="py-3.5 px-4 w-28 text-center">Rating</th>
+                    <th className="py-3.5 px-5">Học sinh</th>
+                    <th className="py-3.5 px-5 text-right w-32">Điểm</th>
+                    <th className="py-3.5 px-5 text-right w-28">Số bài giải</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-[#2A2A2A]">
@@ -514,43 +514,43 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                       }`}
                     >
                       {/* Rank */}
-                      <td className="py-3 px-3 text-center font-mono font-medium text-gray-700 dark:text-gray-300">
+                      <td className="py-3.5 px-4 text-center font-mono font-medium text-gray-700 dark:text-gray-300">
                         #{st.rank}
                       </td>
 
                       {/* Rating */}
-                      <td className="py-3 px-3 text-center whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1 font-mono font-bold text-red-600 dark:text-red-400 text-xs">
+                      <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 font-mono font-bold text-red-600 dark:text-red-400 text-sm">
                           <span className="w-2 h-2 rounded-full bg-red-600 inline-block" />
                           {st.rating}
                         </span>
                       </td>
 
                       {/* Username, Name, School */}
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-5">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                           <div>
-                            <span className="font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer flex items-center gap-1">
+                            <span className="font-bold text-sm sm:text-base text-red-600 dark:text-red-400 hover:underline cursor-pointer flex items-center gap-1.5">
                               {st.hasFlame && <span title="Chuỗi ngày liên tục">🔥</span>}
                               {st.username}
                             </span>
-                            <span className="text-[11px] text-gray-600 dark:text-gray-400 block mt-0.5">
+                            <span className="text-xs text-gray-600 dark:text-gray-400 block mt-0.5">
                               {st.fullName}
                             </span>
                           </div>
-                          <span className="text-[11px] text-gray-500 dark:text-gray-400 italic">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 italic">
                             {st.schoolName}
                           </span>
                         </div>
                       </td>
 
                       {/* Score */}
-                      <td className="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
+                      <td className="py-3.5 px-5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
                         {st.score.toFixed(2)} đ
                       </td>
 
                       {/* Problems */}
-                      <td className="py-3 px-4 text-right font-mono text-gray-700 dark:text-gray-300 tabular-nums">
+                      <td className="py-3.5 px-5 text-right font-mono text-gray-700 dark:text-gray-300 tabular-nums">
                         {st.problemsSolved}
                       </td>
                     </tr>
@@ -563,26 +563,26 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       )}
 
       {/* Rules & Privacy collapsible card */}
-      <div className="p-3 rounded-lg border border-gray-200 dark:border-[#333] bg-gray-50/50 dark:bg-[#1E1E1E]">
+      <div className="p-4 sm:p-5 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/70 dark:bg-[#1E1E1E]">
         <button
           type="button"
           onClick={() => setShowRules(!showRules)}
-          className="w-full flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 hover:text-emerald-600 transition-colors"
+          className="w-full flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 transition-colors"
         >
-          <div className="flex items-center gap-2">
-            <Info className="w-3.5 h-3.5 text-emerald-600" />
-            <span className="font-semibold text-gray-800 dark:text-gray-200">
+          <div className="flex items-center gap-2.5">
+            <Info className="w-4 h-4 text-emerald-600" />
+            <span className="font-bold text-gray-900 dark:text-gray-100 text-sm sm:text-base">
               Quy tắc thi đua điểm số & Cam kết bảo mật
             </span>
           </div>
-          <span className="text-[11px] font-medium text-emerald-600 hover:underline">
+          <span className="text-xs sm:text-sm font-semibold text-emerald-600 hover:underline">
             {showRules ? 'Thu gọn' : 'Xem chi tiết'}
           </span>
         </button>
 
         {showRules && (
-          <div className="mt-2.5 pt-2.5 border-t border-gray-200 dark:border-[#2C2C2C] grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div className="space-y-1 text-[11px] text-gray-600 dark:text-gray-300">
+          <div className="mt-3.5 pt-3 border-t border-gray-200 dark:border-[#2C2C2C] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="space-y-1.5 text-gray-700 dark:text-gray-300 leading-relaxed">
               <p>
                 <strong>Cách tính điểm trường:</strong> Tổng hợp từ toàn bộ học sinh của trường qua các đề thi thử, bài tập về nhà và thử thách 10 câu mỗi ngày.
               </p>
@@ -590,7 +590,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 <strong>Chống gian lận:</strong> Điểm số được hệ thống máy chủ tự động xác nhận sau khi nộp bài.
               </p>
             </div>
-            <div className="space-y-1 text-[11px] text-gray-600 dark:text-gray-300">
+            <div className="space-y-1.5 text-gray-700 dark:text-gray-300 leading-relaxed">
               <p>
                 <strong>Bảo mật:</strong> Chỉ công khai tên trường, số lượng học sinh và tổng điểm chung. Dữ liệu tài khoản cá nhân, mật khẩu, email được bảo vệ tuyệt đối.
               </p>

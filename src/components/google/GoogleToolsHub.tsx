@@ -313,59 +313,59 @@ export const GoogleToolsHub: React.FC<GoogleToolsHubProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#1E1E1E] rounded-xl max-w-4xl w-full border border-gray-200 dark:border-[#333] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 flex items-center justify-center p-3 sm:p-5">
+      <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl w-full max-w-6xl 2xl:max-w-7xl border border-gray-200 dark:border-[#333] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Modal Header */}
         <div className="px-6 py-4 bg-[#202020] text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded bg-[#2878C8] text-white">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-[#2878C8] text-white">
               <Sparkles className="w-5 h-5 text-[#FFC928]" />
             </div>
             <div>
-              <h3 className="text-base font-bold">Hệ Sinh Thái Công Cụ Google Cho TinPath</h3>
-              <p className="text-xs text-gray-300">
+              <h3 className="text-lg font-bold">Hệ Sinh Thái Công Cụ Google Cho TinPath</h3>
+              <p className="text-xs sm:text-sm text-gray-300">
                 Tích hợp toàn diện Google Gemini AI và bộ công cụ Google Workspace
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="p-1 rounded text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="border-b border-gray-200 dark:border-[#333] px-6 py-2 bg-gray-50 dark:bg-[#252525] flex flex-wrap gap-2 text-xs shrink-0">
+        <div className="border-b border-gray-200 dark:border-[#333] px-6 py-2.5 bg-gray-50 dark:bg-[#252525] flex flex-wrap gap-2 text-xs sm:text-sm shrink-0">
           <button
             onClick={() => setActiveTab('workspace')}
-            className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
               activeTab === 'workspace'
                 ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-[#2878C8]" />
+            <ShieldCheck className="w-4 h-4 text-[#2878C8]" />
             Google Workspace (Drive, Sheets, Docs, Calendar, Tasks, Gmail, Meet)
           </button>
           <button
             onClick={() => setActiveTab('images')}
-            className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
               activeTab === 'images'
                 ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
-            <ImageIcon className="w-3.5 h-3.5 text-pink-500" />
+            <ImageIcon className="w-4 h-4 text-pink-500" />
             Tạo ảnh chất lượng cao (1K, 2K, 4K)
           </button>
           <button
             onClick={() => setActiveTab('video')}
-            className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
               activeTab === 'video'
                 ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
-            <Film className="w-3.5 h-3.5 text-indigo-500" />
+            <Film className="w-4 h-4 text-indigo-500" />
             Sinh & Phân tích Video (Veo & Argon)
           </button>
         </div>
