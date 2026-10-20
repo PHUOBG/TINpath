@@ -354,3 +354,72 @@ export async function analyzeVideoContent(params: {
     modelUsed: 'gemini-4-argon (Multimodal Video Analysis)',
   };
 }
+
+/**
+ * 8. Text Embedding (text-embedding-004) — Dùng cho RAG Vector Search
+ * Client gọi /api/gemini/embed để lấy vector embedding của câu hỏi/tài liệu
+ */
+export async function generateEmbedding(text: string): Promise<number[]> {
+  const ai = getGeminiClient();
+
+  const response = await ai.models.embedContent({
+    model: 'text-embedding-004',
+    contents: text,
+    config: {
+      taskType: 'RETRIEVAL_QUERY',
+    },
+  });
+
+  const embedding = response.embeddings?.[0]?.values;
+  if (!embedding || embedding.length === 0) {
+    throw new Error('Không thể tạo embedding từ mô hình text-embedding-004');
+  }
+
+  return embedding;
+}
+
+/**
+ * 9. RAG-Augmented AI Tutor — Trả lời câu hỏi với ngữ cảnh SGK thật
+ * Nhận context SGK từ pgvector search → Gemini Flash trả lời chính xác
+ */
+export async function generateRagTutorResponse(params: {
+  topicTitle: string;
+  userQuestion: string;
+  studentContext?: string;
+  sgkContext: string; // Các đoạn tài liệu SGK liên quan từ Supabase pgvector
+}) {
+  const ai = getGeminiClient();
+
+  const hasContext = params.sgkContext && params.sgkContext.trim().length > 0;
+
+  const systemInstruction = `Bạn là Gia sư AI Tin học chuyên trách chương trình GDPT 2018 của nền tảng TinPath (Việt Nam).
+Nhiệm vụ: Giải thích chi tiết, chính xác theo đúng sách giáo khoa và chương trình Bộ GD&ĐT.
+Phong cách: Từng bước rõ ràng, ví dụ thực tế, code Python/SQL chuẩn, động viên học sinh.
+${hasContext ? 'QUAN TRỌNG: Chỉ trả lời dựa trên tài liệu SGK đã được cung cấp trong ngữ cảnh bên dưới. Trích dẫn rõ nguồn sách khi giải thích.' : ''}`;
+
+  const contextSection = hasContext
+    ? `\n\n📚 TÀI LIỆU SGK THAM KHẢO:\n${params.sgkContext}\n\n---`
+    : '';
+
+  const prompt = `Chủ đề học tập: ${params.topicTitle}
+${params.studentContext ? `Bối cảnh học sinh: ${params.studentContext}` : ''}${contextSection}
+
+Câu hỏi học sinh:
+${params.userQuestion}`;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-3.8-flash',
+    contents: prompt,
+    config: {
+      systemInstruction,
+    },
+  });
+
+  return {
+    text: response.text || 'Không có phản hồi từ mô hình.',
+    modelUsed: hasContext
+      ? 'Gemini Flash + RAG (SGK Tin học 12 GDPT 2018)'
+      : 'Gemini Flash (không có tài liệu RAG)',
+  };
+}
+

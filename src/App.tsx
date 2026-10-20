@@ -25,6 +25,9 @@ import { storageService } from './services/storageService';
 import { OFFICIAL_EXAMS, DAILY_CHALLENGE_POOL } from './data/officialExamsData';
 import { initAuth, googleSignIn, logout } from './services/firebaseAuth';
 import { verifyServerXP } from './services/geminiClient';
+import { saveExamAttempt, updateProfile } from './services/supabaseDbService';
+import { onAuthStateChange } from './services/supabaseAuthService';
+import { isSupabaseConfigured } from './services/supabaseClient';
 
 export default function App() {
   // Theme state (mặc định giao diện sáng)
@@ -80,7 +83,7 @@ export default function App() {
     storageService.setThemeMode(themeMode);
   }, [themeMode]);
 
-  // Initialize Firebase Auth listener
+  // Initialize Firebase Auth listener (giữ nguyên cho Google Sign-in hiện tại)
   useEffect(() => {
     const unsubscribe = initAuth(
       (firebaseUser, token) => {
@@ -104,6 +107,29 @@ export default function App() {
     return () => {
       if (typeof unsubscribe === 'function') unsubscribe();
     };
+  }, []);
+
+  // Lấy session Supabase nếu đã đăng nhập từ trước
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const cleanup = onAuthStateChange((authUser) => {
+      if (authUser && !isLoggedIn) {
+        const profile = storageService.getUserProfile();
+        if (profile.onboardingCompleted) {
+          // Khôi phục session tự động nếu đã hoàn thành onboarding
+          const updated: UserProfile = {
+            ...profile,
+            id: authUser.id,
+            email: authUser.email,
+            displayName: authUser.displayName || profile.displayName,
+            avatarUrl: authUser.avatarUrl || profile.avatarUrl,
+          };
+          setUser(updated);
+          setIsLoggedIn(true);
+        }
+      }
+    });
+    return cleanup;
   }, []);
 
   // Theme toggle
@@ -171,10 +197,13 @@ export default function App() {
     else if (newRole === 'admin') setCurrentTab('admin_dashboard');
   };
 
-  // Save profile
-  const handleSaveProfile = (updated: UserProfile) => {
+  // Save profile — ghi vào Supabase + localStorage
+  const handleSaveProfile = async (updated: UserProfile) => {
     setUser(updated);
     storageService.saveUserProfile(updated);
+    if (isSupabaseConfigured()) {
+      await updateProfile(updated.id, updated);
+    }
   };
 
   // Toggle completed topic
@@ -229,10 +258,9 @@ export default function App() {
     setActiveExam(topicQuiz);
   };
 
-  // Submit Exam Attempt
+  // Submit Exam Attempt — ghi vào Supabase + localStorage
   const handleSubmitAttempt = async (attempt: ExamAttempt) => {
     if (attempt.examId.startsWith('daily_')) {
-      // Server-side XP verification
       try {
         const verifyRes = await verifyServerXP({
           type: 'daily_challenge',
@@ -244,8 +272,14 @@ export default function App() {
         storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, 80);
       }
     } else {
-      // Full exam attempt
+      // Ghi vào Supabase nếu đã cấu hình
       storageService.saveExamAttempt(attempt);
+      if (isSupabaseConfigured()) {
+        saveExamAttempt(attempt).catch(console.error);
+        // Cập nhật XP trong profile Supabase
+        const currentUser = storageService.getUserProfile();
+        updateProfile(currentUser.id, { xp: currentUser.xp }).catch(console.error);
+      }
     }
 
     setExamAttempts(storageService.getExamAttempts());

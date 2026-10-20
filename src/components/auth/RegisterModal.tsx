@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { UserProfile, UserRole } from '../../types';
 import { storageService } from '../../services/storageService';
+import { signUpWithEmail, signInWithEmail, signInWithGoogle } from '../../services/supabaseAuthService';
+import { isSupabaseConfigured } from '../../services/supabaseClient';
 
 // ─── Quảng Ngãi Schools Data ───────────────────────────────────────────────
 const QN_SCHOOLS = [
@@ -171,6 +173,33 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
   const handleSendOTP = async () => {
     if (!validateRegister()) return;
     setIsLoading(true);
+
+    // Nếu Supabase đã cấu hình → đăng ký thật, không cần OTP mock
+    if (isSupabaseConfigured()) {
+      const displayName = `${form.firstName} ${form.lastName}`.trim();
+      const { user: authUser, error } = await signUpWithEmail({
+        email: form.email,
+        password: form.password,
+        displayName,
+        role: form.role as 'student' | 'teacher',
+      });
+
+      if (error || !authUser) {
+        setErrors({ email: error || 'Đăng ký thất bại. Vui lòng thử lại.' });
+        setIsLoading(false);
+        return;
+      }
+
+      // Tạo profile local và báo thành công
+      const newUser = buildUserProfile(authUser.id);
+      storageService.saveUserProfile(newUser);
+      setIsLoading(false);
+      setStep('success');
+      setTimeout(() => { onLoginSuccess(newUser); onClose(); }, 1800);
+      return;
+    }
+
+    // Fallback: Mock OTP khi chưa có Supabase
     await new Promise((r) => setTimeout(r, 1200));
     const otp = generateMockOTP();
     setMockOTP(otp);
@@ -197,8 +226,38 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
 
     if (!customRole && !validateLogin()) return;
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
 
+    // Supabase Auth thật
+    if (isSupabaseConfigured() && !customRole) {
+      const { user: authUser, error } = await signInWithEmail(
+        emailToUse || form.email,
+        form.password
+      );
+
+      if (error || !authUser) {
+        setErrors({ password: error || 'Email hoặc mật khẩu không đúng.' });
+        setIsLoading(false);
+        return;
+      }
+
+      const existingUser = storageService.getUserProfile();
+      const loginUser: UserProfile = {
+        ...existingUser,
+        id: authUser.id,
+        email: authUser.email,
+        displayName: authUser.displayName || existingUser.displayName,
+        avatarUrl: authUser.avatarUrl,
+        onboardingCompleted: true,
+      };
+      storageService.saveUserProfile(loginUser);
+      setIsLoading(false);
+      setStep('success');
+      setTimeout(() => { onLoginSuccess(loginUser); onClose(); }, 1200);
+      return;
+    }
+
+    // Fallback mock login (demo / dev mode)
+    await new Promise((r) => setTimeout(r, 600));
     const existingUser = storageService.getUserProfile();
     let displayName = existingUser.displayName;
     let schoolName = existingUser.schoolName || 'THPT chuyên Lê Khiết';
@@ -228,11 +287,11 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     setTimeout(() => { onLoginSuccess(loginUser); onClose(); }, 1200);
   };
 
-  const buildUserProfile = (): UserProfile => {
+  const buildUserProfile = (authId?: string): UserProfile => {
     const existing = storageService.getUserProfile();
     return {
       ...existing,
-      id: `user_${Date.now()}`,
+      id: authId || `user_${Date.now()}`,
       email: form.email,
       displayName: `${form.firstName} ${form.lastName}`.trim(),
       role: form.role as UserRole,

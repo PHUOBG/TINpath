@@ -258,8 +258,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 {/* Square Avatar with softly rounded corners */}
                 <div className="w-6 h-6 rounded bg-[#2878C8] text-white flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden shadow-xs">
-                  {user.avatar ? (
-                    <img src={user.avatar} alt={user.displayName} className="w-full h-full object-cover" />
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
                   ) : (
                     <span>{user.displayName.charAt(0).toUpperCase()}</span>
                   )}

@@ -8,6 +8,8 @@ import {
   generateEducationalImage,
   startVeoVideoGeneration,
   analyzeVideoContent,
+  generateEmbedding,
+  generateRagTutorResponse,
 } from './gemini';
 
 // Helper to parse JSON body from incoming stream
@@ -209,6 +211,31 @@ export async function handleApiRoute(req: IncomingMessage, res: ServerResponse):
         reason,
         verifiedAt: new Date().toISOString(),
       });
+      return true;
+    }
+
+    // 10. Text Embedding (text-embedding-004) — Dùng cho RAG vector search
+    if (url === '/api/gemini/embed' && req.method === 'POST') {
+      const body = await parseJsonBody(req);
+      if (!body.text || typeof body.text !== 'string') {
+        sendJson(res, 400, { success: false, error: 'Thiếu trường "text" để tạo embedding' });
+        return true;
+      }
+      const embedding = await generateEmbedding(body.text);
+      sendJson(res, 200, { success: true, embedding });
+      return true;
+    }
+
+    // 11. RAG AI Tutor — Trả lời có tài liệu SGK từ pgvector
+    if (url === '/api/gemini/rag-tutor' && req.method === 'POST') {
+      const body = await parseJsonBody(req);
+      const result = await generateRagTutorResponse({
+        topicTitle: body.topicTitle || 'Tổng quan Tin học THPT',
+        userQuestion: body.userQuestion || '',
+        studentContext: body.studentContext,
+        sgkContext: body.sgkContext || '',
+      });
+      sendJson(res, 200, { success: true, ...result });
       return true;
     }
 
