@@ -363,16 +363,17 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   const ai = getGeminiClient();
 
   const response = await ai.models.embedContent({
-    model: 'text-embedding-004',
+    model: 'gemini-embedding-001',
     contents: text,
     config: {
       taskType: 'RETRIEVAL_QUERY',
+      outputDimensionality: 768,
     },
   });
 
   const embedding = response.embeddings?.[0]?.values;
   if (!embedding || embedding.length === 0) {
-    throw new Error('Không thể tạo embedding từ mô hình text-embedding-004');
+    throw new Error('Không thể tạo embedding từ mô hình gemini-embedding-001');
   }
 
   return embedding;

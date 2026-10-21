@@ -26,16 +26,17 @@ const ai = new GoogleGenAI({ apiKey: geminiApiKey });
 
 async function embedChunk(text: string): Promise<number[]> {
   const response = await ai.models.embedContent({
-    model: 'text-embedding-004',
+    model: 'gemini-embedding-001',
     contents: text,
     config: {
       taskType: 'RETRIEVAL_DOCUMENT',
+      outputDimensionality: 768,
     },
   });
 
   const embedding = response.embeddings?.[0]?.values;
   if (!embedding || embedding.length === 0) {
-    throw new Error('Không nhận được vector embedding từ text-embedding-004');
+    throw new Error('Không nhận được vector embedding từ gemini-embedding-001');
   }
   return embedding;
 }
