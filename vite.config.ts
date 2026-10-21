@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, Plugin } from 'vite';
 import 'dotenv/config';
-import { handleApiRoute } from './src/server/apiRouter';
+import { handleApiRoute } from './src/server/apiRouter.ts';
 
 function apiServerPlugin(): Plugin {
   return {

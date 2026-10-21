@@ -10,7 +10,7 @@ import {
   analyzeVideoContent,
   generateEmbedding,
   generateRagTutorResponse,
-} from './gemini';
+} from './gemini.ts';
 
 // Helper to parse JSON body from incoming stream
 async function parseJsonBody(req: IncomingMessage): Promise<any> {
