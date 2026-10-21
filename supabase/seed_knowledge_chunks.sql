@@ -1,17 +1,35 @@
 -- ==============================================================================
--- TINPATH - SEED DỮ LIỆU TRI THỨC SGK TIN HỌC 12 GDPT 2018 CHO HỆ THỐNG AI RAG
+-- TINPATH - SEED CHUYÊN ĐỀ (TOPICS) & KHO TRI THỨC SGK CHO AI RAG
 -- ==============================================================================
 
--- Xóa dữ liệu cũ nếu có
+-- 1. KHỞI TẠO DANH MỤC CHỦ ĐỀ CHUẨN GDPT 2018 TRONG BẢNG TOPICS
+INSERT INTO public.topics (id, name, track, grade, description)
+VALUES
+    ('12B', 'Mạng máy tính và Internet', 'ALL', '12', 'Địa chỉ IP, Switch, Router, giao thức TCP/IP, DNS, DHCP'),
+    ('11F', 'Hệ cơ sở dữ liệu và Truy vấn SQL', 'ALL', '11', 'Mô hình CSDL quan hệ, Khóa chính, Khóa ngoại, câu lệnh SQL SELECT, JOIN'),
+    ('12A', 'Trí tuệ nhân tạo (AI) & Học máy', 'ALL', '12', 'Khái niệm AI, Machine Learning, Học có giám sát, Không giám sát, đạo đức AI'),
+    ('12D', 'Đạo đức, pháp luật thế giới ảo', 'ALL', '12', 'Luật An ninh mạng, quyền riêng tư, bản quyền số'),
+    ('11F_CS', 'Thuật toán và Kĩ thuật lập trình', 'CS', '11', 'Đệ quy, Tìm kiếm nhị phân, Sắp xếp, độ phức tạp O-notation'),
+    ('12G', 'Định hướng nghề nghiệp & Tuyển sinh CNTT', 'ALL', '12', 'Nhóm ngành Máy tính & CNTT, tổ hợp môn A00, A01, D01, D07, điểm chuẩn'),
+    ('12F', 'Tạo trang web và thiết kế web', 'ALL', '12', 'HTML, CSS, cấu trúc trang web'),
+    ('12F_CS', 'Khoa học dữ liệu & Học máy nâng cao', 'CS', '12', 'Tiền xử lý dữ liệu và thuật toán học máy')
+ON CONFLICT (id) DO UPDATE SET
+    name = EXCLUDED.name,
+    track = EXCLUDED.track,
+    description = EXCLUDED.description;
+
+-- 2. XÓA DỮ LIỆU TRI THỨC CŨ TRONG BẢNG KNOWLEDGE_CHUNKS (NẾU CÓ)
 DELETE FROM public.knowledge_chunks;
 
--- 1. CHUYÊN ĐỀ: MẠNG MÁY TÍNH VÀ INTERNET
+-- 3. NẠP DỮ LIỆU TRI THỨC SGK TIN HỌC 12 VÀO KNOWLEDGE_CHUNKS
+
+-- 3.1 CHUYÊN ĐỀ 12B: MẠNG MÁY TÍNH VÀ INTERNET
 INSERT INTO public.knowledge_chunks (topic_id, book_source, chapter, page_number, chunk_title, content)
 VALUES
 (
-    'cs_net',
+    '12B',
     'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 1: Mạng máy tính và Internet',
+    'Chủ đề B: Mạng máy tính và Internet',
     12,
     'Khái niệm Địa chỉ IP và Phân biệt IPv4 với IPv6',
     'Địa chỉ IP (Internet Protocol address) là định danh duy nhất cho mỗi thiết bị khi tham gia vào mạng máy tính nhằm xác định vị trí và định tuyến gói tin.
@@ -19,9 +37,9 @@ VALUES
 - IPv6 (Internet Protocol version 6): Được thiết kế để thay thế IPv4 với độ dài 128 bit, được viết dưới dạng 8 nhóm số hexa (thập lục phân), phân tách bằng dấu hai chấm (Ví dụ: 2001:0db8:85a3:0000:0000:8a2e:0370:7334). IPv6 cung cấp không gian địa chỉ khổng lồ lên tới 2^128 địa chỉ, hỗ trợ bảo mật IPsec tích hợp sẵn và cấu hình tự động.'
 ),
 (
-    'cs_net',
+    '12B',
     'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 1: Mạng máy tính và Internet',
+    'Chủ đề B: Mạng máy tính và Internet',
     18,
     'Thiết bị mạng: Phân biệt Switch (Bộ chuyển mạch) và Router (Bộ định tuyến)',
     'Trong kiến trúc mạng LAN và WAN:
@@ -29,9 +47,9 @@ VALUES
 - Router (Bộ định tuyến): Hoạt động ở tầng Mạng (Network Layer - Tầng 3 của mô hình OSI). Router chịu trách nhiệm kết nối hai hoặc nhiều mạng khác nhau (ví dụ kết nối mạng LAN gia đình với mạng diện rộng Internet của nhà mạng ISP). Router sử dụng bảng định tuyến (Routing Table) và địa chỉ IP để tìm đường đi ngắn nhất, tối ưu nhất cho gói tin (packet) di chuyển giữa các mạng.'
 ),
 (
-    'cs_net',
+    '12B',
     'SGK Tin học 12 - Cánh Diều',
-    'Chủ đề 1: Mạng máy tính và Internet',
+    'Chủ đề B: Mạng máy tính và Internet',
     25,
     'Giao thức mạng TCP/IP, DNS và DHCP',
     'Các giao thức mạng then chốt trong bộ giao thức TCP/IP:
@@ -41,13 +59,13 @@ VALUES
 - DHCP (Dynamic Host Configuration Protocol): Giao thức cấp phát địa chỉ IP động tự động cho các thiết bị khi vừa kết nối vào mạng.'
 );
 
--- 2. CHUYÊN ĐỀ: CƠ SỞ DỮ LIỆU QUAN HỆ VÀ TRUY VẤN SQL
+-- 3.2 CHUYÊN ĐỀ 11F: CƠ SỞ DỮ LIỆU QUAN HỆ VÀ TRUY VẤN SQL
 INSERT INTO public.knowledge_chunks (topic_id, book_source, chapter, page_number, chunk_title, content)
 VALUES
 (
-    'cs_db',
-    'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 2: Cơ sở dữ liệu và Hệ quản trị CSDL',
+    '11F',
+    'SGK Tin học 11 - Kết Nối Tri Thức',
+    'Chủ đề F: Cơ sở dữ liệu và Hệ quản trị CSDL',
     42,
     'Mô hình CSDL quan hệ: Khóa chính (Primary Key) và Khóa ngoại (Foreign Key)',
     'Trong hệ quản trị cơ sở dữ liệu quan hệ (RDBMS):
@@ -56,9 +74,9 @@ VALUES
 - Khóa ngoại (Foreign Key - FK): Là thuộc tính trong một bảng liên kết đến khóa chính của bảng khác nhằm thiết lập mối quan hệ giữa hai bảng. Khóa ngoại đảm bảo Ràng buộc toàn vẹn tham chiếu (Referential Integrity): giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL.'
 ),
 (
-    'cs_db',
-    'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 2: Cơ sở dữ liệu và Hệ quản trị CSDL',
+    '11F',
+    'SGK Tin học 11 - Kết Nối Tri Thức',
+    'Chủ đề F: Cơ sở dữ liệu và Hệ quản trị CSDL',
     56,
     'Các câu lệnh truy vấn SQL căn bản: SELECT, WHERE, ORDER BY, GROUP BY, HAVING',
     'Cú pháp chuẩn truy vấn dữ liệu SQL:
@@ -70,9 +88,9 @@ VALUES
 Thứ tự thực thi câu lệnh SQL: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY.'
 ),
 (
-    'cs_db',
-    'SGK Tin học 12 - Cánh Diều',
-    'Chủ đề 2: Cơ sở dữ liệu và Hệ quản trị CSDL',
+    '11F',
+    'SGK Tin học 11 - Cánh Diều',
+    'Chủ đề F: Cơ sở dữ liệu và Hệ quản trị CSDL',
     68,
     'Các phép kết nối bảng trong SQL: INNER JOIN, LEFT JOIN, RIGHT JOIN',
     'Khi cần lấy thông tin từ nhiều bảng có quan hệ với nhau:
@@ -82,13 +100,13 @@ Thứ tự thực thi câu lệnh SQL: FROM -> WHERE -> GROUP BY -> HAVING -> SE
 Ví dụ: SELECT h.ho_ten, l.ten_lop FROM hoc_sinh h INNER JOIN lop_hoc l ON h.ma_lop = l.ma_lop;'
 );
 
--- 3. CHUYÊN ĐỀ: TRÍ TUỆ NHÂN TẠO (AI) VÀ HỌC MÁY (MACHINE LEARNING)
+-- 3.3 CHUYÊN ĐỀ 12A: TRÍ TUỆ NHÂN TẠO (AI) VÀ HỌC MÁY
 INSERT INTO public.knowledge_chunks (topic_id, book_source, chapter, page_number, chunk_title, content)
 VALUES
 (
-    'cs_ai',
+    '12A',
     'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 3: Giới thiệu Trí tuệ nhân tạo',
+    'Chủ đề A: Giới thiệu Trí tuệ nhân tạo',
     85,
     'Khái niệm Trí tuệ nhân tạo (AI) và các lĩnh vực nghiên cứu chính',
     'Trí tuệ nhân tạo (Artificial Intelligence - AI) là ngành khoa học và công nghệ nghiên cứu, xây dựng các hệ thống tính toán có khả năng thực hiện các tác vụ đòi hỏi trí thông minh của con người như: nhận thức thị giác, nhận dạng tiếng nói, hiểu ngôn ngữ tự nhiên, học hỏi từ dữ liệu và ra quyết định.
@@ -99,9 +117,9 @@ Các lĩnh vực tiêu biểu của AI:
 - Robot thông minh (Robotics) và Hệ chuyên gia (Expert Systems).'
 ),
 (
-    'cs_ai',
+    '12A',
     'SGK Tin học 12 - Cánh Diều',
-    'Chủ đề 3: Giới thiệu Trí tuệ nhân tạo',
+    'Chủ đề A: Giới thiệu Trí tuệ nhân tạo',
     96,
     'Phân biệt Học có giám sát (Supervised Learning) và Học không giám sát (Unsupervised Learning)',
     'Trong Học máy (Machine Learning):
@@ -113,9 +131,9 @@ Các lĩnh vực tiêu biểu của AI:
   + Giảm chiều dữ liệu (Dimensionality Reduction).'
 ),
 (
-    'cs_ai',
+    '12D',
     'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 3: Giới thiệu Trí tuệ nhân tạo',
+    'Chủ đề D: Đạo đức, pháp luật và văn hóa trong môi trường số',
     108,
     'Đạo đức AI, Quyền riêng tư và Luật An ninh mạng',
     'Khi phát triển và ứng dụng AI trong đời sống:
@@ -124,13 +142,13 @@ Các lĩnh vực tiêu biểu của AI:
 - Trách nhiệm giải trình và tính minh bạch (Explainability): Hệ thống AI cần có khả năng giải thích nguyên do đưa ra quyết định, đặc biệt trong y tế, pháp lý và tài chính.'
 );
 
--- 4. CHUYÊN ĐỀ: THUẬT TOÁN VÀ LẬP TRÌNH PYTHON NÂNG CAO
+-- 3.4 CHUYÊN ĐỀ 11F_CS: THUẬT TOÁN VÀ LẬP TRÌNH NÂNG CAO
 INSERT INTO public.knowledge_chunks (topic_id, book_source, chapter, page_number, chunk_title, content)
 VALUES
 (
-    'cs_algo',
-    'SGK Tin học 12 - Kết Nối Tri Thức',
-    'Chủ đề 4: Thuật toán và Lập trình',
+    '11F_CS',
+    'SGK Tin học 11 - Kết Nối Tri Thức',
+    'Chuyên đề CS: Thuật toán và Lập trình nâng cao',
     120,
     'Thuật toán Đệ quy (Recursion) và Điều kiện dừng (Base Case)',
     'Đệ quy là phương pháp lập trình trong đó một hàm tự gọi lại chính nó với kích thước bài toán nhỏ hơn.
@@ -144,9 +162,9 @@ def factorial(n):
     return n * factorial(n - 1) # Recursive step'
 ),
 (
-    'cs_algo',
-    'SGK Tin học 12 - Cánh Diều',
-    'Chủ đề 4: Thuật toán và Lập trình',
+    '11F_CS',
+    'SGK Tin học 11 - Cánh Diều',
+    'Chuyên đề CS: Thuật toán và Lập trình nâng cao',
     134,
     'Thuật toán Tìm kiếm nhị phân (Binary Search) và Độ phức tạp thuật toán O(log n)',
     'Thuật toán tìm kiếm nhị phân áp dụng trên mảng ĐÃ ĐƯỢC SẮP XẾP.
@@ -159,13 +177,13 @@ Nguyên lý: Tại mỗi bước so sánh phần tử cần tìm với phần t�
 - Tìm kiếm nhị phân (Binary Search): O(log n) - mỗi lần so sánh loại bỏ được một nửa số lượng phần tử, tối ưu vượt trội cho dữ liệu lớn.'
 );
 
--- 5. CHUYÊN ĐỀ: ĐỊNH HƯỚNG NGHỀ NGHIỆP CNTT & THÔNG TIN TUYỂN SINH
+-- 3.5 CHUYÊN ĐỀ 12G: ĐỊNH HƯỚNG NGHỀ NGHIỆP CNTT & THÔNG TIN TUYỂN SINH
 INSERT INTO public.knowledge_chunks (topic_id, book_source, chapter, page_number, chunk_title, content)
 VALUES
 (
-    'career_guidance',
+    '12G',
     'Cẩm nang Tuyển sinh Đại học & Bộ GD&ĐT',
-    'Định hướng nghề nghiệp Tin học & Công nghệ số',
+    'Chủ đề G: Hướng nghiệp Tin học & Công nghệ số',
     1,
     'Các ngành nghề công nghệ thông tin trọng điểm và tổ hợp môn xét tuyển',
     'Các ngành đào tạo đại học nhóm ngành Máy tính và Công nghệ thông tin (Mã nhóm ngành 748):
