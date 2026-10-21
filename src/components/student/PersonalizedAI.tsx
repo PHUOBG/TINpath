@@ -33,6 +33,7 @@ import {
   requestAdaptiveStudyPlan,
   requestDiagnosticAnalysis,
 } from '../../services/geminiClient';
+import { askRagTutor } from '../../services/ragService.ts';
 
 interface PersonalizedAIProps {
   user: UserProfile;
@@ -92,15 +93,22 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   const [completedDays, setCompletedDays] = useState<Record<number, boolean>>({});
 
   // Companion AI Tutor chat state
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string; model?: string; sources?: string[] }>>([
+  const [tutorMode, setTutorMode] = useState<'rag' | 'thinking' | 'search'>('rag');
+  const [chatMessages, setChatMessages] = useState<Array<{
+    sender: 'user' | 'ai';
+    text: string;
+    model?: string;
+    sources?: string[];
+    ragSources?: Array<{ title: string; bookSource: string }>;
+  }>>([
     {
       sender: 'ai',
-      text: `Xin chào ${user.displayName}! Mình là Trợ lý AI Tin học THPT của TinPath. Bạn có thể hỏi bất kỳ khái niệm lý thuyết nào (như giao thức TCP/IP, khóa chính/ngoại SQL, độ phức tạp thuật toán O) hoặc bật chế độ Suy luận sâu (Gemini 4 Argon High Thinking) để giải bài toán phức tạp!`,
-      model: 'gemini-4-argon',
+      text: `Xin chào ${user.displayName}! Mình là Trợ lý AI Tin học THPT tích hợp RAG Tri thức SGK Tin học 12. Khi bạn hỏi bài, AI sẽ tự động tìm kiếm đối chiếu các đoạn bài học chuẩn từ SGK GDPT 2018 (Kết Nối Tri Thức, Cánh Diều) trên Supabase để giải thích chính xác nhất!`,
+      model: 'Gemini Flash + RAG (SGK Tin 12 GDPT 2018)',
     },
   ]);
   const [inputQuestion, setInputQuestion] = useState('');
-  const [useHighThinking, setUseHighThinking] = useState(true);
+  const [useHighThinking, setUseHighThinking] = useState(false);
   const [useSearchGrounding, setUseSearchGrounding] = useState(false);
   const [isAskingAi, setIsAskingAi] = useState(false);
 
@@ -425,7 +433,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     setIsAskingAi(true);
 
     try {
-      if (useSearchGrounding) {
+      if (tutorMode === 'search') {
         const res = await askSearchGroundedInfo(userText);
         setChatMessages((prev) => [
           ...prev,
@@ -436,11 +444,11 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
             sources: res.searchSources,
           },
         ]);
-      } else {
+      } else if (tutorMode === 'thinking') {
         const res = await askThinkingAiTutor({
           topicTitle: 'Ôn thi Tin học THPT GDPT 2018',
           userQuestion: userText,
-          studentContext: `Học sinh lớp ${user.grade}, định hướng ${user.track}, mục tiêu điểm ${user.targetScore}`,
+          studentContext: `Học sinh lớp ${user.grade}, trường ${user.schoolName || 'THPT'}, định hướng ${user.track}, mục tiêu điểm ${user.targetScore}`,
         });
         setChatMessages((prev) => [
           ...prev,
@@ -450,6 +458,39 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
             model: res.modelUsed,
           },
         ]);
+      } else {
+        // Default: RAG Tutor mode (Đối chiếu SGK Tin 12 từ Supabase)
+        try {
+          const res = await askRagTutor({
+            topicTitle: 'Ôn thi Tin học THPT GDPT 2018',
+            userQuestion: userText,
+            studentContext: `Học sinh lớp ${user.grade}, trường ${user.schoolName || 'THPT'}, định hướng ${user.track}, mục tiêu điểm ${user.targetScore}`,
+          });
+          setChatMessages((prev) => [
+            ...prev,
+            {
+              sender: 'ai',
+              text: res.text,
+              model: res.modelUsed,
+              ragSources: res.sourceChunks,
+            },
+          ]);
+        } catch {
+          // Fallback to direct thinking AI if RAG lookup encounters issue
+          const res = await askThinkingAiTutor({
+            topicTitle: 'Ôn thi Tin học THPT GDPT 2018',
+            userQuestion: userText,
+            studentContext: `Học sinh lớp ${user.grade}, trường ${user.schoolName || 'THPT'}, định hướng ${user.track}, mục tiêu điểm ${user.targetScore}`,
+          });
+          setChatMessages((prev) => [
+            ...prev,
+            {
+              sender: 'ai',
+              text: res.text,
+              model: res.modelUsed,
+            },
+          ]);
+        }
       }
     } catch (err: any) {
       setChatMessages((prev) => [
@@ -1418,36 +1459,45 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
               <span className="font-bold text-gray-900 dark:text-white text-base">Gia sư Tin học AI 24/7 (Gemini Engine)</span>
             </div>
 
-            <div className="flex items-center gap-5">
-              {/* High Thinking Toggle */}
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={useHighThinking}
-                  onChange={(e) => {
-                    setUseHighThinking(e.target.checked);
-                    if (e.target.checked) setUseSearchGrounding(false);
-                  }}
-                  className="rounded text-[#2878C8] w-4 h-4"
-                />
-                <span className="font-medium text-xs sm:text-sm">Suy luận sâu (Gemini 4 Argon High Thinking)</span>
-              </label>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setTutorMode('rag')}
+                className={`px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
+                  tutorMode === 'rag'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'bg-gray-100 dark:bg-[#252525] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#333]'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>RAG SGK Tin 12</span>
+              </button>
 
-              {/* Search Grounding Toggle */}
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={useSearchGrounding}
-                  onChange={(e) => {
-                    setUseSearchGrounding(e.target.checked);
-                    if (e.target.checked) setUseHighThinking(false);
-                  }}
-                  className="rounded text-[#2878C8] w-4 h-4"
-                />
-                <span className="font-medium text-xs sm:text-sm flex items-center gap-1.5">
-                  <Search className="w-3.5 h-3.5 text-[#2878C8]" /> Tra cứu Google Search
-                </span>
-              </label>
+              <button
+                type="button"
+                onClick={() => setTutorMode('thinking')}
+                className={`px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
+                  tutorMode === 'thinking'
+                    ? 'bg-amber-600 text-white shadow-xs'
+                    : 'bg-gray-100 dark:bg-[#252525] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#333]'
+                }`}
+              >
+                <Brain className="w-3.5 h-3.5" />
+                <span>Suy luận sâu</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setTutorMode('search')}
+                className={`px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
+                  tutorMode === 'search'
+                    ? 'bg-[#2878C8] text-white shadow-xs'
+                    : 'bg-gray-100 dark:bg-[#252525] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#333]'
+                }`}
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>Google Search</span>
+              </button>
             </div>
           </div>
 
@@ -1461,7 +1511,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
               Phân biệt Switch & Router
             </button>
             <button
-              onClick={() => setInputQuestion('Giải thích 5 đặc trưng cơ bản của Trí tuệ nhân tạo (AI)?')}
+              onClick={() => setInputQuestion('Giải thích 5 đặc trưng cơ bản của Trí tuệ nhân tạo (AI) và Machine Learning?')}
               className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#252525] hover:bg-blue-50 hover:text-[#2878C8] shrink-0 transition-colors text-xs"
             >
               5 đặc trưng của AI
@@ -1471,6 +1521,12 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
               className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#252525] hover:bg-blue-50 hover:text-[#2878C8] shrink-0 transition-colors text-xs"
             >
               Binary Search & O-notation
+            </button>
+            <button
+              onClick={() => setInputQuestion('Học sinh THPT Quảng Ngãi thi khối A01 muốn xét tuyển ngành Khoa học máy tính Bách Khoa cần bao nhiêu điểm?')}
+              className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#252525] hover:bg-indigo-50 hover:text-indigo-600 shrink-0 transition-colors text-xs"
+            >
+              Tư vấn tuyển sinh Bách Khoa
             </button>
           </div>
 
@@ -1494,6 +1550,24 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     </span>
                   )}
                   {msg.text}
+
+                  {msg.ragSources && msg.ragSources.length > 0 && (
+                    <div className="mt-3 pt-2.5 border-t border-indigo-200 dark:border-indigo-900/50 text-xs">
+                      <span className="font-bold text-indigo-700 dark:text-indigo-400 block mb-1.5 flex items-center gap-1">
+                        <BookOpen className="w-3.5 h-3.5" /> Đối chiếu SGK Tin 12 chuẩn Bộ GD&ĐT:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {msg.ragSources.map((s, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-medium"
+                          >
+                            📖 {s.bookSource} — {s.title}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {msg.sources && msg.sources.length > 0 && (
                     <div className="mt-2.5 pt-2 border-t border-gray-200 dark:border-[#333] text-xs text-gray-500">
