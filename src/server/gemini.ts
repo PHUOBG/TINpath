@@ -63,7 +63,7 @@ ${params.userQuestion}`;
 export async function searchGroundedQuery(query: string) {
   const ai = getGeminiClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-3.5-flash-lite',
     contents: `Cung cấp thông tin chính xác, cập nhật nhất về kỳ thi tốt nghiệp THPT và môn Tin học GDPT 2018 theo truy vấn sau:\n${query}`,
     config: {
       tools: [{ googleSearch: {} }],
@@ -95,7 +95,7 @@ export async function searchGroundedQuery(query: string) {
 export async function generateFastHint(questionContent: string, currentOptions: string) {
   const ai = getGeminiClient();
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-flash-lite',
+    model: 'gemini-3.5-flash-lite',
     contents: `Hãy gợi ý một manh mối tư duy ngắn gọn (dưới 60 từ) để giúp học sinh giải câu trắc nghiệm Tin học THPT sau mà KHÔNG tiết lộ trực tiếp đáp án A/B/C/D:\nCâu hỏi: ${questionContent}\nCác lựa chọn:\n${currentOptions}`,
     config: {
       systemInstruction: 'Bạn là trợ lý gợi ý nhanh trong phòng thi Tin học. Đưa ra gợi ý tư duy ngắn, súc tích, không đưa thẳng đáp án.',
@@ -143,7 +143,7 @@ Yêu cầu trả về dạng JSON phân tích chi tiết gồm:
    - focusQuestionType: dạng câu hỏi trọng tâm (Lý thuyết, Đọc code, Bài tập SQL, Đề thi thử)`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-3.5-flash-lite',
     contents: prompt,
     config: {
       responseMimeType: 'application/json',
@@ -218,7 +218,7 @@ Hãy xuất ra định dạng JSON chuẩn (RFC 8259) với cấu trúc:
 }`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-3.5-flash-lite',
     contents: prompt,
     config: {
       responseMimeType: 'application/json',
@@ -409,7 +409,7 @@ Câu hỏi học sinh:
 ${params.userQuestion}`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-3.5-flash-lite',
     contents: prompt,
     config: {
       systemInstruction,
