@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Flame,
   Award,
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Exam, SubjectTopicId, ExamAttempt } from '../../types';
 import { OFFICIAL_EXAMS } from '../../data/officialExamsData';
+import { getExams } from '../../services/supabaseDbService';
 import { TOPIC_LESSONS } from '../../data/topicsData';
 import { storageService } from '../../services/storageService';
 import { ExamCommentModal } from './ExamCommentModal';
@@ -51,8 +52,17 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
 
   // Exam bank filter state
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
+  const [examsList, setExamsList] = useState<Exam[]>(OFFICIAL_EXAMS);
 
-  const filteredExams = OFFICIAL_EXAMS.filter((ex) => {
+  useEffect(() => {
+    getExams().then((loaded) => {
+      if (loaded && loaded.length > 0) {
+        setExamsList(loaded);
+      }
+    });
+  }, []);
+
+  const filteredExams = examsList.filter((ex) => {
     if (difficultyFilter === 'all') return true;
     return ex.difficulty === difficultyFilter;
   });

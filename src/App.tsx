@@ -239,8 +239,9 @@ export default function App() {
 
   // Start Topic Custom Quiz
   const handleStartTopicQuiz = (topicId: SubjectTopicId, count: number, level: string) => {
-    const pool = OFFICIAL_EXAMS[0].part1Questions.filter((q) => q.topicId === topicId);
-    const questionsToUse = pool.length > 0 ? pool.slice(0, count) : OFFICIAL_EXAMS[0].part1Questions.slice(0, count);
+    const allQuestions = OFFICIAL_EXAMS.flatMap((e) => e.part1Questions);
+    const pool = allQuestions.filter((q) => q.topicId === topicId);
+    const questionsToUse = pool.length > 0 ? pool.slice(0, count) : allQuestions.slice(0, count);
 
     const topicQuiz: Exam = {
       id: `quiz_${topicId}_${Date.now()}`,

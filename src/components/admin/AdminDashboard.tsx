@@ -246,7 +246,7 @@ export const AdminDashboard: React.FC = () => {
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Kiểm duyệt ngân hàng đề thi chuẩn</h3>
             <span className="text-xs px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-mono font-bold">
-              7 đề đã duyệt chính thức
+              {OFFICIAL_EXAMS.length} đề thi thật đã số hóa & kiểm duyệt
             </span>
           </div>
 

@@ -12,7 +12,9 @@ import {
   Assignment,
   ExamComment,
   StudyRoadmapItem,
+  Exam,
 } from '../types';
+import { OFFICIAL_EXAMS } from '../data/officialExamsData';
 
 // ---------------------------------------------------------------------------
 // FALLBACK: Đọc/Ghi localStorage (dùng khi chưa cấu hình Supabase)
@@ -304,6 +306,82 @@ export async function getClassroomAssignments(classroomId: string): Promise<Assi
     status: row.status,
     submissionsCount: 0,
   }));
+}
+
+// ---------------------------------------------------------------------------
+// EXAMS — Lấy danh sách đề thi chính thức từ Supabase (fallback: OFFICIAL_EXAMS)
+// ---------------------------------------------------------------------------
+export async function getExams(): Promise<Exam[]> {
+  if (!isSupabaseConfigured()) {
+    return OFFICIAL_EXAMS;
+  }
+  try {
+    const { data: dbExams, error } = await supabase
+      .from('exams')
+      .select('*')
+      .order('year', { ascending: false });
+
+    if (error || !dbExams || dbExams.length === 0) {
+      return OFFICIAL_EXAMS;
+    }
+
+    const { data: dbQuestions, error: qErr } = await supabase
+      .from('questions')
+      .select('*');
+
+    if (qErr || !dbQuestions || dbQuestions.length === 0) {
+      return OFFICIAL_EXAMS;
+    }
+
+    return dbExams.map(ex => {
+      const examQs = dbQuestions.filter(q => q.exam_id === ex.id);
+      const part1 = examQs
+        .filter(q => q.type === 'single_choice')
+        .map(q => ({
+          id: q.id,
+          type: 'single_choice' as const,
+          topicId: q.topic_id,
+          topicName: q.topic_name,
+          level: q.level,
+          content: q.content,
+          options: q.options || {},
+          correctAnswer: q.correct_answer,
+          explanation: q.explanation || '',
+          codeSnippet: q.code_snippet,
+        }));
+
+      const part2 = examQs
+        .filter(q => q.type === 'true_false_group')
+        .map(q => ({
+          id: q.id,
+          type: 'true_false_group' as const,
+          topicId: q.topic_id,
+          topicName: q.topic_name,
+          level: q.level,
+          trackRequirement: q.track_requirement,
+          context: q.content,
+          statements: q.statements || [],
+          codeSnippet: q.code_snippet,
+        }));
+
+      const fallback = OFFICIAL_EXAMS.find(e => e.id === ex.id);
+      return {
+        id: ex.id,
+        title: ex.title,
+        source: ex.source,
+        durationMinutes: ex.duration_minutes,
+        year: ex.year,
+        difficulty: ex.difficulty,
+        description: ex.description || '',
+        baseXP: ex.base_xp || 100,
+        part1Questions: part1.length > 0 ? part1 : (fallback?.part1Questions || []),
+        part2Questions: part2.length > 0 ? part2 : (fallback?.part2Questions || []),
+      };
+    });
+  } catch (err) {
+    console.warn('Supabase getExams fallback to local:', err);
+    return OFFICIAL_EXAMS;
+  }
 }
 
 // ---------------------------------------------------------------------------

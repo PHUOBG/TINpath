@@ -76,6 +76,7 @@ export interface TrueFalseGroupQuestion {
   type: 'true_false_group';
   topicId: SubjectTopicId;
   topicName: string;
+  level?: CognitiveLevel;
   trackRequirement?: 'ALL' | 'CS' | 'ICT';
   context: string;
   statements: TrueFalseStatement[];

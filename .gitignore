@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+__pycache__/
+raw_data/Sach/
+*.mp4
+*.MP4
