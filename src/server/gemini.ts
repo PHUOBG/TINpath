@@ -143,7 +143,7 @@ Yêu cầu trả về dạng JSON phân tích chi tiết gồm:
    - focusQuestionType: dạng câu hỏi trọng tâm (Lý thuyết, Đọc code, Bài tập SQL, Đề thi thử)`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash-lite',
+    model: 'gemini-3.8-flash',
     contents: prompt,
     config: {
       responseMimeType: 'application/json',
@@ -218,7 +218,7 @@ Hãy xuất ra định dạng JSON chuẩn (RFC 8259) với cấu trúc:
 }`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash-lite',
+    model: 'gemini-3.8-flash',
     contents: prompt,
     config: {
       responseMimeType: 'application/json',

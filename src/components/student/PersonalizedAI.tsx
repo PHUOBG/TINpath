@@ -25,8 +25,15 @@ import {
   Sliders,
   Filter,
 } from 'lucide-react';
-import { UserProfile, ExamAttempt, SubjectTopicId } from '../../types';
-import { DIAGNOSTIC_QUESTIONS } from '../../data/officialExamsData';
+import {
+  UserProfile,
+  ExamAttempt,
+  SubjectTopicId,
+  Exam,
+  SingleChoiceQuestion,
+  TrueFalseGroupQuestion,
+} from '../../types';
+import { OFFICIAL_EXAMS } from '../../data/officialExamsData';
 import {
   askThinkingAiTutor,
   askSearchGroundedInfo,
@@ -73,12 +80,33 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     return 1;
   });
 
-  // Diagnostic Test state
-  const [diagnosticAnswers, setDiagnosticAnswers] = useState<Record<string, 'A' | 'B' | 'C' | 'D'>>({});
+  // Step 1: Real Full THPTQG Exam state
+  const [selectedExamId, setSelectedExamId] = useState<string>(OFFICIAL_EXAMS[0].id);
+  const currentExam = OFFICIAL_EXAMS.find((e) => e.id === selectedExamId) || OFFICIAL_EXAMS[0];
+
+  // Filter Part 2 questions according to student's chosen track (CS or ICT)
+  const part2Questions = currentExam.part2Questions.filter(
+    (q) => !q.trackRequirement || q.trackRequirement === 'ALL' || q.trackRequirement === user.track
+  );
+
+  // Student answers:
+  // Part 1: Record<string, 'A' | 'B' | 'C' | 'D'>
+  const [part1Answers, setPart1Answers] = useState<Record<string, 'A' | 'B' | 'C' | 'D'>>({});
+  // Part 2: Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }>
+  const [part2Answers, setPart2Answers] = useState<Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }>>({});
+
   const [diagnosticSubmitted, setDiagnosticSubmitted] = useState<boolean>(() => {
     return user.diagnosticScore !== undefined && user.diagnosticScore !== null;
   });
   const [diagScore, setDiagScore] = useState<number | null>(user.diagnosticScore ?? null);
+  const [diagnosticExamTitle, setDiagnosticExamTitle] = useState<string>(currentExam.title);
+  const [scoreBreakdown, setScoreBreakdown] = useState<{
+    part1Score: number;
+    part1Correct: number;
+    part2Score: number;
+    part2Details: Array<{ questionId: string; correctStatements: number; score: number }>;
+  } | null>(null);
+
   const [isAnalyzingDiagnostic, setIsAnalyzingDiagnostic] = useState(false);
   const [diagnosticAnalysis, setDiagnosticAnalysis] = useState<DiagnosticAnalysisResult | null>(null);
   const [reviewFilter, setReviewFilter] = useState<'all' | 'wrong' | 'correct'>('all');
@@ -103,8 +131,8 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   }>>([
     {
       sender: 'ai',
-      text: `Xin chào ${user.displayName}! Mình là Trợ lý AI Tin học THPT tích hợp RAG Tri thức SGK Tin học 12. Khi bạn hỏi bài, AI sẽ tự động tìm kiếm đối chiếu các đoạn bài học chuẩn từ SGK GDPT 2018 (Kết Nối Tri Thức, Cánh Diều) trên Supabase để giải thích chính xác nhất!`,
-      model: 'Gemini Flash + RAG (SGK Tin 12 GDPT 2018)',
+      text: `Xin chào ${user.displayName}! Mình là Trợ lý AI Tin học THPT tích hợp RAG Tri thức SGK Tin học 12. Khi bạn hỏi bài, AI sẽ tự động đối chiếu các đoạn bài học chuẩn từ SGK GDPT 2018 trên Supabase để giải thích chính xác nhất!`,
+      model: 'Gemini 3.8 Flash + RAG (SGK Tin 12)',
     },
   ]);
   const [inputQuestion, setInputQuestion] = useState('');
@@ -112,66 +140,103 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   const [useSearchGrounding, setUseSearchGrounding] = useState(false);
   const [isAskingAi, setIsAskingAi] = useState(false);
 
-  // Helper: compute local diagnostic report if AI API key is missing or offline
+  // Calculate official Ministry scoring on full THPTQG exam
+  const calculateExamScore = (
+    exam: Exam,
+    p1Ans: Record<string, 'A' | 'B' | 'C' | 'D'>,
+    p2Ans: Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }>
+  ) => {
+    let part1Score = 0;
+    let part1Correct = 0;
+    for (const q of exam.part1Questions) {
+      if (p1Ans[q.id] === q.correctAnswer) {
+        part1Score += 0.25;
+        part1Correct += 1;
+      }
+    }
+
+    const p2Filtered = exam.part2Questions.filter(
+      (q) => !q.trackRequirement || q.trackRequirement === 'ALL' || q.trackRequirement === user.track
+    );
+
+    let part2Score = 0;
+    const part2Details = p2Filtered.map((q) => {
+      const selections = p2Ans[q.id] || {};
+      let correctCount = 0;
+      for (const stmt of q.statements) {
+        if (selections[stmt.id] === stmt.isCorrect) {
+          correctCount += 1;
+        }
+      }
+      let qScore = 0;
+      if (correctCount === 1) qScore = 0.1;
+      else if (correctCount === 2) qScore = 0.25;
+      else if (correctCount === 3) qScore = 0.5;
+      else if (correctCount === 4) qScore = 1.0;
+
+      part2Score += qScore;
+      return {
+        questionId: q.id,
+        correctStatements: correctCount,
+        score: qScore,
+      };
+    });
+
+    const totalScore = Math.min(10, Number((part1Score + part2Score).toFixed(2)));
+
+    return {
+      totalScore,
+      part1Score: Number(part1Score.toFixed(2)),
+      part1Correct,
+      part2Score: Number(part2Score.toFixed(2)),
+      part2Details,
+    };
+  };
+
+  // Local fallback diagnostic report if network is offline
   const computeLocalAnalysis = (
     score: number,
-    correctCount: number,
-    total: number,
-    answers: Record<string, 'A' | 'B' | 'C' | 'D'>
+    wrongQuestions: Array<{ topicName: string; content: string; userAnswer: string; correctAnswer: string }>,
+    topicBreakdown: Array<{ topicId: string; topicName: string; correct: number; total: number; percentage: number }>,
+    scores: { part1Correct: number; part1Score: number; part2Score: number }
   ): DiagnosticAnalysisResult => {
-    const wrongQs = DIAGNOSTIC_QUESTIONS.filter((q) => answers[q.id] !== q.correctAnswer);
-    const wrongTopics = Array.from(new Set(wrongQs.map((q) => q.topicId)));
-    const wrongTopicNames = Array.from(new Set(wrongQs.map((q) => q.topicName)));
-    const correctQs = DIAGNOSTIC_QUESTIONS.filter((q) => answers[q.id] === q.correctAnswer);
-    const correctTopicNames = Array.from(new Set(correctQs.map((q) => q.topicName)));
+    const weakTopics = topicBreakdown
+      .filter((t) => t.percentage < 70)
+      .map((t) => t.topicId);
 
-    // Cognitive levels calculation
-    const knowQs = DIAGNOSTIC_QUESTIONS.filter((q) => q.level === 'biet');
-    const understandQs = DIAGNOSTIC_QUESTIONS.filter((q) => q.level === 'hieu');
-    const applyQs = DIAGNOSTIC_QUESTIONS.filter((q) => q.level === 'van_dung');
+    const weakTopicNames = topicBreakdown
+      .filter((t) => t.percentage < 70)
+      .map((t) => t.topicName);
 
-    const knowCorrect = knowQs.filter((q) => answers[q.id] === q.correctAnswer).length;
-    const understandCorrect = understandQs.filter((q) => answers[q.id] === q.correctAnswer).length;
-    const applyCorrect = applyQs.filter((q) => answers[q.id] === q.correctAnswer).length;
-
-    const knowPct = Math.round((knowCorrect / (knowQs.length || 1)) * 100);
-    const understandPct = Math.round((understandCorrect / (understandQs.length || 1)) * 100);
-    const applyPct = Math.round((applyCorrect / (applyQs.length || 1)) * 100);
+    const strongTopicNames = topicBreakdown
+      .filter((t) => t.percentage >= 70)
+      .map((t) => t.topicName);
 
     let ranking = 'Khá - Nền tảng tốt, cần nâng cao vận dụng';
-    let assessment = `Học sinh thể hiện khả năng nắm bắt kiến thức nền tảng tương đối tốt với ${correctCount}/${total} câu hỏi chính xác. Cần đặc biệt chú ý khắc phục các lỗ hổng lý thuyết liên quan đến mạng máy tính và chuẩn hóa cơ sở dữ liệu.`;
+    let assessment = `Học sinh đạt ${score.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPT chuẩn (Phần I: ${scores.part1Score}đ, Phần II: ${scores.part2Score}đ). Nắm được kiến thức cốt lõi nhưng còn thiếu sót ở các câu hỏi phân hóa thực tiễn.`;
 
     if (score >= 9.0) {
       ranking = 'Xuất sắc - Nền tảng vững vàng toàn diện';
-      assessment = `Học sinh có tư duy Tin học rất xuất sắc, làm chủ hầu hết các chủ đề từ lý thuyết AI, mạng máy tính đến thuật toán và cơ sở dữ liệu. Sẵn sàng cho mục tiêu điểm 9.5 - 10 trong kỳ thi tốt nghiệp THPT.`;
+      assessment = `Học sinh có tư duy Tin học xuất sắc với ${score.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPTQG chuẩn. Làm chủ cả phần trắc nghiệm nhiều phương án lẫn đúng/sai. Sẵn sàng cho mục tiêu 9.5 - 10 điểm!`;
     } else if (score >= 8.0) {
       ranking = 'Giỏi - Nắm chắc kiến thức cốt lõi';
-      assessment = `Nền tảng kiến thức rất vững chắc. Bạn chỉ gặp một vài sai sót nhỏ ở các câu hỏi vận dụng hoặc bẫy đề thi. Tập trung rèn luyện đề chuẩn sẽ sớm đạt ngưỡng điểm tối đa.`;
+      assessment = `Kết quả thi THPTQG đạt ${score.toFixed(2)}/10 điểm rất ấn tượng. Nền tảng kiến thức vững vàng, chỉ gặp một vài sai sót nhỏ ở các câu hỏi bẫy hoặc vận dụng thực tiễn.`;
     } else if (score < 5.0) {
       ranking = 'Cần củng cố nền tảng kiến thức';
-      assessment = `Học sinh còn bị hổng một số khái niệm cơ bản về mạng máy tính, HTML và cơ sở dữ liệu. Cần bám sát lộ trình 7 ngày của TinPath để ôn lại lý thuyết trọng tâm trước khi luyện đề.`;
+      assessment = `Kết quả đạt ${score.toFixed(2)}/10 điểm cho thấy học sinh còn bị hổng khá nhiều kiến thức nền tảng trong chương trình lớp 11 và 12. Cần bám sát lộ trình từng ngày của TinPath để ôn tập lại.`;
     }
 
-    const strengths: string[] = [];
-    if (correctTopicNames.length > 0) {
-      strengths.push(`Nắm chắc các nội dung: ${correctTopicNames.slice(0, 3).join(', ')}.`);
-    }
-    if (knowPct >= 75) {
-      strengths.push(`Ghi nhớ tốt các định nghĩa, mốc thời gian và khái niệm cốt lõi (Đạt ${knowPct}% ở mức độ Biết).`);
-    }
-    if (strengths.length === 0) {
-      strengths.push('Có tinh thần học hỏi và sẵn sàng bù đắp các lỗ hổng kiến thức.');
-    }
+    const weaknesses = wrongQuestions.slice(0, 4).map((w) => {
+      return `Lỗ hổng [${w.topicName}]: ${w.content.slice(0, 90)}... (Bạn chọn: ${w.userAnswer} → Đáp án đúng: ${w.correctAnswer})`;
+    });
 
-    const weaknesses: string[] = [];
-    if (wrongTopicNames.length > 0) {
-      weaknesses.push(`Cần ôn lại các chuyên đề: ${wrongTopicNames.join(', ')}.`);
-    }
-    if (applyPct < 70) {
-      weaknesses.push(`Kỹ năng xử lý bài tập tính toán địa chỉ IP và truy vết thuật toán còn lúng túng (Đạt ${applyPct}% ở mức độ Vận dụng).`);
-    }
     if (weaknesses.length === 0) {
       weaknesses.push('Cần rèn luyện thêm tốc độ phản xạ với các câu hỏi bẫy định nghĩa.');
+    }
+
+    const strengths = strongTopicNames.slice(0, 3).map((st) => `Nắm vững kiến thức chuyên đề ${st}.`);
+    if (strengths.length === 0) {
+      strengths.push('Có tinh thần làm bài nghiêm túc và sẵn sàng bồi đắp kiến thức.');
     }
 
     return {
@@ -180,28 +245,25 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       strengths,
       weaknesses,
       cognitiveLevels: {
-        know: {
-          percentage: knowPct,
-          evaluation: knowPct >= 80 ? 'Nắm chắc kiến thức định nghĩa' : 'Cần ôn lại các khái niệm cơ bản',
-        },
-        understand: {
-          percentage: understandPct,
-          evaluation: understandPct >= 70 ? 'Hiểu tốt cơ chế và phân loại' : 'Cần phân biệt rõ các thiết bị & chuẩn mạng',
-        },
-        apply: {
-          percentage: applyPct,
-          evaluation: applyPct >= 70 ? 'Tư duy giải quyết bài toán tốt' : 'Cần luyện thêm dạng bài đổi nhị phân & thuật toán',
-        },
+        know: { percentage: Math.min(100, Math.round(score * 10 + 10)), evaluation: 'Nắm chắc kiến thức định nghĩa nhận biết' },
+        understand: { percentage: Math.min(100, Math.round(score * 10)), evaluation: 'Hiểu tốt cơ chế và quy trình mạng & CSDL' },
+        apply: { percentage: Math.min(100, Math.max(30, Math.round(score * 10 - 15))), evaluation: 'Cần luyện thêm dạng bài đổi nhị phân & thuật toán' },
       },
-      pedagogicalAdvice: `Phân bổ 45 phút mỗi ngày: Dành 20 phút đọc lại lý thuyết các phần làm sai, 20 phút làm bài tập trắc nghiệm chuyên đề và 5 phút ôn lại bằng flashcard trước khi ngủ.`,
-      recommendedWeakTopics: wrongTopics.length > 0 ? wrongTopics : ['12B', '11F'],
+      pedagogicalAdvice: `Dành 45 phút mỗi ngày theo lộ trình: 20 phút đọc lại lý thuyết các phần làm sai (${weakTopicNames.slice(0, 2).join(', ') || 'Mạng & CSDL'}), 20 phút giải bài tập trắc nghiệm và 5 phút đối chiếu lời giải chi tiết.`,
+      recommendedWeakTopics: weakTopics.length > 0 ? weakTopics : ['12B', '11F'],
     };
   };
 
-  // Perform Diagnostic Analysis (Calls Gemini API with graceful heuristic fallback)
-  const triggerDiagnosticAnalysis = async (score: number, answers: Record<string, 'A' | 'B' | 'C' | 'D'>) => {
+  // Run Real AI Diagnostic Analysis via Gemini 3.8 Flash
+  const runAiAnalysisOnExam = async (
+    exam: Exam,
+    p1Ans: Record<string, 'A' | 'B' | 'C' | 'D'>,
+    p2Ans: Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }>,
+    finalScore: number,
+    scoresData: any
+  ) => {
     setIsAnalyzingDiagnostic(true);
-    let correct = 0;
+
     const wrongQuestions: Array<{
       id: string;
       topicName: string;
@@ -211,28 +273,58 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       explanation: string;
     }> = [];
 
-    // Topic stats accumulator
     const topicStats: Record<string, { topicName: string; correct: number; total: number }> = {};
 
-    for (const q of DIAGNOSTIC_QUESTIONS) {
+    // 1. Part 1 breakdown
+    for (const q of exam.part1Questions) {
       if (!topicStats[q.topicId]) {
         topicStats[q.topicId] = { topicName: q.topicName, correct: 0, total: 0 };
       }
-      topicStats[q.topicId].total++;
+      topicStats[q.topicId].total += 1;
 
-      const userAns = answers[q.id];
-      if (userAns === q.correctAnswer) {
-        correct++;
-        topicStats[q.topicId].correct++;
+      const userChoice = p1Ans[q.id];
+      if (userChoice === q.correctAnswer) {
+        topicStats[q.topicId].correct += 1;
       } else {
+        const userChoiceText = userChoice ? `${userChoice}. ${q.options[userChoice]}` : 'Chưa chọn';
+        const correctChoiceText = `${q.correctAnswer}. ${q.options[q.correctAnswer]}`;
         wrongQuestions.push({
           id: q.id,
           topicName: q.topicName,
-          content: q.content,
-          userAnswer: userAns || 'Chưa chọn',
-          correctAnswer: q.correctAnswer,
-          explanation: q.explanation,
+          content: `[Phần I] ${q.content}`,
+          userAnswer: userChoiceText,
+          correctAnswer: correctChoiceText,
+          explanation: q.explanation || 'Đối chiếu chuẩn kiến thức SGK GDPT 2018.',
         });
+      }
+    }
+
+    // 2. Part 2 breakdown
+    const p2Filtered = exam.part2Questions.filter(
+      (q) => !q.trackRequirement || q.trackRequirement === 'ALL' || q.trackRequirement === user.track
+    );
+
+    for (const q of p2Filtered) {
+      if (!topicStats[q.topicId]) {
+        topicStats[q.topicId] = { topicName: q.topicName, correct: 0, total: 0 };
+      }
+      topicStats[q.topicId].total += 4;
+
+      const selections = p2Ans[q.id] || {};
+      for (const stmt of q.statements) {
+        const userStatementVal = selections[stmt.id];
+        if (userStatementVal === stmt.isCorrect) {
+          topicStats[q.topicId].correct += 1;
+        } else {
+          wrongQuestions.push({
+            id: `${q.id}_${stmt.id}`,
+            topicName: q.topicName,
+            content: `[Phần II - ${q.context}] Ý ${stmt.id.toUpperCase()}: "${stmt.statement}"`,
+            userAnswer: userStatementVal === undefined ? 'Chưa trả lời' : userStatementVal ? 'Chọn Đúng' : 'Chọn Sai',
+            correctAnswer: stmt.isCorrect ? 'Đáp án Đúng' : 'Đáp án Sai',
+            explanation: stmt.explanation || 'Xem lại bài học chuyên đề trong SGK.',
+          });
+        }
       }
     }
 
@@ -241,7 +333,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       topicName: val.topicName,
       correct: val.correct,
       total: val.total,
-      percentage: Math.round((val.correct / val.total) * 100),
+      percentage: Math.round((val.correct / (val.total || 1)) * 100),
     }));
 
     try {
@@ -249,9 +341,9 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
         studentName: user.displayName,
         grade: user.grade,
         track: user.track,
-        score,
-        totalQuestions: DIAGNOSTIC_QUESTIONS.length,
-        correctCount: correct,
+        score: finalScore,
+        totalQuestions: 28,
+        correctCount: scoresData.part1Correct,
         topicBreakdown,
         wrongQuestions,
       });
@@ -261,60 +353,90 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
           const parsed = JSON.parse(res.rawJson);
           setDiagnosticAnalysis(parsed);
           return;
-        } catch {
-          // If JSON parse fails, use fallback
-        }
+        } catch {}
       }
-      // If no valid JSON from real AI, compute local report
-      const fallbackReport = computeLocalAnalysis(score, correct, DIAGNOSTIC_QUESTIONS.length, answers);
+      const fallbackReport = computeLocalAnalysis(finalScore, wrongQuestions, topicBreakdown, scoresData);
       setDiagnosticAnalysis(fallbackReport);
     } catch {
-      // Local fallback on API error/missing key
-      const fallbackReport = computeLocalAnalysis(score, correct, DIAGNOSTIC_QUESTIONS.length, answers);
+      const fallbackReport = computeLocalAnalysis(finalScore, wrongQuestions, topicBreakdown, scoresData);
       setDiagnosticAnalysis(fallbackReport);
     } finally {
       setIsAnalyzingDiagnostic(false);
     }
   };
 
-  // Submit diagnostic test from Step 1
+  // Submit full THPTQG diagnostic test from Step 1
   const handleSubmitDiagnostic = async () => {
-    let correct = 0;
-    for (const q of DIAGNOSTIC_QUESTIONS) {
-      if (diagnosticAnswers[q.id] === q.correctAnswer) {
-        correct++;
-      }
-    }
-    const score = Number(((correct / DIAGNOSTIC_QUESTIONS.length) * 10).toFixed(1));
-    setDiagScore(score);
+    const scores = calculateExamScore(currentExam, part1Answers, part2Answers);
+    setScoreBreakdown(scores);
+    setDiagScore(scores.totalScore);
     setDiagnosticSubmitted(true);
+    setDiagnosticExamTitle(currentExam.title);
+
     onUpdateUser({
       ...user,
-      diagnosticScore: score,
-      xp: user.xp + 50,
+      diagnosticScore: scores.totalScore,
+      xp: user.xp + 60,
     });
 
-    // Automatically advance to Step 2 and trigger AI analysis
     setCurrentStep(2);
-    await triggerDiagnosticAnalysis(score, diagnosticAnswers);
+    await runAiAnalysisOnExam(currentExam, part1Answers, part2Answers, scores.totalScore, scores);
+  };
+
+  // Immediately use student's existing exam attempt for AI diagnosis
+  const handleUseExistingExamAttempt = async (attempt: ExamAttempt) => {
+    const matchingExam = OFFICIAL_EXAMS.find((e) => e.id === attempt.examId) || OFFICIAL_EXAMS[0];
+    setSelectedExamId(matchingExam.id);
+    setDiagnosticExamTitle(attempt.examTitle);
+
+    const p1: Record<string, 'A' | 'B' | 'C' | 'D'> = {};
+    const p2: Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }> = {};
+
+    Object.values(attempt.answers || {}).forEach((ans) => {
+      if (ans.type === 'single_choice' && ans.selectedOption) {
+        p1[ans.questionId] = ans.selectedOption;
+      } else if (ans.type === 'true_false_group' && ans.trueFalseSelections) {
+        p2[ans.questionId] = ans.trueFalseSelections;
+      }
+    });
+
+    const scores = calculateExamScore(matchingExam, p1, p2);
+    setPart1Answers(p1);
+    setPart2Answers(p2);
+    setScoreBreakdown(scores);
+    setDiagScore(attempt.totalScore);
+    setDiagnosticSubmitted(true);
+    setCurrentStep(2);
+
+    await runAiAnalysisOnExam(matchingExam, p1, p2, attempt.totalScore, scores);
   };
 
   // Quick fill sample test answers for instant demo
   const handleQuickFillSampleAnswers = () => {
-    // 7 correct answers, 3 intentional mistakes (diag_3 wrong, diag_5 wrong, diag_9 wrong)
-    const sample: Record<string, 'A' | 'B' | 'C' | 'D'> = {
-      diag_1: 'B', // Correct
-      diag_2: 'A', // Correct
-      diag_3: 'A', // Incorrect (Correct is C)
-      diag_4: 'B', // Correct
-      diag_5: 'B', // Incorrect (Correct is C)
-      diag_6: 'C', // Correct
-      diag_7: 'C', // Correct
-      diag_8: 'C', // Correct
-      diag_9: 'A', // Incorrect (Correct is B)
-      diag_10: 'C', // Correct
-    };
-    setDiagnosticAnswers(sample);
+    const p1: Record<string, 'A' | 'B' | 'C' | 'D'> = {};
+    currentExam.part1Questions.forEach((q, idx) => {
+      if (idx === 3 || idx === 7 || idx === 12 || idx === 18) {
+        const wrongOpts = (['A', 'B', 'C', 'D'] as const).filter((o) => o !== q.correctAnswer);
+        p1[q.id] = wrongOpts[0];
+      } else {
+        p1[q.id] = q.correctAnswer;
+      }
+    });
+
+    const p2: Record<string, { a?: boolean; b?: boolean; c?: boolean; d?: boolean }> = {};
+    part2Questions.forEach((q, qIdx) => {
+      p2[q.id] = {};
+      q.statements.forEach((stmt, sIdx) => {
+        if ((qIdx === 0 && sIdx === 1) || (qIdx === 1 && sIdx === 2) || (qIdx === 2 && sIdx === 0)) {
+          p2[q.id][stmt.id] = !stmt.isCorrect;
+        } else {
+          p2[q.id][stmt.id] = stmt.isCorrect;
+        }
+      });
+    });
+
+    setPart1Answers(p1);
+    setPart2Answers(p2);
   };
 
   // Generate Personalized Learning Path with Gemini (Step 3)
@@ -505,30 +627,25 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     }
   };
 
-  // If user already had diagnosticScore on load, populate initial local analysis
+  // If user already had diagnosticScore on load, initialize
   useEffect(() => {
     if (user.diagnosticScore && !diagnosticAnalysis) {
-      // Build an initial sample analysis matching user score
-      const sampleAnswers: Record<string, 'A' | 'B' | 'C' | 'D'> = {
-        diag_1: 'B',
-        diag_2: 'A',
-        diag_3: 'C',
-        diag_4: 'B',
-        diag_5: 'C',
-        diag_6: 'C',
-        diag_7: 'C',
-        diag_8: 'C',
-        diag_9: 'B',
-        diag_10: 'C',
-      };
-      setDiagnosticAnswers(sampleAnswers);
-      const report = computeLocalAnalysis(user.diagnosticScore, 7, 10, sampleAnswers);
-      setDiagnosticAnalysis(report);
+      if (examAttempts && examAttempts.length > 0) {
+        handleUseExistingExamAttempt(examAttempts[0]);
+      } else {
+        handleQuickFillSampleAnswers();
+      }
     }
   }, [user.diagnosticScore]);
 
-  // Answered count in Step 1
-  const answeredCount = Object.keys(diagnosticAnswers).length;
+  // Answered count in Step 1 (Full THPTQG 28-question exam)
+  const part1AnsweredCount = Object.keys(part1Answers).length;
+  const part2AnsweredCount = part2Questions.filter((q) => {
+    const ans = part2Answers[q.id];
+    return ans && (ans.a !== undefined || ans.b !== undefined || ans.c !== undefined || ans.d !== undefined);
+  }).length;
+  const totalAnsweredQuestions = part1AnsweredCount + part2AnsweredCount;
+  const totalExamQuestions = currentExam.part1Questions.length + part2Questions.length;
 
   return (
     <div className="space-y-6">
@@ -613,7 +730,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                       Bước 1: Đánh giá năng lực
                     </div>
                     <div className="text-xs text-gray-500 mt-0.5">
-                      {diagnosticSubmitted ? `Đã hoàn thành (${diagScore ?? 7}đ)` : '10 câu sàng lọc ma trận'}
+                      {diagnosticSubmitted ? `Đã hoàn thành (${diagScore ?? 7.25}đ)` : 'Đề thi THPTQG 28 câu'}
                     </div>
                   </div>
                 </div>
@@ -710,165 +827,367 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
           {/* ======================================================== */}
           {currentStep === 1 && (
             <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-6">
-              {/* Step 1 Header & Quick Tools */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-[#2C2C2C]">
-                <div>
-                  <div className="flex items-center gap-2.5">
+              {/* Header with Exam Selector & Quick Tools */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-gray-100 dark:border-[#2C2C2C]">
+                <div className="space-y-1.5 max-w-2xl">
+                  <div className="flex items-center gap-2.5 flex-wrap">
                     <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-[#2878C8] text-white font-mono">
                       BƯỚC 1 / 3
                     </span>
+                    <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-[#2878C8] dark:bg-blue-950 dark:text-blue-300">
+                      Chuẩn Cấu trúc Đề thi Tốt nghiệp THPT 2026
+                    </span>
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                      Bài thi Đánh giá Năng lực Đầu vào Tin học THPT
+                      Bài thi Đánh giá Năng lực Đầu vào Toàn diện
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Gồm 10 câu trắc nghiệm bao quát 5 chủ đề cốt lõi (AI 12A, Mạng 12B, Web 12F, CSDL 11F, Thuật toán 11F_CS) chuẩn ma trận GDPT 2018.
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Làm bài thi THPTQG chuẩn Bộ GD&ĐT gồm 28 câu (Phần I: 24 câu trắc nghiệm nhiều phương án - 6.0đ; Phần II: 4 câu đúng/sai - 4.0đ). AI Gemini 3.8 Flash sẽ trực tiếp phân tích kết quả, chỉ rõ từng lỗ hổng kiến thức để tạo lộ trình học thích ứng.
                   </p>
                 </div>
 
-                {/* Quick Actions for testing and demo */}
-                <div className="flex items-center gap-2.5 shrink-0">
+                {/* Quick Actions */}
+                <div className="flex flex-wrap items-center gap-2.5 shrink-0">
                   <button
                     onClick={handleQuickFillSampleAnswers}
-                    className="px-4 py-2 rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-bold hover:bg-amber-100 transition-colors flex items-center gap-1.5"
-                    title="Tự động chọn đáp án mẫu (7/10 câu đúng) để thử nghiệm nhanh phân tích và lộ trình AI"
+                    className="px-4 py-2.5 rounded-xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-bold hover:bg-amber-100 transition-colors flex items-center gap-1.5 shadow-xs"
+                    title="Tự động điền bài làm mẫu (đạt ~7.25đ với các sai lầm thực tế để AI chẩn đoán)"
                   >
                     <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
                     ⚡ Điền nhanh kết quả mẫu
                   </button>
-                  {answeredCount > 0 && (
+                  {totalAnsweredQuestions > 0 && (
                     <button
-                      onClick={() => setDiagnosticAnswers({})}
-                      className="px-3 py-2 rounded-lg border border-gray-200 dark:border-[#333] text-gray-600 dark:text-gray-400 hover:text-gray-900 text-xs font-medium transition-colors"
-                      title="Xóa tất cả lựa chọn"
+                      onClick={() => {
+                        setPart1Answers({});
+                        setPart2Answers({});
+                      }}
+                      className="px-3 py-2.5 rounded-xl border border-gray-200 dark:border-[#333] text-gray-600 dark:text-gray-400 hover:text-gray-900 text-xs font-medium transition-colors flex items-center gap-1.5"
+                      title="Xóa tất cả câu trả lời để làm lại từ đầu"
                     >
                       <RotateCcw className="w-4 h-4" />
+                      Làm lại
                     </button>
                   )}
                 </div>
               </div>
 
-              {/* Progress indicator */}
-              <div className="p-4 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] flex items-center justify-between text-sm">
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    Tiến độ làm bài:
-                  </span>
-                  <div className="w-36 sm:w-56 h-2.5 bg-gray-200 dark:bg-[#333] rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-[#2878C8] transition-all duration-300 rounded-full"
-                      style={{ width: `${(answeredCount / DIAGNOSTIC_QUESTIONS.length) * 100}%` }}
-                    />
+              {/* Notice if student has existing exam attempts */}
+              {examAttempts && examAttempts.length > 0 && (
+                <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50/90 to-indigo-50/70 dark:from-blue-950/40 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-900/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900 text-[#2878C8] flex items-center justify-center shrink-0">
+                      <GraduationCap className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-gray-900 dark:text-white">
+                        Bạn đã làm bài thi &quot;{examAttempts[0].examTitle}&quot; đạt {examAttempts[0].totalScore} điểm
+                      </div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                        Bạn có thể sử dụng ngay bài thi này để AI phân tích chẩn đoán chuyên sâu mà không cần làm lại từ đầu.
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-mono font-bold text-[#2878C8]">
-                    {answeredCount} / {DIAGNOSTIC_QUESTIONS.length} câu
+                  <button
+                    onClick={() => handleUseExistingExamAttempt(examAttempts[0])}
+                    className="px-4 py-2 rounded-lg bg-[#2878C8] hover:bg-[#2068B0] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Dùng kết quả này để AI chẩn đoán ngay
+                  </button>
+                </div>
+              )}
+
+              {/* Exam Picker & Status Panel */}
+              <div className="p-4 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                    Chọn đề thi THPTQG đánh giá:
                   </span>
+                  <select
+                    value={selectedExamId}
+                    onChange={(e) => {
+                      setSelectedExamId(e.target.value);
+                      setPart1Answers({});
+                      setPart2Answers({});
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#2878C8]"
+                  >
+                    {OFFICIAL_EXAMS.map((exam) => (
+                      <option key={exam.id} value={exam.id}>
+                        {exam.title} ({exam.year}) - {exam.creatorName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                <div className="text-gray-500 text-xs hidden sm:block">
-                  Thời gian gợi ý: <span className="font-mono font-semibold">10 - 15 phút</span>
+                <div className="flex items-center gap-4 text-xs font-medium text-gray-600 dark:text-gray-400">
+                  <span>
+                    Tổng số câu: <strong className="text-gray-900 dark:text-white">{totalExamQuestions} câu</strong>
+                  </span>
+                  <span>•</span>
+                  <span>
+                    Thời gian: <strong className="text-gray-900 dark:text-white">50 phút</strong>
+                  </span>
+                  <span>•</span>
+                  <span>
+                    Tiến độ: <strong className="text-[#2878C8] font-mono font-bold">{totalAnsweredQuestions} / {totalExamQuestions}</strong>
+                  </span>
                 </div>
               </div>
 
-              {/* Question list */}
-              <div className="space-y-4">
-                {DIAGNOSTIC_QUESTIONS.map((q, idx) => {
-                  const isSelected = Boolean(diagnosticAnswers[q.id]);
-                  return (
-                    <div
-                      key={q.id}
-                      className={`p-5 rounded-xl border transition-all space-y-3.5 ${
-                        isSelected
-                          ? 'border-blue-200 dark:border-blue-900/40 bg-white dark:bg-[#222]'
-                          : 'border-gray-200 dark:border-[#333] bg-gray-50/40 dark:bg-[#1E1E1E]'
-                      }`}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-7 h-7 rounded-md bg-blue-100 dark:bg-blue-950 text-[#2878C8] font-bold font-mono flex items-center justify-center text-xs">
-                            {idx + 1}
-                          </span>
-                          <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">
-                            {q.topicName}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-gray-100 dark:bg-[#333] text-gray-600 dark:text-gray-300">
-                            Chủ đề {q.topicId}
-                          </span>
-                          <span
-                            className={`px-2.5 py-0.5 rounded text-xs font-semibold ${
-                              q.level === 'biet'
-                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300'
-                                : q.level === 'hieu'
-                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300'
-                                : 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
-                            }`}
-                          >
-                            {q.level === 'biet' ? 'Biết' : q.level === 'hieu' ? 'Hiểu' : 'Vận dụng'}
-                          </span>
-                        </div>
-                      </div>
+              {/* Progress bar */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Tiến độ hoàn thành bài thi:</span>
+                  <span className="font-mono font-bold text-[#2878C8]">
+                    {Math.round((totalAnsweredQuestions / (totalExamQuestions || 1)) * 100)}% ({totalAnsweredQuestions}/{totalExamQuestions} câu)
+                  </span>
+                </div>
+                <div className="w-full h-2.5 bg-gray-200 dark:bg-[#333] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#2878C8] transition-all duration-300 rounded-full"
+                    style={{ width: `${(totalAnsweredQuestions / (totalExamQuestions || 1)) * 100}%` }}
+                  />
+                </div>
+              </div>
 
-                      <p className="font-medium text-gray-900 dark:text-gray-100 text-sm sm:text-base leading-relaxed">
-                        {q.content}
-                      </p>
+              {/* ======================================================== */}
+              {/* PHẦN I: 24 CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN */}
+              {/* ======================================================== */}
+              <div className="space-y-4 pt-2">
+                <div className="p-3.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/40 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-md bg-[#2878C8] text-white flex items-center justify-center text-xs font-bold font-mono">
+                        I
+                      </span>
+                      PHẦN I: CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN
+                    </h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                      Gồm 24 câu hỏi (Từ câu 1 đến câu 24). Mỗi câu đúng được 0.25 điểm. Tối đa 6.0 điểm.
+                    </p>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-[#2878C8]">
+                    {part1AnsweredCount} / {currentExam.part1Questions.length} đã làm
+                  </span>
+                </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                        {(['A', 'B', 'C', 'D'] as const).map((opt) => {
-                          const isChosen = diagnosticAnswers[q.id] === opt;
-                          return (
-                            <button
-                              key={opt}
-                              type="button"
-                              onClick={() => {
-                                setDiagnosticAnswers((prev) => ({ ...prev, [q.id]: opt }));
-                              }}
-                              className={`text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
-                                isChosen
-                                  ? 'border-[#2878C8] bg-blue-50 dark:bg-blue-950/50 shadow-xs ring-1 ring-[#2878C8]/20'
-                                  : 'border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] hover:border-gray-300 dark:hover:border-[#444]'
+                <div className="space-y-4">
+                  {currentExam.part1Questions.map((q, idx) => {
+                    const isSelected = Boolean(part1Answers[q.id]);
+                    return (
+                      <div
+                        key={q.id}
+                        className={`p-5 rounded-xl border transition-all space-y-3.5 ${
+                          isSelected
+                            ? 'border-blue-200 dark:border-blue-900/40 bg-white dark:bg-[#222]'
+                            : 'border-gray-200 dark:border-[#333] bg-gray-50/30 dark:bg-[#1E1E1E]'
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-7 h-7 rounded-md bg-blue-100 dark:bg-blue-950 text-[#2878C8] font-bold font-mono flex items-center justify-center text-xs">
+                              {idx + 1}
+                            </span>
+                            <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">
+                              {q.topicName}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-gray-100 dark:bg-[#333] text-gray-600 dark:text-gray-300">
+                              Chủ đề {q.topicId}
+                            </span>
+                            <span
+                              className={`px-2.5 py-0.5 rounded text-xs font-semibold ${
+                                q.level === 'biet'
+                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300'
+                                  : q.level === 'hieu'
+                                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300'
+                                  : 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
                               }`}
                             >
-                              <span
-                                className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 ${
+                              {q.level === 'biet' ? 'Biết' : q.level === 'hieu' ? 'Hiểu' : 'Vận dụng'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="font-medium text-gray-900 dark:text-gray-100 text-sm sm:text-base leading-relaxed">
+                          {q.content}
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                          {(['A', 'B', 'C', 'D'] as const).map((opt) => {
+                            const isChosen = part1Answers[q.id] === opt;
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => {
+                                  setPart1Answers((prev) => ({ ...prev, [q.id]: opt }));
+                                }}
+                                className={`text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
                                   isChosen
-                                    ? 'bg-[#2878C8] text-white'
-                                    : 'bg-gray-100 dark:bg-[#333] text-gray-700 dark:text-gray-300'
+                                    ? 'border-[#2878C8] bg-blue-50 dark:bg-blue-950/50 shadow-xs ring-1 ring-[#2878C8]/20'
+                                    : 'border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] hover:border-gray-300 dark:hover:border-[#444]'
                                 }`}
                               >
-                                {opt}
-                              </span>
-                              <span
-                                className={`text-sm leading-relaxed ${
-                                  isChosen
-                                    ? 'font-bold text-blue-950 dark:text-blue-100'
-                                    : 'text-gray-800 dark:text-gray-200'
-                                }`}
-                              >
-                                {q.options[opt]}
-                              </span>
-                            </button>
-                          );
-                        })}
+                                <span
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 ${
+                                    isChosen
+                                      ? 'bg-[#2878C8] text-white'
+                                      : 'bg-gray-100 dark:bg-[#333] text-gray-700 dark:text-gray-300'
+                                  }`}
+                                >
+                                  {opt}
+                                </span>
+                                <span
+                                  className={`text-sm leading-relaxed ${
+                                    isChosen
+                                      ? 'font-bold text-blue-950 dark:text-blue-100'
+                                      : 'text-gray-800 dark:text-gray-200'
+                                  }`}
+                                >
+                                  {q.options[opt]}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ======================================================== */}
+              {/* PHẦN II: 4 CÂU TRẮC NGHIỆM ĐÚNG / SAI */}
+              {/* ======================================================== */}
+              <div className="space-y-4 pt-4 border-t border-gray-100 dark:border-[#2C2C2C]">
+                <div className="p-3.5 rounded-xl bg-purple-50/70 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-md bg-purple-600 text-white flex items-center justify-center text-xs font-bold font-mono">
+                        II
+                      </span>
+                      PHẦN II: CÂU TRẮC NGHIỆM ĐÚNG / SAI
+                    </h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                      Gồm 4 câu hỏi. Mỗi câu có 4 ý a, b, c, d. Đúng 1 ý: 0.1đ | Đúng 2 ý: 0.25đ | Đúng 3 ý: 0.5đ | Đúng 4 ý: 1.0đ. Tối đa 4.0 điểm.
+                    </p>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-purple-600 dark:text-purple-400">
+                    {part2AnsweredCount} / {part2Questions.length} đã làm
+                  </span>
+                </div>
+
+                <div className="space-y-5">
+                  {part2Questions.map((q, qIdx) => {
+                    const currentSelections = part2Answers[q.id] || {};
+                    return (
+                      <div
+                        key={q.id}
+                        className="p-5 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1E1E1E] space-y-4"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-7 h-7 rounded-md bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-300 font-bold font-mono flex items-center justify-center text-xs">
+                              {currentExam.part1Questions.length + qIdx + 1}
+                            </span>
+                            <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">
+                              {q.topicName}
+                            </span>
+                          </div>
+                          <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+                            Chủ đề {q.topicId} • Đúng/Sai
+                          </span>
+                        </div>
+
+                        {/* Context scenario */}
+                        <div className="p-3.5 rounded-lg bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-medium">
+                          {q.context}
+                        </div>
+
+                        {/* 4 statements a, b, c, d */}
+                        <div className="space-y-3">
+                          {q.statements.map((stmt) => {
+                            const val = currentSelections[stmt.id];
+                            return (
+                              <div
+                                key={stmt.id}
+                                className="p-3.5 rounded-xl border border-gray-100 dark:border-[#2E2E2E] bg-gray-50/50 dark:bg-[#222] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                              >
+                                <div className="flex items-start gap-2.5">
+                                  <span className="font-mono font-bold text-xs uppercase px-2 py-0.5 rounded bg-gray-200 dark:bg-[#333] text-gray-700 dark:text-gray-300 shrink-0 mt-0.5">
+                                    Ý {stmt.id}
+                                  </span>
+                                  <span className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+                                    {stmt.statement}
+                                  </span>
+                                </div>
+
+                                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setPart2Answers((prev) => ({
+                                        ...prev,
+                                        [q.id]: {
+                                          ...(prev[q.id] || {}),
+                                          [stmt.id]: true,
+                                        },
+                                      }));
+                                    }}
+                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                                      val === true
+                                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                                        : 'bg-white dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 border-gray-300 dark:border-[#444] hover:border-emerald-500'
+                                    }`}
+                                  >
+                                    ĐÚNG
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setPart2Answers((prev) => ({
+                                        ...prev,
+                                        [q.id]: {
+                                          ...(prev[q.id] || {}),
+                                          [stmt.id]: false,
+                                        },
+                                      }));
+                                    }}
+                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                                      val === false
+                                        ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
+                                        : 'bg-white dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 border-gray-300 dark:border-[#444] hover:border-rose-500'
+                                    }`}
+                                  >
+                                    SAI
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Submit Action Bottom Bar */}
               <div className="pt-5 border-t border-gray-100 dark:border-[#2C2C2C] flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-gray-500">
-                  {answeredCount < DIAGNOSTIC_QUESTIONS.length ? (
+                  {totalAnsweredQuestions < totalExamQuestions ? (
                     <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1.5 font-medium">
-                      <AlertTriangle className="w-4 h-4" />
-                      Bạn còn {DIAGNOSTIC_QUESTIONS.length - answeredCount} câu chưa chọn. Hệ thống vẫn cho phép nộp để chẩn đoán sơ bộ.
+                      <AlertTriangle className="w-4 h-4 shrink-0" />
+                      Bạn còn {totalExamQuestions - totalAnsweredQuestions} câu chưa hoàn thành. Bạn có thể nộp ngay hoặc dùng nút &quot;Điền nhanh kết quả mẫu&quot; để trải nghiệm AI chẩn đoán.
                     </span>
                   ) : (
                     <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-medium">
-                      <CheckCircle2 className="w-4 h-4" />
-                      Đã hoàn thành đầy đủ 10/10 câu hỏi! Sẵn sàng phân tích với AI.
+                      <CheckCircle2 className="w-4 h-4 shrink-0" />
+                      Đã hoàn thành đầy đủ 28/28 câu hỏi! Sẵn sàng phân tích với Gemini AI.
                     </span>
                   )}
                 </div>
@@ -882,11 +1201,11 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     {isAnalyzingDiagnostic ? (
                       <>
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        AI đang chấm điểm & chẩn đoán...
+                        AI Gemini 3.8 Flash đang chấm điểm & chẩn đoán...
                       </>
                     ) : (
                       <>
-                        Nộp bài & Chẩn đoán năng lực với AI
+                        Nộp bài & Phân tích chẩn đoán với AI
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -905,7 +1224,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
               <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2.5 flex-wrap">
                       <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-[#2878C8] text-white font-mono">
                         BƯỚC 2 / 3
                       </span>
@@ -914,7 +1233,10 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                       </h3>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Tổng hợp dữ liệu bài thi đầu vào, định vị chính xác điểm mạnh và phát hiện các lỗ hổng kiến thức để chuẩn bị xây dựng lộ trình học thích ứng.
+                      Đề thi: <strong className="text-gray-900 dark:text-white">{diagnosticExamTitle || currentExam.title}</strong>
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Hệ thống tự động đối chiếu từng đáp án thực tế với dữ liệu sách giáo khoa Tin học 12 và ma trận năng lực GDPT 2018.
                     </p>
                   </div>
 
@@ -922,10 +1244,10 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   <div className="flex items-center gap-4 bg-blue-50 dark:bg-blue-950/40 p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 shrink-0">
                     <div className="text-center pr-4 border-r border-blue-200 dark:border-blue-900/50">
                       <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 block">
-                        Điểm đánh giá
+                        Tổng điểm
                       </span>
                       <span className="text-3xl sm:text-4xl font-black font-mono text-[#2878C8]">
-                        {diagScore !== null ? diagScore : 7.0}
+                        {diagScore !== null ? diagScore : 7.25}
                         <span className="text-sm font-normal text-gray-500"> / 10đ</span>
                       </span>
                     </div>
@@ -934,8 +1256,10 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                       <span className="px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 inline-block">
                         {diagnosticAnalysis?.levelRanking || 'Khá - Nền tảng tốt'}
                       </span>
-                      <div className="text-xs text-gray-600 dark:text-gray-300">
-                        {DIAGNOSTIC_QUESTIONS.filter((q) => diagnosticAnswers[q.id] === q.correctAnswer).length} / {DIAGNOSTIC_QUESTIONS.length} câu chính xác
+                      <div className="text-xs text-gray-600 dark:text-gray-300 font-mono">
+                        {scoreBreakdown
+                          ? `Phần I: ${scoreBreakdown.part1Score}đ • Phần II: ${scoreBreakdown.part2Score}đ`
+                          : 'Đạt điểm chuẩn phân hóa THPT'}
                       </div>
                     </div>
                   </div>
@@ -947,12 +1271,12 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-[#2878C8]" />
                       <span className="font-bold text-xs sm:text-sm text-[#2878C8] uppercase tracking-wider">
-                        Đánh giá sư phạm từ Gemini 3.8 Flash Engine
+                        Đánh giá sư phạm từ Gemini 3.8 Flash AI
                       </span>
                     </div>
                     {isAnalyzingDiagnostic && (
                       <span className="text-xs text-gray-500 flex items-center gap-1.5">
-                        <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Đang chẩn đoán...
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Đang chẩn đoán thực tế...
                       </span>
                     )}
                   </div>
@@ -966,14 +1290,14 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     <div className="pt-2.5 border-t border-blue-200/60 dark:border-blue-900/40 text-xs sm:text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
                       <Info className="w-4 h-4 text-[#2878C8] shrink-0 mt-0.5" />
                       <span>
-                        <strong className="text-gray-900 dark:text-white">Lời khuyên chiến lược: </strong>
+                        <strong className="text-gray-900 dark:text-white">Lời khuyên chiến lược từ AI: </strong>
                         {diagnosticAnalysis.pedagogicalAdvice}
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* 2-Columns: Strengths vs Knowledge Gaps */}
+                {/* 2-Columns: Strengths vs Knowledge Gaps (Lỗ hổng kiến thức) */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Strengths */}
                   <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/40 dark:bg-emerald-950/20 space-y-3">
@@ -995,10 +1319,10 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   </div>
 
                   {/* Weaknesses / Gaps */}
-                  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/40 dark:bg-amber-950/20 space-y-3">
-                    <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-sm">
+                  <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/40 dark:bg-rose-950/20 space-y-3">
+                    <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-bold text-sm">
                       <AlertTriangle className="w-5 h-5" />
-                      <span>Lỗ hổng kiến thức cần bồi dưỡng (Cần ôn tập)</span>
+                      <span>Lỗ hổng kiến thức & Sai lầm cần bồi dưỡng</span>
                     </div>
                     <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                       {(diagnosticAnalysis?.weaknesses || [
@@ -1006,7 +1330,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                         'Chủ đề 11F (Cơ sở dữ liệu): Cần phân biệt rõ khái niệm Bản ghi (Record) và Thuộc tính (Field).',
                       ]).map((wk, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-amber-600 font-bold">•</span>
+                          <span className="text-rose-600 font-bold">•</span>
                           <span>{wk}</span>
                         </li>
                       ))}
@@ -1089,7 +1413,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-[#2878C8]" />
-                      Xem lại chi tiết bài làm & Lời giải
+                      Xem lại chi tiết từng câu hỏi & Lời giải chuẩn SGK
                     </h4>
 
                     {/* Filter buttons */}
@@ -1102,7 +1426,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                             : 'text-gray-500'
                         }`}
                       >
-                        Tất cả ({DIAGNOSTIC_QUESTIONS.length})
+                        Tất cả ({totalExamQuestions})
                       </button>
                       <button
                         onClick={() => setReviewFilter('wrong')}
@@ -1112,7 +1436,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                             : 'text-gray-500'
                         }`}
                       >
-                        Câu làm sai ({DIAGNOSTIC_QUESTIONS.filter((q) => diagnosticAnswers[q.id] !== q.correctAnswer).length})
+                        Câu làm sai
                       </button>
                       <button
                         onClick={() => setReviewFilter('correct')}
@@ -1122,71 +1446,172 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                             : 'text-gray-500'
                         }`}
                       >
-                        Câu đúng ({DIAGNOSTIC_QUESTIONS.filter((q) => diagnosticAnswers[q.id] === q.correctAnswer).length})
+                        Câu làm đúng
                       </button>
                     </div>
                   </div>
 
-                  {/* Filtered Question Review Cards */}
+                  {/* Review Cards: Part 1 */}
                   <div className="space-y-3.5">
-                    {DIAGNOSTIC_QUESTIONS.filter((q) => {
-                      const isCorrect = diagnosticAnswers[q.id] === q.correctAnswer;
-                      if (reviewFilter === 'wrong') return !isCorrect;
-                      if (reviewFilter === 'correct') return isCorrect;
-                      return true;
-                    }).map((q, idx) => {
-                      const userChoice = diagnosticAnswers[q.id];
-                      const isCorrect = userChoice === q.correctAnswer;
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      Phần I: Câu trắc nghiệm nhiều phương án
+                    </div>
+
+                    {currentExam.part1Questions
+                      .filter((q) => {
+                        const isCorrect = part1Answers[q.id] === q.correctAnswer;
+                        if (reviewFilter === 'wrong') return !isCorrect;
+                        if (reviewFilter === 'correct') return isCorrect;
+                        return true;
+                      })
+                      .map((q) => {
+                        const userChoice = part1Answers[q.id];
+                        const isCorrect = userChoice === q.correctAnswer;
+                        return (
+                          <div
+                            key={q.id}
+                            className={`p-4 rounded-xl border text-sm space-y-2.5 ${
+                              isCorrect
+                                ? 'border-emerald-200 dark:border-emerald-950 bg-emerald-50/20 dark:bg-emerald-950/10'
+                                : 'border-rose-200 dark:border-rose-950 bg-rose-50/20 dark:bg-rose-950/10'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-2 flex-wrap">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`px-2 py-0.5 rounded text-xs font-mono font-bold ${
+                                    isCorrect
+                                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                                      : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                                  }`}
+                                >
+                                  {isCorrect ? '✓ ĐÚNG (+0.25đ)' : '✗ SAI'}
+                                </span>
+                                <span className="font-semibold text-gray-900 dark:text-white">
+                                  [Chủ đề {q.topicId}] {q.topicName}
+                                </span>
+                              </div>
+                              <span className="text-gray-500 font-mono text-xs">
+                                Đáp án đúng: <strong className="text-emerald-600 font-bold">{q.correctAnswer}</strong>
+                              </span>
+                            </div>
+
+                            <p className="font-medium text-gray-800 dark:text-gray-200 leading-relaxed">{q.content}</p>
+
+                            <div className="pt-2 border-t border-gray-200/60 dark:border-[#333] flex flex-wrap items-center justify-between gap-2 text-xs">
+                              <div>
+                                <span className="text-gray-500">Bạn đã chọn: </span>
+                                <strong className={isCorrect ? 'text-emerald-600' : 'text-rose-600'}>
+                                  {userChoice ? `${userChoice}. ${q.options[userChoice]}` : 'Chưa chọn'}
+                                </strong>
+                              </div>
+
+                              <button
+                                onClick={() => onNavigateTopic(q.topicId)}
+                                className="text-[#2878C8] hover:underline font-semibold flex items-center gap-1"
+                              >
+                                Học bài chủ đề {q.topicId} ➔
+                              </button>
+                            </div>
+
+                            <div className="text-xs text-gray-600 dark:text-gray-400 bg-white/60 dark:bg-black/20 p-2.5 rounded-lg leading-relaxed">
+                              <span className="font-bold text-gray-700 dark:text-gray-300">Giải thích SGK: </span>
+                              {q.explanation}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                    {/* Review Cards: Part 2 */}
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider pt-4">
+                      Phần II: Câu hỏi Đúng / Sai
+                    </div>
+
+                    {part2Questions.map((q, qIdx) => {
+                      const userStmts = part2Answers[q.id] || {};
+                      let correctCount = 0;
+                      q.statements.forEach((stmt) => {
+                        if (userStmts[stmt.id] === stmt.isCorrect) correctCount += 1;
+                      });
+
+                      let earnedScore = 0;
+                      if (correctCount === 1) earnedScore = 0.1;
+                      else if (correctCount === 2) earnedScore = 0.25;
+                      else if (correctCount === 3) earnedScore = 0.5;
+                      else if (correctCount === 4) earnedScore = 1.0;
+
                       return (
                         <div
                           key={q.id}
-                          className={`p-4 rounded-xl border text-sm space-y-2.5 ${
-                            isCorrect
-                              ? 'border-emerald-200 dark:border-emerald-950 bg-emerald-50/20 dark:bg-emerald-950/10'
-                              : 'border-rose-200 dark:border-rose-950 bg-rose-50/20 dark:bg-rose-950/10'
-                          }`}
+                          className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1E1E1E] text-sm space-y-3"
                         >
-                          <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
                             <div className="flex items-center gap-2">
-                              <span
-                                className={`px-2 py-0.5 rounded text-xs font-mono font-bold ${
-                                  isCorrect
-                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                    : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                }`}
-                              >
-                                {isCorrect ? '✓ ĐÚNG' : '✗ SAI'}
+                              <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300">
+                                Câu {currentExam.part1Questions.length + qIdx + 1} (Phần II)
                               </span>
                               <span className="font-semibold text-gray-900 dark:text-white">
-                                [Chủ đề {q.topicId}] {q.topicName}
+                                {q.topicName}
                               </span>
                             </div>
-                            <span className="text-gray-500 font-mono text-xs">
-                              Đáp án đúng: <strong className="text-emerald-600">{q.correctAnswer}</strong>
+                            <span className="font-mono text-xs font-bold text-[#2878C8]">
+                              Đúng {correctCount}/4 ý (+{earnedScore}đ)
                             </span>
                           </div>
 
-                          <p className="font-medium text-gray-800 dark:text-gray-200 leading-relaxed">{q.content}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#252525] p-2.5 rounded-lg leading-relaxed font-medium">
+                            {q.context}
+                          </p>
 
-                          <div className="pt-2 border-t border-gray-200/60 dark:border-[#333] flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <div>
-                              <span className="text-gray-500">Bạn đã chọn: </span>
-                              <strong className={isCorrect ? 'text-emerald-600' : 'text-rose-600'}>
-                                {userChoice ? `${userChoice}. ${q.options[userChoice]}` : 'Chưa chọn'}
-                              </strong>
-                            </div>
+                          <div className="space-y-2">
+                            {q.statements.map((stmt) => {
+                              const userAns = userStmts[stmt.id];
+                              const isStmtCorrect = userAns === stmt.isCorrect;
+                              return (
+                                <div
+                                  key={stmt.id}
+                                  className={`p-2.5 rounded-lg border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                                    isStmtCorrect
+                                      ? 'border-emerald-200 dark:border-emerald-950 bg-emerald-50/20 dark:bg-emerald-950/10'
+                                      : 'border-rose-200 dark:border-rose-950 bg-rose-50/20 dark:bg-rose-950/10'
+                                  }`}
+                                >
+                                  <div className="space-y-0.5">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="font-mono font-bold uppercase">Ý {stmt.id}:</span>
+                                      <span className="text-gray-800 dark:text-gray-200">{stmt.statement}</span>
+                                    </div>
+                                    {stmt.explanation && (
+                                      <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                                        💡 {stmt.explanation}
+                                      </div>
+                                    )}
+                                  </div>
 
-                            <button
-                              onClick={() => onNavigateTopic(q.topicId)}
-                              className="text-[#2878C8] hover:underline font-semibold flex items-center gap-1"
-                            >
-                              Học bài chủ đề này ➔
-                            </button>
+                                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-center font-mono">
+                                    <span className="text-gray-500">
+                                      Bạn chọn:{' '}
+                                      <strong className={isStmtCorrect ? 'text-emerald-600' : 'text-rose-600'}>
+                                        {userAns === undefined ? 'Chưa chọn' : userAns ? 'ĐÚNG' : 'SAI'}
+                                      </strong>
+                                    </span>
+                                    <span>•</span>
+                                    <span className="text-emerald-600 font-bold">
+                                      Đáp án: {stmt.isCorrect ? 'ĐÚNG' : 'SAI'}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
 
-                          <div className="text-xs text-gray-600 dark:text-gray-400 bg-white/60 dark:bg-black/20 p-2.5 rounded-lg leading-relaxed">
-                            <span className="font-bold text-gray-700 dark:text-gray-300">Giải thích: </span>
-                            {q.explanation}
+                          <div className="pt-2 border-t border-gray-100 dark:border-[#2C2C2C] flex justify-end">
+                            <button
+                              onClick={() => onNavigateTopic(q.topicId)}
+                              className="text-xs text-[#2878C8] hover:underline font-semibold flex items-center gap-1"
+                            >
+                              Học bài chuyên đề {q.topicId} ➔
+                            </button>
                           </div>
                         </div>
                       );
@@ -1201,7 +1626,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium flex items-center gap-1.5"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Làm lại bài đánh giá đầu vào
+                    Làm lại bài thi đánh giá
                   </button>
 
                   <button
