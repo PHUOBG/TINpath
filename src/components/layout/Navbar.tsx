@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-[#212529] text-white border-b border-[#2d3238] shadow-sm select-none h-[50px]">
+      <header className="sticky top-0 z-40 w-full bg-[#212529] text-white border-b border-[#2d3238] shadow-sm select-none h-[54px]">
         <div className="w-full h-full mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between">
           {/* LEFT ZONE: VNOI Exact Geometric Logo & Online Judge Branding */}
           <div className="flex items-center gap-1 sm:gap-2 h-full shrink-0">
@@ -124,16 +124,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <img
                 src="/images/logo/tinpath_logo.png"
                 alt="TinPath Logo"
-                className="w-8 h-8 object-contain drop-shadow-sm shrink-0"
+                className="w-[36px] h-[36px] sm:w-[40px] sm:h-[40px] object-contain drop-shadow-sm shrink-0"
               />
 
               {/* Brand title & school subtitle */}
               <div className="flex flex-col justify-center leading-none tracking-tight text-left">
-                <div className="flex items-baseline font-black leading-none text-[15px]">
+                <div className="flex items-baseline font-black leading-none text-[17px] sm:text-[18.5px]">
                   <span className="text-white">Tin</span>
                   <span className="text-[#38BDF8]">Path</span>
                 </div>
-                <span className="text-[9.5px] text-gray-300 font-medium tracking-tight mt-0.5">
+                <span className="text-[11px] sm:text-[11.5px] text-gray-200 font-medium tracking-tight mt-1">
                   - THPT Trần Quốc Tuấn
                 </span>
               </div>

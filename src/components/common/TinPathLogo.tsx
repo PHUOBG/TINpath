@@ -14,7 +14,7 @@ interface TinPathLogoProps {
  * Rendered using the official modern square educational app icon
  */
 export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
-  size = 40,
+  size = 44,
   className = '',
 }) => {
   return (
@@ -34,7 +34,7 @@ export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
 
 export const TinPathLogo: React.FC<TinPathLogoProps> = ({
   className = '',
-  size = 40,
+  size = 44,
   showText = true,
   textColor,
   subtextColor,
@@ -42,7 +42,7 @@ export const TinPathLogo: React.FC<TinPathLogoProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-2.5 select-none ${
+      className={`flex items-center gap-3 select-none ${
         layout === 'vertical' ? 'flex-col text-center' : 'flex-row text-left'
       } ${className}`}
     >
@@ -52,7 +52,7 @@ export const TinPathLogo: React.FC<TinPathLogoProps> = ({
       {showText && (
         <div className="flex flex-col justify-center">
           {/* Main Title: Tin + Path */}
-          <div className="flex items-baseline tracking-tight font-black leading-none text-xl sm:text-2xl">
+          <div className="flex items-baseline tracking-tight font-black leading-none text-2xl sm:text-[26px]">
             <span className={textColor ? textColor : 'text-[#0D3B82] dark:text-[#60A5FA]'}>
               Tin
             </span>
@@ -63,7 +63,7 @@ export const TinPathLogo: React.FC<TinPathLogoProps> = ({
 
           {/* Subtitle: "- Trường Trung Học Phổ Thông Trần Quốc Tuấn" */}
           <span
-            className={`text-[11px] sm:text-xs font-semibold tracking-wide mt-0.5 leading-none ${
+            className={`text-xs sm:text-[13px] font-semibold tracking-wide mt-1 leading-none ${
               subtextColor
                 ? subtextColor
                 : 'text-gray-600 dark:text-gray-300'
