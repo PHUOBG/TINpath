@@ -7,6 +7,7 @@ import { ExamPractice } from './components/student/ExamPractice';
 import { ExamTakingModal } from './components/student/ExamTakingModal';
 import { PersonalizedAI } from './components/student/PersonalizedAI';
 import { Leaderboard } from './components/student/Leaderboard';
+import { UserProfileView } from './components/student/UserProfileView';
 import { TeacherDashboard } from './components/teacher/TeacherDashboard';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { GoogleToolsHub } from './components/google/GoogleToolsHub';
@@ -328,7 +329,7 @@ export default function App() {
             user={user}
             themeMode={themeMode}
             onToggleTheme={handleToggleTheme}
-            onOpenProfile={() => setIsAuthModalOpen(true)}
+            onOpenProfile={() => setCurrentTab('profile')}
             onSwitchRole={handleSwitchRole}
             onOpenGoogleHub={() => setIsGoogleHubOpen(true)}
             onOpenAuth={() => setIsAuthModalOpen(true)}
@@ -386,6 +387,16 @@ export default function App() {
 
             {currentTab === 'leaderboard' && (
               <Leaderboard currentUser={user} onClose={() => setCurrentTab('home')} />
+            )}
+
+            {currentTab === 'profile' && (
+              <UserProfileView
+                user={user}
+                examAttempts={examAttempts}
+                completedTopics={completedTopics}
+                onUpdateUser={setUser}
+                onNavigateTab={setCurrentTab}
+              />
             )}
           </>
         )}

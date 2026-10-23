@@ -267,16 +267,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onMouseLeave={() => setUserDropdownOpen(false)}
                 >
                   {/* User Profile Summary */}
-                  <div className="px-4 py-3">
-                    <p className="font-bold text-white text-[13.5px] truncate">{user.displayName}</p>
-                    <p className="text-gray-400 text-[11px] truncate">{user.email}</p>
+                  <button
+                    onClick={() => {
+                      onOpenProfile();
+                      setUserDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors block"
+                  >
+                    <p className="font-bold text-white text-[13.5px] truncate hover:text-[#38BDF8]">{user.displayName}</p>
+                    <p className="text-gray-400 text-[11px] truncate">@{user.username || 'fuongchuche'}</p>
                     <div className="mt-2 flex items-center justify-between text-[11px] text-gray-300">
                       <span>{user.schoolName}</span>
                       <span className="px-1.5 py-0.5 rounded bg-[#2878C8] text-white font-mono uppercase text-[10px] font-semibold">
                         Lớp {user.grade}
                       </span>
                     </div>
-                  </div>
+                  </button>
 
                   {/* Role Switch */}
                   <div className="py-1">
@@ -336,7 +342,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full text-left px-4 py-1.5 text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2"
                     >
-                      <UserIcon className="w-3.5 h-3.5 text-gray-400" /> Hồ sơ & Trường học
+                      <UserIcon className="w-3.5 h-3.5 text-gray-400" /> Hồ sơ cá nhân
                     </button>
                     <button
                       onClick={() => {

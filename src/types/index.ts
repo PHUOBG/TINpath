@@ -4,7 +4,9 @@ export interface UserProfile {
   id: string;
   email: string;
   displayName: string;
+  username?: string;
   avatarUrl?: string;
+  bio?: string;
   role: UserRole;
   province: string; // e.g. "Quảng Ngãi"
   district: string; // e.g. "TP. Quảng Ngãi", "Huyện Bình Sơn"
