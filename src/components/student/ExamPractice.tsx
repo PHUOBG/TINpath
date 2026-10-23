@@ -16,6 +16,7 @@ import {
   MessageSquare,
   FileQuestion,
   Users,
+  History,
 } from 'lucide-react';
 import { Exam, SubjectTopicId, ExamAttempt } from '../../types';
 import { OFFICIAL_EXAMS } from '../../data/officialExamsData';
@@ -42,7 +43,7 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
   streakDays,
   examAttempts,
 }) => {
-  const [activeTab, setActiveTab] = useState<'daily' | 'topic' | 'exams'>('exams');
+  const [activeTab, setActiveTab] = useState<'daily' | 'topic' | 'exams' | 'submissions'>('exams');
   const [commentModalExam, setCommentModalExam] = useState<{ id: string; title: string } | null>(null);
   const [commentsVersion, setCommentsVersion] = useState(0);
   const currentUser = storageService.getUserProfile();
@@ -114,6 +115,30 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
 
           <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-[#252525] p-1.5 rounded-lg flex-wrap">
             <button
+              onClick={() => setActiveTab('exams')}
+              className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors flex items-center gap-2 ${
+                activeTab === 'exams'
+                  ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+              }`}
+            >
+              <BookOpen className="w-4 h-4 text-[#22A06B]" />
+              Ngân hàng đề thi
+            </button>
+
+            <button
+              onClick={() => setActiveTab('submissions')}
+              className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors flex items-center gap-2 ${
+                activeTab === 'submissions'
+                  ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+              }`}
+            >
+              <History className="w-4 h-4 text-[#2878C8]" />
+              Các bài nộp {examAttempts.length > 0 && `(${examAttempts.length})`}
+            </button>
+
+            <button
               onClick={() => setActiveTab('daily')}
               className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors flex items-center gap-2 ${
                 activeTab === 'daily'
@@ -135,18 +160,6 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
             >
               <Layers className="w-4 h-4 text-[#2878C8]" />
               Luyện theo chủ đề
-            </button>
-
-            <button
-              onClick={() => setActiveTab('exams')}
-              className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors flex items-center gap-2 ${
-                activeTab === 'exams'
-                  ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
-              }`}
-            >
-              <BookOpen className="w-4 h-4 text-[#22A06B]" />
-              Ngân hàng đề thi
             </button>
           </div>
         </div>
@@ -430,6 +443,147 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* TAB D: CÁC BÀI NỘP (LỊCH SỬ THI) */}
+      {activeTab === 'submissions' && (
+        <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-[#2C2C2C]">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-lg bg-blue-100 dark:bg-blue-950 text-[#2878C8]">
+                  <History className="w-5 h-5" />
+                </span>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  Lịch sử các bài thi đã nộp
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Tổng hợp tất cả các lần làm bài thi trắc nghiệm tốt nghiệp THPT của bạn
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4 text-xs font-semibold text-gray-500">
+              <span>
+                Tổng số bài nộp: <strong className="text-gray-900 dark:text-white font-mono">{examAttempts.length}</strong>
+              </span>
+              {examAttempts.length > 0 && (
+                <>
+                  <span>•</span>
+                  <span>
+                    Điểm cao nhất: <strong className="text-emerald-600 font-mono font-bold">
+                      {Math.max(...examAttempts.map((a) => a.totalScore)).toFixed(2)}đ
+                    </strong>
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {examAttempts.length === 0 ? (
+            <div className="py-14 text-center space-y-3">
+              <div className="w-14 h-14 rounded-full bg-gray-100 dark:bg-[#252525] text-gray-400 mx-auto flex items-center justify-center">
+                <History className="w-7 h-7" />
+              </div>
+              <h4 className="text-base font-bold text-gray-900 dark:text-white">
+                Bạn chưa nộp bài thi nào
+              </h4>
+              <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto">
+                Hãy chuyển sang tab &quot;Ngân hàng đề thi&quot; và bắt đầu làm một đề thi thử THPTQG để lưu lại bài nộp và tích lũy điểm kinh nghiệm XP.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={() => setActiveTab('exams')}
+                  className="px-5 py-2.5 rounded-lg bg-[#2878C8] text-white text-xs sm:text-sm font-bold hover:bg-[#2068B0] transition-colors"
+                >
+                  Xem Ngân hàng đề thi ➔
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3.5">
+              {examAttempts.map((attempt) => {
+                const durationMin = Math.floor(attempt.durationSeconds / 60);
+                const durationSec = attempt.durationSeconds % 60;
+                const formattedDate = new Date(attempt.submittedAt).toLocaleString('vi-VN', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                });
+
+                return (
+                  <div
+                    key={attempt.id}
+                    className="p-5 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/40 dark:bg-[#1A1A1A] hover:border-gray-300 dark:hover:border-[#444] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white">
+                          {attempt.examTitle}
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-blue-100 dark:bg-blue-950 text-[#2878C8]">
+                          Định hướng {attempt.track || 'CS'}
+                        </span>
+                        <span className="text-xs text-gray-500 flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {formattedDate}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300 flex-wrap">
+                        <span>
+                          Thời gian làm bài: <strong className="font-mono text-gray-900 dark:text-white">{durationMin}p {durationSec}s</strong>
+                        </span>
+                        <span>•</span>
+                        <span>
+                          Phần I: <strong className="text-gray-900 dark:text-white">{attempt.correctPart1Count}/24 câu</strong> ({attempt.part1Score.toFixed(2)}đ)
+                        </span>
+                        <span>•</span>
+                        <span>
+                          Phần II: <strong className="text-gray-900 dark:text-white">{attempt.part2Score.toFixed(2)}đ</strong>
+                        </span>
+                        <span>•</span>
+                        <span className="text-amber-600 dark:text-amber-400 font-bold font-mono">
+                          +{attempt.xpEarned || 50} XP
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 shrink-0 self-end md:self-center">
+                      <div className="text-right">
+                        <span className="text-[11px] text-gray-500 block">Tổng điểm</span>
+                        <span
+                          className={`text-2xl font-black font-mono ${
+                            attempt.totalScore >= 8.0
+                              ? 'text-emerald-600'
+                              : attempt.totalScore >= 6.5
+                              ? 'text-[#2878C8]'
+                              : attempt.totalScore >= 5.0
+                              ? 'text-amber-500'
+                              : 'text-rose-500'
+                          }`}
+                        >
+                          {attempt.totalScore.toFixed(2)}
+                          <span className="text-xs font-normal text-gray-500"> / 10đ</span>
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => onStartExam(attempt.examId, true)}
+                        className="px-4 py-2 rounded-lg bg-[#2878C8] text-white text-xs font-bold hover:bg-[#2068B0] transition-colors flex items-center gap-1.5 shadow-xs"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        Thi lại
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 

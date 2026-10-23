@@ -81,9 +81,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     return [
       { id: 'home', label: 'TRANG CHỦ' },
       { id: 'learning', label: 'DANH SÁCH BÀI' },
-      { id: 'practice', label: 'CÁC BÀI NỘP' },
-      { id: 'leaderboard', label: 'THÀNH VIÊN' },
       { id: 'practice', label: 'CÁC KỲ THI' },
+      { id: 'leaderboard', label: 'THÀNH VIÊN' },
       { id: 'personalized_ai', label: 'GIA SƯ AI' },
     ];
   };
