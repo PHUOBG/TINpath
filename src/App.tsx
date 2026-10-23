@@ -69,6 +69,7 @@ export default function App() {
 
   // Modals state
   const [activeExam, setActiveExam] = useState<Exam | null>(null);
+  const [isExamPracticeMode, setIsExamPracticeMode] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isGoogleHubOpen, setIsGoogleHubOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -214,8 +215,9 @@ export default function App() {
   };
 
   // Start Exam by ID
-  const handleStartExam = (examId: string) => {
+  const handleStartExam = (examId: string, isRetake?: boolean) => {
     const found = OFFICIAL_EXAMS.find((e) => e.id === examId) || OFFICIAL_EXAMS[0];
+    setIsExamPracticeMode(Boolean(isRetake));
     setActiveExam(found);
   };
 
@@ -234,6 +236,7 @@ export default function App() {
       part1Questions: DAILY_CHALLENGE_POOL,
       part2Questions: [], // Daily challenge focuses on Part 1
     };
+    setIsExamPracticeMode(true);
     setActiveExam(dailyExam);
   };
 
@@ -256,6 +259,7 @@ export default function App() {
       part1Questions: questionsToUse,
       part2Questions: [],
     };
+    setIsExamPracticeMode(true);
     setActiveExam(topicQuiz);
   };
 
@@ -418,11 +422,15 @@ export default function App() {
       {activeExam && (
         <ExamTakingModal
           isOpen={Boolean(activeExam)}
-          onClose={() => setActiveExam(null)}
+          onClose={() => {
+            setActiveExam(null);
+            setIsExamPracticeMode(false);
+          }}
           exam={activeExam}
           track={user.track}
           onSubmitAttempt={handleSubmitAttempt}
           userId={user.id}
+          isPracticeMode={isExamPracticeMode}
         />
       )}
 

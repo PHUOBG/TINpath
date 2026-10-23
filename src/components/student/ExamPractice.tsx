@@ -26,7 +26,7 @@ import { ExamCommentModal } from './ExamCommentModal';
 
 
 interface ExamPracticeProps {
-  onStartExam: (examId: string) => void;
+  onStartExam: (examId: string, isRetake?: boolean) => void;
   onStartDailyChallenge: () => void;
   onStartTopicQuiz: (topicId: SubjectTopicId, questionCount: number, level: string) => void;
   completedDailyToday: boolean;
@@ -419,7 +419,7 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                       </button>
 
                       <button
-                        onClick={() => onStartExam(exam.id)}
+                        onClick={() => onStartExam(exam.id, Boolean(attempt))}
                         className="px-5 py-2 rounded-lg bg-[#2878C8] text-white text-xs sm:text-sm font-bold hover:bg-[#2068B0] transition-colors flex items-center gap-2 shadow-sm"
                       >
                         <Play className="w-4 h-4 fill-white" /> {attempt ? 'Luyện lại' : 'Bắt đầu làm bài'}

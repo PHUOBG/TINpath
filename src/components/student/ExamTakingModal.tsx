@@ -12,6 +12,11 @@ import {
   Check,
   Award,
   MessageSquare,
+  AlertTriangle,
+  Maximize2,
+  Shield,
+  Edit3,
+  FileQuestion,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import {
@@ -32,6 +37,7 @@ interface ExamTakingModalProps {
   track: 'CS' | 'ICT';
   onSubmitAttempt: (attempt: ExamAttempt) => void;
   userId: string;
+  isPracticeMode?: boolean;
 }
 
 export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
@@ -41,7 +47,16 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
   track,
   onSubmitAttempt,
   userId,
+  isPracticeMode = false,
 }) => {
+  // Exam phase: 'warning' (pre-exam instructions & rules agreement) | 'taking' (active exam workspace)
+  const [examPhase, setExamPhase] = useState<'warning' | 'taking'>(
+    isPracticeMode ? 'taking' : 'warning'
+  );
+  const [fullscreenRequired, setFullscreenRequired] = useState<boolean>(!isPracticeMode);
+  const [showFullscreenWarning, setShowFullscreenWarning] = useState<boolean>(false);
+  const [violationsCount, setViolationsCount] = useState<number>(0);
+
   const [secondsRemaining, setSecondsRemaining] = useState(exam.durationMinutes * 60);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, StudentExamAnswer>>({});
@@ -53,6 +68,153 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const currentUser = storageService.getUserProfile();
+
+  // Reset states whenever modal opens or exam changes
+  useEffect(() => {
+    if (isOpen) {
+      setExamPhase(isPracticeMode ? 'taking' : 'warning');
+      setFullscreenRequired(!isPracticeMode);
+      setShowFullscreenWarning(false);
+      setViolationsCount(0);
+      setSecondsRemaining(exam.durationMinutes * 60);
+      setIsSubmitted(false);
+      setCompletedAttempt(null);
+      setAnswers({});
+      setFlaggedQuestions({});
+      setCurrentQuestionIndex(0);
+    }
+  }, [isOpen, exam.id, isPracticeMode]);
+
+  // Format exam display title
+  const getExamDisplayCode = (ex: Exam): string => {
+    if (ex.source) {
+      const school = ex.source.replace(/^Trường\s+/, '').split(',')[0].trim().toUpperCase();
+      return `[TIN HỌC-${ex.year}] - ${school} - [2026]`;
+    }
+    return `[TIN HỌC-${ex.year}] - ${ex.title.toUpperCase()}`;
+  };
+
+  // Safe exit fullscreen
+  const exitFullscreenSafe = () => {
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    } catch (e) {}
+  };
+
+  // Start official exam with Fullscreen
+  const handleStartOfficialExam = async () => {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (err) {
+      console.warn('Fullscreen request failed:', err);
+    }
+    setFullscreenRequired(true);
+    setExamPhase('taking');
+  };
+
+  // Start practice exam (retake/review, no fullscreen needed)
+  const handleStartPracticeExam = () => {
+    setFullscreenRequired(false);
+    setExamPhase('taking');
+  };
+
+  // Resume fullscreen from exit warning modal
+  const handleResumeFullscreen = async () => {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (err) {
+      console.warn('Fullscreen request rejected:', err);
+    }
+    setShowFullscreenWarning(false);
+  };
+
+  // Safe close exam
+  const handleCloseExam = () => {
+    exitFullscreenSafe();
+    onClose();
+  };
+
+  // Anti-cheat: Fullscreen change & tab switch listener
+  useEffect(() => {
+    if (!isOpen || isSubmitted || examPhase !== 'taking' || !fullscreenRequired) return;
+
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setShowFullscreenWarning(true);
+        setViolationsCount((prev) => {
+          const next = prev + 1;
+          if (next >= 3) {
+            setTimeout(() => {
+              handleFinalSubmit();
+            }, 800);
+          }
+          return next;
+        });
+      } else {
+        setShowFullscreenWarning(false);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setShowFullscreenWarning(true);
+        setViolationsCount((prev) => {
+          const next = prev + 1;
+          if (next >= 3) {
+            setTimeout(() => {
+              handleFinalSubmit();
+            }, 800);
+          }
+          return next;
+        });
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isOpen, isSubmitted, examPhase, fullscreenRequired]);
+
+  // Anti-cheat: Block right click, copy, cut, paste, and developer shortcuts
+  useEffect(() => {
+    if (!isOpen || isSubmitted || examPhase !== 'taking' || !fullscreenRequired) return;
+
+    const preventDefaultAction = (e: Event) => e.preventDefault();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && ['U', 'C', 'V', 'A'].includes(e.key.toUpperCase()))
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', preventDefaultAction);
+    document.addEventListener('copy', preventDefaultAction);
+    document.addEventListener('cut', preventDefaultAction);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('contextmenu', preventDefaultAction);
+      document.removeEventListener('copy', preventDefaultAction);
+      document.removeEventListener('cut', preventDefaultAction);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, isSubmitted, examPhase, fullscreenRequired]);
 
   // Filter Part 2 questions according to student's chosen track
   // Part 2 has 4 questions in total: 2 common (ALL) + 2 track-specific (CS or ICT)
@@ -81,9 +243,9 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
     })),
   ];
 
-  // Timer countdown
+  // Timer countdown: only active during taking phase
   useEffect(() => {
-    if (!isOpen || isSubmitted) return;
+    if (!isOpen || isSubmitted || examPhase !== 'taking') return;
     const interval = setInterval(() => {
       setSecondsRemaining((prev) => {
         if (prev <= 1) {
@@ -95,7 +257,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [isOpen, isSubmitted]);
+  }, [isOpen, isSubmitted, examPhase]);
 
   if (!isOpen) return null;
 
@@ -238,6 +400,8 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
     setCompletedAttempt(attempt);
     setIsSubmitted(true);
+    setShowFullscreenWarning(false);
+    exitFullscreenSafe();
     onSubmitAttempt(attempt);
 
     if (scores.totalScore >= 8.0) {
@@ -260,6 +424,139 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-gray-900/80 flex flex-col backdrop-blur-xs select-none">
+      {/* ── PRE-EXAM INSTRUCTION & ANTI-CHEAT WARNING MODAL (Image 1) ── */}
+      {examPhase === 'warning' && (
+        <div className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#121620] border border-gray-800/80 rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-6 text-white my-auto animate-in fade-in zoom-in-95 duration-200">
+            {/* Header Title */}
+            <div className="text-center space-y-1.5 border-b border-gray-800/60 pb-5">
+              <h2 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-white">
+                {getExamDisplayCode(exam)}
+              </h2>
+              <p className="text-gray-400 text-sm font-medium">
+                Xin hãy đọc kỹ hướng dẫn trước khi bắt đầu
+              </p>
+            </div>
+
+            {/* Quick Meta Stats */}
+            <div className="flex items-center justify-center gap-8 text-sm font-medium text-gray-300">
+              <div className="flex items-center gap-2">
+                <FileQuestion className="w-5 h-5 text-[#38bdf8]" />
+                <span><strong className="text-white font-bold">{allQuestions.length}</strong> câu hỏi</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-[#38bdf8]" />
+                <span><strong className="text-white font-bold">{exam.durationMinutes}</strong> phút</span>
+              </div>
+            </div>
+
+            {/* Warning Box (Lưu ý quan trọng) */}
+            <div className="p-5 rounded-xl bg-[#1e1710] border border-amber-900/50 shadow-inner">
+              <h3 className="font-bold text-base text-amber-400 flex items-center gap-2 mb-3">
+                <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+                <span>Lưu ý quan trọng</span>
+              </h3>
+              <ul className="text-sm text-amber-100/90 space-y-2.5 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold">•</span>
+                  <span>Bài thi sẽ được mở ở chế độ <strong className="text-white font-semibold">toàn màn hình</strong></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold">•</span>
+                  <span>Không được chuyển tab hoặc rời khỏi cửa sổ bài thi</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold">•</span>
+                  <span>Chuột phải và sao chép bị vô hiệu hóa</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold">•</span>
+                  <span>Vi phạm <strong className="text-amber-300 font-bold">3 lần</strong> sẽ bị nộp bài tự động</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-400 font-bold">•</span>
+                  <span><strong className="text-amber-300 font-bold">Thời gian</strong> được tính từ khi bắt đầu, không thể tạm dừng</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Anti-cheat status indicator */}
+            <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span>Hệ thống chống gian lận đang hoạt động</span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3 pt-2">
+              <button
+                onClick={handleStartOfficialExam}
+                className="w-full py-3.5 px-6 rounded-xl bg-[#D32F2F] hover:bg-[#b71c1c] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-red-900/30 transition-all active:scale-[0.99] cursor-pointer"
+              >
+                <Maximize2 className="w-5 h-5" />
+                <span>Vào toàn màn hình & Bắt đầu làm bài</span>
+              </button>
+
+              <button
+                onClick={handleStartPracticeExam}
+                className="w-full py-3 px-6 rounded-xl bg-[#1A1F2E] hover:bg-[#242A3D] border border-gray-700/80 text-gray-200 font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <Edit3 className="w-4 h-4 text-gray-400" />
+                <span>Ôn tập / Giải bài</span>
+              </button>
+
+              <p className="text-[11px] text-gray-500 text-center leading-normal px-2">
+                Đề lớp chỉ làm kiểm tra. Kho đề và tủ đề có thêm chế độ ôn tập (tạm dừng, bảng vẽ, không chống gian lận).
+              </p>
+
+              <div className="text-center pt-2">
+                <button
+                  onClick={handleCloseExam}
+                  className="text-gray-400 hover:text-white text-sm font-medium transition-colors cursor-pointer"
+                >
+                  Quay lại
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── FULLSCREEN EXIT WARNING OVERLAY (Image 3) ── */}
+      {showFullscreenWarning && !isSubmitted && examPhase === 'taking' && (
+        <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#121620] border border-red-900/60 rounded-2xl p-7 max-w-sm w-full shadow-2xl text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
+              <AlertTriangle className="w-9 h-9 text-amber-500" />
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-bold font-serif text-white tracking-tight">
+              Bạn đã thoát toàn màn hình
+            </h3>
+
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Vui lòng quay lại chế độ toàn màn hình để tiếp tục làm bài
+            </p>
+
+            <div className="p-2.5 rounded-lg bg-red-950/60 border border-red-800/50 text-xs text-red-300 font-mono">
+              Cảnh báo vi phạm: <strong className="text-white font-bold">{violationsCount} / 3 lần</strong>
+              {violationsCount >= 3 ? (
+                <span className="block mt-1 text-red-400 font-bold">Đã đạt giới hạn! Đang tự động nộp bài...</span>
+              ) : (
+                <span className="block mt-0.5 text-gray-400">Vi phạm quá 3 lần hệ thống sẽ tự động nộp bài!</span>
+              )}
+            </div>
+
+            <button
+              onClick={handleResumeFullscreen}
+              className="w-full py-3 px-6 rounded-xl bg-[#D32F2F] hover:bg-[#b71c1c] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-900/40 transition-all active:scale-[0.99] cursor-pointer"
+            >
+              <Maximize2 className="w-4.5 h-4.5" />
+              <span>Quay lại toàn màn hình</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Top Exam Action Bar */}
       <div className="bg-[#202020] text-white px-4 py-3 border-b border-[#333] flex items-center justify-between shrink-0 shadow-md">
         <div className="flex items-center gap-3">
@@ -267,10 +564,10 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
             onClick={() => {
               if (!isSubmitted) {
                 if (window.confirm('Bạn có chắc muốn thoát bài thi? Tiến độ hiện tại chưa được lưu.')) {
-                  onClose();
+                  handleCloseExam();
                 }
               } else {
-                onClose();
+                handleCloseExam();
               }
             }}
             className="p-1 rounded text-gray-400 hover:text-white hover:bg-[#333] transition-colors"
@@ -278,9 +575,9 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
             <X className="w-5 h-5" />
           </button>
           <div className="flex-1 min-w-0 pr-4">
-            <h3 className="font-bold text-base sm:text-lg truncate">{exam.title}</h3>
+            <h3 className="font-bold text-base sm:text-lg truncate">{getExamDisplayCode(exam)}</h3>
             <span className="text-xs text-gray-400">
-              Định hướng: <strong>{track === 'CS' ? 'Khoa học máy tính' : 'Tin học ứng dụng'}</strong> · 28 câu hỏi
+              Định hướng: <strong>{track === 'CS' ? 'Khoa học máy tính' : 'Tin học ứng dụng'}</strong> · {allQuestions.length} câu hỏi
             </span>
           </div>
         </div>
@@ -313,7 +610,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                 Đã nộp bài · {completedAttempt?.totalScore.toFixed(2)} / 10 điểm
               </span>
               <button
-                onClick={onClose}
+                onClick={handleCloseExam}
                 className="px-4 py-1.5 rounded-lg bg-[#2878C8] text-white text-sm font-bold hover:bg-[#2068B0]"
               >
                 Đóng
