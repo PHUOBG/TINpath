@@ -120,32 +120,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2.5 h-full focus:outline-none hover:opacity-95 transition-opacity pr-2"
               title="TinPath - VNOI Online Judge Edition"
             >
-              {/* 4-Quadrant VNOI Iconic Logo Emblem */}
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="shrink-0"
-              >
-                {/* Top-left: Red wedge/quadrant */}
-                <path d="M14 3 C7.92 3 3 7.92 3 14 H14 V3 Z" fill="#DC2626" />
-                {/* Top-right: Dark slate wedge */}
-                <path d="M18 3 V14 H29 C29 7.92 24.08 3 18 3 Z" fill="#334155" />
-                {/* Bottom-left: Amber/Golden yellow circular dot */}
-                <circle cx="8.5" cy="23.5" r="5.5" fill="#F59E0B" />
-                {/* Bottom-right: Teal/Cyan wedge */}
-                <path d="M18 18 V29 C24.08 29 29 24.08 29 18 H18 Z" fill="#06B6D4" />
-              </svg>
+              {/* TinPath Official Logo Emblem */}
+              <img
+                src="/images/logo/tinpath_logo.png"
+                alt="TinPath Logo"
+                className="w-7 h-7 rounded-lg object-contain shadow-sm shrink-0"
+              />
 
-              {/* Stacked online / judge text matching VNOI screenshot */}
-              <div className="flex flex-col justify-center leading-none tracking-tighter text-left">
-                <span className="text-[14.5px] font-extrabold text-white tracking-tight leading-[1.05]">
-                  online
-                </span>
-                <span className="text-[14.5px] font-extrabold text-white tracking-tight leading-[1.05]">
-                  judge
+              {/* Brand title & school subtitle */}
+              <div className="flex flex-col justify-center leading-none tracking-tight text-left">
+                <div className="flex items-baseline font-black leading-none text-[15px]">
+                  <span className="text-white">Tin</span>
+                  <span className="text-[#38BDF8]">Path</span>
+                </div>
+                <span className="text-[9.5px] text-gray-300 font-medium tracking-tight mt-0.5">
+                  - THPT Trần Quốc Tuấn
                 </span>
               </div>
             </button>

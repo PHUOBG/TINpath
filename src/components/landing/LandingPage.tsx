@@ -1027,7 +1027,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <div className="flex items-center gap-3">
                   <TinPathLogo size={32} textColor="text-white" subtextColor="text-cyan-300" />
                   <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 font-code-inline text-[11px] text-cyan-200">
-                    Quảng Ngãi
+                    THPT Trần Quốc Tuấn
                   </span>
                 </div>
                 <p className="text-sm text-blue-100/85 max-w-xl mt-1 leading-relaxed">
