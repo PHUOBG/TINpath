@@ -15,7 +15,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGoogleHub, onOpenPrivacy }
           {/* Slogan and Brand */}
           <div className="flex flex-col items-center md:items-start gap-1.5">
             <TinPathLogo
-              size={46}
+              size={32}
               textColor="text-white"
               subtextColor="text-blue-300 font-medium"
             />
