@@ -24,11 +24,9 @@ export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
       width={size}
       height={size}
       onError={(e) => {
-        // Fallback if needed
-        (e.currentTarget as HTMLImageElement).src =
-          '/images/landing/a_modern_clean_square_app_icon_for_an_educational_programming_platform_called.png';
+        (e.currentTarget as HTMLImageElement).src = '/images/logo/tinpath_logo.png';
       }}
-      className={`shrink-0 rounded-xl object-contain shadow-sm ${className}`}
+      className={`shrink-0 object-contain drop-shadow-sm ${className}`}
       style={{ width: `${size}px`, height: `${size}px` }}
     />
   );
