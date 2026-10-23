@@ -103,9 +103,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-[#212529] text-white border-b border-[#2d3238] shadow-sm select-none h-[50px]">
+      <header className="sticky top-0 z-40 w-full bg-[#212529] text-white border-b border-[#2d3238] shadow-sm select-none h-[54px] sm:h-[58px]">
         <div className="w-full h-full mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between">
-          {/* LEFT ZONE: VNOI Exact Geometric Logo & Online Judge Branding */}
+          {/* LEFT ZONE: Brand Logo & Navigation */}
           <div className="flex items-center gap-1 sm:gap-2 h-full shrink-0">
             <button
               onClick={() =>
@@ -117,23 +117,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'home'
                 )
               }
-              className="flex items-center gap-2.5 h-full focus:outline-none hover:opacity-95 transition-opacity pr-2"
-              title="TinPath - VNOI Online Judge Edition"
+              className="flex items-center gap-2.5 sm:gap-3 h-full focus:outline-none hover:opacity-95 transition-opacity pr-2"
+              title="TinPath - Trường THPT Trần Quốc Tuấn"
             >
-              {/* TinPath Official Logo Emblem */}
+              {/* TinPath Official Logo Emblem (To & Rõ) */}
               <img
                 src="/images/logo/tinpath_logo.png"
                 alt="TinPath Logo"
-                className="w-7 h-7 rounded-lg object-contain shadow-sm shrink-0"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain shadow-md shrink-0 border border-white/20"
               />
 
               {/* Brand title & school subtitle */}
               <div className="flex flex-col justify-center leading-none tracking-tight text-left">
-                <div className="flex items-baseline font-black leading-none text-[15px]">
+                <div className="flex items-baseline font-black leading-none text-base sm:text-[18px]">
                   <span className="text-white">Tin</span>
                   <span className="text-[#38BDF8]">Path</span>
                 </div>
-                <span className="text-[9.5px] text-gray-300 font-medium tracking-tight mt-0.5">
+                <span className="text-[10px] sm:text-[11px] text-gray-300 font-medium tracking-tight mt-1">
                   - THPT Trần Quốc Tuấn
                 </span>
               </div>

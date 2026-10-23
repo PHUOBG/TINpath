@@ -68,11 +68,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           : 'bg-[#1e6fb8]/90 backdrop-blur-md border-b border-cyan-300/20'
       }`}>
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-          <div className="flex items-center justify-between h-14">
+          <div className="flex items-center justify-between h-16 sm:h-20 py-2">
 
-            {/* Logo */}
+            {/* Logo (To, rõ ràng & nổi bật) */}
             <div className="flex items-center shrink-0">
-              <TinPathLogo size={36} textColor="text-white" subtextColor="text-cyan-400" />
+              <TinPathLogo size={54} textColor="text-white" subtextColor="text-cyan-200" />
             </div>
 
             {/* Center Nav Links — desktop */}
@@ -1025,7 +1025,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <footer className="flex flex-col gap-8 pt-8 text-blue-100/90 border-t border-cyan-300/25">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <TinPathLogo size={32} textColor="text-white" subtextColor="text-cyan-300" />
+                  <TinPathLogo size={46} textColor="text-white" subtextColor="text-cyan-200" />
                   <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 font-code-inline text-[11px] text-cyan-200">
                     THPT Trần Quốc Tuấn
                   </span>

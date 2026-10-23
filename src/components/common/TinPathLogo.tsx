@@ -11,10 +11,10 @@ interface TinPathLogoProps {
 
 /**
  * TinPath App Icon
- * Rendered using the official modern square educational app icon
+ * Rendered using the official modern square educational app icon with enhanced dimensions
  */
 export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
-  size = 40,
+  size = 52,
   className = '',
 }) => {
   return (
@@ -28,7 +28,7 @@ export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
         (e.currentTarget as HTMLImageElement).src =
           '/images/landing/a_modern_clean_square_app_icon_for_an_educational_programming_platform_called.png';
       }}
-      className={`shrink-0 rounded-xl object-contain shadow-sm ${className}`}
+      className={`shrink-0 rounded-2xl object-contain shadow-md border border-white/20 ${className}`}
       style={{ width: `${size}px`, height: `${size}px` }}
     />
   );
@@ -36,7 +36,7 @@ export const TinPathIcon: React.FC<{ size?: number; className?: string }> = ({
 
 export const TinPathLogo: React.FC<TinPathLogoProps> = ({
   className = '',
-  size = 40,
+  size = 52,
   showText = true,
   textColor,
   subtextColor,
@@ -44,17 +44,17 @@ export const TinPathLogo: React.FC<TinPathLogoProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-2.5 select-none ${
+      className={`flex items-center gap-3 sm:gap-3.5 select-none ${
         layout === 'vertical' ? 'flex-col text-center' : 'flex-row text-left'
       } ${className}`}
     >
-      {/* Official App Icon */}
+      {/* Official App Icon (To, rõ, sắc nét) */}
       <TinPathIcon size={size} />
 
       {showText && (
         <div className="flex flex-col justify-center">
-          {/* Main Title: Tin + Path */}
-          <div className="flex items-baseline tracking-tight font-black leading-none text-xl sm:text-2xl">
+          {/* Main Title: Tin + Path (Kích thước chữ lớn & nổi bật) */}
+          <div className="flex items-baseline tracking-tight font-black leading-none text-2xl sm:text-[28px]">
             <span className={textColor ? textColor : 'text-[#0D3B82] dark:text-[#60A5FA]'}>
               Tin
             </span>
@@ -65,7 +65,7 @@ export const TinPathLogo: React.FC<TinPathLogoProps> = ({
 
           {/* Subtitle: "- Trường Trung Học Phổ Thông Trần Quốc Tuấn" */}
           <span
-            className={`text-[11px] sm:text-xs font-semibold tracking-wide mt-0.5 leading-none ${
+            className={`text-xs sm:text-[13px] font-semibold tracking-normal mt-1 leading-tight ${
               subtextColor
                 ? subtextColor
                 : 'text-gray-600 dark:text-gray-300'

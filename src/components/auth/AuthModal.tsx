@@ -76,7 +76,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="px-6 py-4 bg-[#202020] text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <TinPathLogo
-              size={38}
+              size={48}
               textColor="text-white"
               subtextColor="text-blue-300 font-medium"
             />
