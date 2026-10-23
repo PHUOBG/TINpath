@@ -332,8 +332,8 @@ export default function App() {
             onSignOut={handleLogout}
           />
 
-      {/* Main View Area: Tràn rộng sang 2 bên trái phải theo yêu cầu người dùng */}
-      <main className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-8 xl:px-8 2xl:px-10 py-6">
+      {/* Main View Area: Tràn rộng sang 2 bên trái phải, dịch xuống cho cân xứng với top navbar */}
+      <main className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-8 xl:px-8 2xl:px-10 pt-8 sm:pt-10 md:pt-12 pb-14 sm:pb-16">
         {/* STUDENT VIEWS */}
         {user.role === 'student' && (
           <>

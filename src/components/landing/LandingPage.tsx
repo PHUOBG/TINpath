@@ -59,13 +59,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   );
 
   return (
-    <div className="w-full bg-gradient-to-b from-[#143e6d] via-[#16477d] to-[#0e2c50] text-slate-100 flex flex-col items-center selection:bg-cyan-500 selection:text-white min-h-screen">
+    <div className="w-full bg-gradient-to-b from-[#1e6fb8] via-[#257dc9] to-[#1c66aa] text-slate-100 flex flex-col items-center selection:bg-cyan-500 selection:text-white min-h-screen">
 
       {/* ══════ LANDING NAVBAR ══════ */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#10355f]/95 backdrop-blur-md shadow-lg border-b border-cyan-400/20'
-          : 'bg-[#123966]/90 backdrop-blur-md border-b border-cyan-400/15'
+          ? 'bg-[#1b66a8]/95 backdrop-blur-md shadow-lg border-b border-cyan-300/30'
+          : 'bg-[#1e6fb8]/90 backdrop-blur-md border-b border-cyan-300/20'
       }`}>
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex items-center justify-between h-14">
@@ -86,7 +86,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <a
                   key={item.href}
                   href={item.href}
-                  className="px-3.5 py-1.5 text-[13px] font-medium text-blue-100/85 hover:text-white hover:bg-white/10 rounded-md transition-all"
+                  className="px-3.5 py-1.5 text-[13px] font-medium text-blue-100/90 hover:text-white hover:bg-white/10 rounded-md transition-all"
                 >
                   {item.label}
                 </a>
@@ -129,7 +129,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0f2d52] border-t border-cyan-400/20 px-4 py-3 flex flex-col gap-1">
+          <div className="md:hidden bg-[#1b66a8] border-t border-cyan-300/25 px-4 py-3 flex flex-col gap-1">
             {[
               { href: '#about-tinpath', label: 'Giới thiệu' },
               { href: '#features', label: 'Tính năng' },
@@ -164,12 +164,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </header>
       {/* ══════ END NAVBAR ══════ */}
 
-      {/* ══════ 1. EXPANSIVE HERO SECTION (Sắc xanh biển nhạt & chuyển sắc cân bằng) ══════ */}
-      <section className="w-full relative overflow-hidden bg-gradient-to-b from-[#143d6b] via-[#1a4a80] to-[#164373] text-white pt-20 pb-16 lg:pt-24 lg:pb-20">
+      {/* ══════ 1. EXPANSIVE HERO SECTION (Sắc xanh biển tươi sáng & cân bằng đối xứng) ══════ */}
+      <section className="w-full relative overflow-hidden bg-gradient-to-b from-[#1e6fb8] via-[#2884d8] to-[#2073bf] text-white pt-36 sm:pt-40 lg:pt-44 pb-20 sm:pb-28 lg:pb-32">
         {/* Subtle glowing ambient orbs - lighter ocean & cyan luminous glows */}
-        <div className="absolute top-1/4 left-10 w-[520px] h-[520px] bg-cyan-400/25 rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-400/30 rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-sky-400/20 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/4 left-10 w-[520px] h-[520px] bg-cyan-300/35 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-300/30 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-sky-200/25 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
@@ -177,21 +177,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* ── Left Column: Content, CTAs & Tech Support ── */}
             <div className="lg:col-span-7 flex flex-col">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#153a63]/90 border border-cyan-400/30 text-xs font-medium text-cyan-300 shadow-sm mb-6">
+              <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#175388]/90 border border-cyan-300/40 text-xs font-medium text-cyan-200 shadow-sm mb-6">
                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
                 <span className="text-blue-100">GDPT 2018</span>
-                <span className="text-cyan-500">•</span>
+                <span className="text-cyan-400">•</span>
                 <span>Chuyên đề Tin học 12 &amp; Ôn thi Tốt nghiệp THPT</span>
               </div>
 
               {/* Headline */}
               <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-[1.15] mb-5">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-200 to-blue-300">TinPath:</span>{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-sky-100 to-white">TinPath:</span>{' '}
                 Hành trình chinh phục Tin học THPT bắt đầu từ đây.
               </h1>
 
               {/* Subtitle */}
-              <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl mb-8">
+              <p className="text-base sm:text-lg text-blue-50/95 leading-relaxed max-w-2xl mb-8">
                 Nền tảng đồng hành cùng học sinh Quảng Ngãi trong hành trình ôn thi tốt nghiệp THPT môn Tin học với hệ thống học theo chuyên đề, ngân hàng đề thi chuẩn hóa và lộ trình cá nhân hóa bằng Trí tuệ Nhân tạo.
               </p>
 
@@ -199,14 +199,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="flex flex-wrap items-center gap-3.5 mb-8">
                 <button
                   onClick={() => onOpenAuth('register')}
-                  className="h-12 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white font-semibold text-sm sm:text-base flex items-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:shadow-[0_0_35px_rgba(6,182,212,0.65)] active:scale-98 transition-all cursor-pointer"
+                  className="h-12 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-white font-semibold text-sm sm:text-base flex items-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:shadow-[0_0_35px_rgba(6,182,212,0.65)] active:scale-98 transition-all cursor-pointer"
                 >
                   <span>Bắt đầu học ngay</span>
                   <span className="text-lg">🎓</span>
                 </button>
                 <a
                   href="#about-tinpath"
-                  className="h-12 px-5 rounded-xl bg-[#12355e]/90 hover:bg-[#184474] border border-cyan-400/30 hover:border-cyan-300 text-white font-semibold text-sm sm:text-base flex items-center gap-2 active:scale-98 transition-all"
+                  className="h-12 px-5 rounded-xl bg-[#165084]/90 hover:bg-[#1a5e9a] border border-cyan-300/40 hover:border-cyan-200 text-white font-semibold text-sm sm:text-base flex items-center gap-2 active:scale-98 transition-all"
                 >
                   <span>🧭</span>
                   <span>Khám phá môn học &amp; Đề thi</span>
@@ -215,32 +215,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Tech Stack Pills: Python, C++, HTML5/CSS3, Gemini AI */}
               <div className="mb-8">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-cyan-300/80 mb-3 flex items-center gap-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-cyan-200/90 mb-3 flex items-center gap-2">
                   <span>HỖ TRỢ TOÀN DIỆN CÔNG NGHỆ &amp; NGÔN NGỮ LẬP TRÌNH:</span>
                 </div>
                 <div className="flex flex-wrap gap-2.5">
                   {/* Python */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#123762] border border-[#25568f] hover:border-amber-400/60 text-xs font-semibold text-slate-100 transition-colors">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18538a] border border-[#2e74b5] hover:border-amber-300/70 text-xs font-semibold text-slate-100 transition-colors">
                     <span className="text-base">🐍</span>
                     <span className="text-amber-300 font-bold">Python 3.12</span>
                   </div>
 
                   {/* C++ */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#123762] border border-[#25568f] hover:border-cyan-400/60 text-xs font-semibold text-slate-100 transition-colors">
-                    <span className="text-cyan-400 font-mono text-sm">&lt;/&gt;</span>
-                    <span className="text-cyan-300 font-bold">C++ 20 / STL</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18538a] border border-[#2e74b5] hover:border-cyan-300/70 text-xs font-semibold text-slate-100 transition-colors">
+                    <span className="text-cyan-300 font-mono text-sm">&lt;/&gt;</span>
+                    <span className="text-cyan-200 font-bold">C++ 20 / STL</span>
                   </div>
 
                   {/* HTML5 & CSS3 */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#123762] border border-[#25568f] hover:border-orange-400/60 text-xs font-semibold text-slate-100 transition-colors">
-                    <span className="text-orange-400 font-bold">🌐</span>
-                    <span className="text-orange-300 font-bold">HTML5 / CSS3</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18538a] border border-[#2e74b5] hover:border-orange-300/70 text-xs font-semibold text-slate-100 transition-colors">
+                    <span className="text-orange-300 font-bold">🌐</span>
+                    <span className="text-orange-200 font-bold">HTML5 / CSS3</span>
                   </div>
 
                   {/* Gemini AI Tutor */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1e2552] border border-[#48429b] hover:border-purple-400/70 text-xs font-semibold text-slate-100 transition-colors">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#24427c] border border-[#496fb2] hover:border-purple-300/80 text-xs font-semibold text-slate-100 transition-colors">
                     <span className="text-base">🧠</span>
-                    <span className="text-purple-300 font-bold">Gemini AI Tutor</span>
+                    <span className="text-purple-200 font-bold">Gemini AI Tutor</span>
                   </div>
                 </div>
               </div>
@@ -276,37 +276,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* ── Right Column: 3D Books Showcase & Floating Code Badges ── */}
             <div className="lg:col-span-5 relative flex items-center justify-center min-h-[460px] lg:min-h-[520px] select-none">
               {/* Luminous circular glows behind the books */}
-              <div className="absolute w-[380px] h-[380px] rounded-full bg-cyan-400/25 blur-[80px] pointer-events-none" />
-              <div className="absolute w-[280px] h-[280px] rounded-full bg-blue-400/25 blur-[60px] pointer-events-none" />
+              <div className="absolute w-[380px] h-[380px] rounded-full bg-cyan-300/35 blur-[80px] pointer-events-none" />
+              <div className="absolute w-[280px] h-[280px] rounded-full bg-blue-300/30 blur-[60px] pointer-events-none" />
 
               {/* Network Globe Background with smooth blend */}
-              <div className="absolute inset-0 rounded-3xl overflow-hidden opacity-45 pointer-events-none">
+              <div className="absolute inset-0 rounded-3xl overflow-hidden opacity-40 pointer-events-none">
                 <img
                   src="/images/landing/network_globe_bg.png"
                   alt="Network Globe"
                   className="w-full h-full object-cover filter brightness-125 contrast-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#164373]/90 via-transparent to-[#143d6b]/90" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#164373]/90 via-transparent to-[#164373]/90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2073bf]/90 via-transparent to-[#1e6fb8]/90" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#2073bf]/90 via-transparent to-[#2073bf]/90" />
               </div>
 
               {/* Floating Badge Top Left: binary_search.py */}
-              <div className="animate-float-1 absolute top-2 left-0 sm:left-2 z-20 bg-[#123760]/95 hover:bg-[#174476] backdrop-blur-md border border-cyan-400/40 rounded-xl p-3 shadow-2xl max-w-[210px] sm:max-w-[230px] hover:scale-105 transition-transform duration-300 cursor-default">
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-400 font-semibold mb-1.5">
+              <div className="animate-float-1 absolute top-2 left-0 sm:left-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-cyan-300/40 rounded-xl p-3 shadow-2xl max-w-[210px] sm:max-w-[230px] hover:scale-105 transition-transform duration-300 cursor-default">
+                <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-300 font-semibold mb-1.5">
                   <span>🔸</span>
                   <span>binary_search.py</span>
                 </div>
-                <div className="font-mono text-[10px] text-slate-200 leading-relaxed bg-[#0b2442]/90 p-2 rounded-lg border border-cyan-500/20 shadow-inner">
-                  <div className="text-cyan-300"><span className="text-purple-300">def</span> search(arr, x):</div>
-                  <div className="pl-3 text-slate-300">mid = (l + r) // 2</div>
-                  <div className="text-emerald-400 font-medium text-[9px] pt-1"># Độ phức tạp O(log N)</div>
+                <div className="font-mono text-[10px] text-slate-100 leading-relaxed bg-[#104373]/90 p-2 rounded-lg border border-cyan-400/25 shadow-inner">
+                  <div className="text-cyan-200"><span className="text-purple-300">def</span> search(arr, x):</div>
+                  <div className="pl-3 text-slate-200">mid = (l + r) // 2</div>
+                  <div className="text-emerald-300 font-medium text-[9px] pt-1"># Độ phức tạp O(log N)</div>
                 </div>
               </div>
 
               {/* Floating Badge Top Right: TinPath AI Tutor */}
-              <div className="animate-float-2 absolute top-0 right-0 sm:right-2 z-20 bg-[#133862]/95 hover:bg-[#184474] backdrop-blur-md border border-cyan-400/40 rounded-xl p-3 shadow-2xl max-w-[210px] sm:max-w-[220px] hover:scale-105 transition-transform duration-300 cursor-default">
+              <div className="animate-float-2 absolute top-0 right-0 sm:right-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-cyan-300/40 rounded-xl p-3 shadow-2xl max-w-[210px] sm:max-w-[220px] hover:scale-105 transition-transform duration-300 cursor-default">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <div className="w-6 h-6 rounded-lg bg-cyan-500/25 flex items-center justify-center text-cyan-300 text-xs">
+                  <div className="w-6 h-6 rounded-lg bg-cyan-400/25 flex items-center justify-center text-cyan-200 text-xs">
                     🤖
                   </div>
                   <div>
@@ -317,78 +317,80 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-200 italic bg-[#0b2442]/90 p-2 rounded-lg border border-cyan-500/20 shadow-inner">
+                <p className="text-[10px] text-blue-50 italic bg-[#104373]/90 p-2 rounded-lg border border-cyan-400/25 shadow-inner">
                   &quot;Đã gợi ý giải thuật Quy hoạch động cho đề thi thử số 08!&quot;
                 </p>
               </div>
 
-              {/* 3D Book Fan Display (3 Real Textbook Covers) */}
-              <div className="relative z-10 flex items-center justify-center py-8">
-                {/* Book 1 (Left): Chuyên đề Tin học 12 (Ứng dụng) */}
-                <div className="w-[130px] sm:w-[155px] lg:w-[170px] -mr-8 sm:-mr-10 transform -rotate-8 translate-y-3 hover:translate-y-0 hover:rotate-0 hover:z-30 transition-all duration-300 drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] cursor-pointer group">
-                  <div className="relative rounded-lg overflow-hidden border border-white/20 shadow-2xl bg-slate-900">
+              {/* 3D Book Fan Display (3 Real Textbook Covers - Completely Uniform, Zero White Space) */}
+              <div className="relative z-10 flex items-center justify-center py-6 sm:py-8">
+                {/* Book 1 (Left): Tin học 11 KNTT - Tin học ứng dụng */}
+                <div className="w-[136px] sm:w-[162px] lg:w-[182px] -mr-7 sm:-mr-9 transform -rotate-6 translate-y-2 hover:translate-y-0 hover:rotate-0 hover:z-30 transition-all duration-300 drop-shadow-[0_16px_30px_rgba(10,35,65,0.45)] cursor-pointer group">
+                  <div className="relative aspect-[1/1.41] rounded-xl overflow-hidden border border-white/25 shadow-2xl bg-slate-900 p-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 before:bg-gradient-to-r before:from-white/25 before:to-transparent before:z-10 before:pointer-events-none">
                     <img
-                      src="/images/books/chuyen_de_tin_hoc_12_ung_dung.png"
-                      alt="Chuyên đề học tập Tin học 12"
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                      src="/images/books/tin_hoc_11_kntt_ud.png"
+                      alt="Tin học 11 - Định hướng Tin học ứng dụng"
+                      className="w-full h-full object-cover block select-none pointer-events-none group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-purple-950/90 text-purple-200 border border-purple-500/40 text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm backdrop-blur-xs">
-                      Chuyên đề 12
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-amber-950/90 text-amber-200 border border-amber-400/50 text-[9.5px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md backdrop-blur-xs z-20 flex items-center gap-1">
+                      <span>📖</span>
+                      <span>Tin học 11 KNTT</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Book 2 (Center): Tin học 12 - Định hướng Khoa học máy tính (Featured) */}
-                <div className="w-[155px] sm:w-[185px] lg:w-[205px] z-20 transform hover:scale-105 transition-all duration-300 drop-shadow-[0_20px_40px_rgba(2,132,199,0.5)] cursor-pointer group">
-                  <div className="relative rounded-xl overflow-hidden border-2 border-cyan-400/80 shadow-2xl bg-slate-900 ring-4 ring-cyan-500/25">
+                {/* Book 2 (Center): Tin học 12 KNTT - Khoa học máy tính (Featured Prominent) */}
+                <div className="w-[158px] sm:w-[188px] lg:w-[210px] z-20 transform hover:scale-105 transition-all duration-300 drop-shadow-[0_22px_40px_rgba(6,182,212,0.45)] cursor-pointer group">
+                  <div className="relative aspect-[1/1.41] rounded-xl overflow-hidden border-2 border-cyan-300/80 shadow-2xl bg-slate-900 ring-4 ring-cyan-400/25 p-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 before:bg-gradient-to-r before:from-white/30 before:to-transparent before:z-10 before:pointer-events-none">
                     <img
-                      src="/images/books/tin_hoc_12_ket_noi_cs.png"
+                      src="/images/books/tin_hoc_12_kntt_cs.png"
                       alt="Tin học 12 - Định hướng Khoa học máy tính"
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover block select-none pointer-events-none group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-[10px] sm:text-[11px] font-extrabold px-3 py-1 rounded-full whitespace-nowrap shadow-lg flex items-center gap-1 border border-cyan-300/60">
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white text-[10.5px] sm:text-[11px] font-extrabold px-3 py-1 rounded-full whitespace-nowrap shadow-lg flex items-center gap-1.5 border border-cyan-200/70 z-20">
                       <span>⚡</span>
                       <span>Ôn Thi THPT 2025</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Book 3 (Right): Tin học 12 - Tin học ứng dụng (Cánh Diều AI) */}
-                <div className="w-[130px] sm:w-[155px] lg:w-[170px] -ml-8 sm:-ml-10 transform rotate-8 translate-y-3 hover:translate-y-0 hover:rotate-0 hover:z-30 transition-all duration-300 drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] cursor-pointer group">
-                  <div className="relative rounded-lg overflow-hidden border border-white/20 shadow-2xl bg-slate-900">
+                {/* Book 3 (Right): Hướng dẫn ôn thi tốt nghiệp THPT Môn Tin học */}
+                <div className="w-[136px] sm:w-[162px] lg:w-[182px] -ml-7 sm:-ml-9 transform rotate-6 translate-y-2 hover:translate-y-0 hover:rotate-0 hover:z-30 transition-all duration-300 drop-shadow-[0_16px_30px_rgba(10,35,65,0.45)] cursor-pointer group">
+                  <div className="relative aspect-[1/1.41] rounded-xl overflow-hidden border border-white/25 shadow-2xl bg-slate-900 p-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 before:bg-gradient-to-r before:from-white/25 before:to-transparent before:z-10 before:pointer-events-none">
                     <img
-                      src="/images/books/tin_hoc_12_canh_dieu_ung_dung.jpg"
-                      alt="Tin học 12 - Tin học ứng dụng Cánh Diều"
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                      src="/images/books/huong_dan_on_thi_tot_nghiep.png"
+                      alt="Hướng dẫn ôn thi tốt nghiệp THPT Môn Tin học"
+                      className="w-full h-full object-cover block select-none pointer-events-none group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-blue-950/90 text-blue-200 border border-blue-500/40 text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm backdrop-blur-xs">
-                      Ứng dụng 12
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-blue-950/90 text-cyan-200 border border-cyan-400/50 text-[9.5px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md backdrop-blur-xs z-20 flex items-center gap-1">
+                      <span>🎯</span>
+                      <span>Đề Thi Chuẩn Bộ</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Floating Badge Bottom Left: Question Bank Trophy */}
-              <div className="animate-float-3 absolute bottom-2 left-0 sm:left-2 z-20 bg-[#133862]/95 hover:bg-[#184474] backdrop-blur-md border border-amber-400/40 rounded-xl p-2.5 sm:p-3 shadow-2xl flex items-center gap-2.5 hover:scale-105 transition-transform duration-300 cursor-default">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-lg sm:text-xl">
+              <div className="animate-float-3 absolute bottom-2 left-0 sm:left-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-amber-300/40 rounded-xl p-2.5 sm:p-3 shadow-2xl flex items-center gap-2.5 hover:scale-105 transition-transform duration-300 cursor-default">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400/20 border border-amber-400/30 flex items-center justify-center text-lg sm:text-xl">
                   🏆
                 </div>
                 <div>
                   <div className="text-[10px] font-medium text-blue-100">Ngân hàng đề thi</div>
-                  <div className="text-xs font-bold text-amber-300">2.500+ Câu trắc nghiệm</div>
+                  <div className="text-xs font-bold text-amber-200">2.500+ Câu trắc nghiệm</div>
                 </div>
               </div>
 
               {/* Floating Badge Bottom Right: C++20 Standard */}
-              <div className="animate-float-4 absolute bottom-0 right-0 sm:right-2 z-20 bg-[#133862]/95 hover:bg-[#184474] backdrop-blur-md border border-cyan-400/40 rounded-xl p-2.5 sm:p-3 shadow-2xl max-w-[190px] sm:max-w-[210px] hover:scale-105 transition-transform duration-300 cursor-default">
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-cyan-300 font-semibold mb-1">
+              <div className="animate-float-4 absolute bottom-0 right-0 sm:right-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-cyan-300/40 rounded-xl p-2.5 sm:p-3 shadow-2xl max-w-[190px] sm:max-w-[210px] hover:scale-105 transition-transform duration-300 cursor-default">
+                <div className="flex items-center gap-1.5 text-[11px] font-mono text-cyan-200 font-semibold mb-1">
                   <span>⚙️</span>
                   <span>C++20 Standard</span>
                 </div>
-                <div className="font-mono text-[9px] text-slate-200 bg-[#0b2442]/90 p-1.5 rounded border border-cyan-500/20 shadow-inner leading-tight">
+                <div className="font-mono text-[9px] text-slate-100 bg-[#104373]/90 p-1.5 rounded border border-cyan-400/25 shadow-inner leading-tight">
                   <div>std::vector&lt;int&gt; v;</div>
-                  <div className="text-cyan-300">sort(v.begin(), v.end());</div>
-                  <div className="text-emerald-400 font-bold pt-0.5">Tối ưu 100 điểm test</div>
+                  <div className="text-cyan-200">sort(v.begin(), v.end());</div>
+                  <div className="text-emerald-300 font-bold pt-0.5">Tối ưu 100 điểm test</div>
                 </div>
               </div>
             </div>
@@ -397,70 +399,70 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* ══════ 2. BODY SECTIONS CONTAINER (Sắc xanh biển lan tỏa xuống dưới, liền mạch & cân bằng) ══════ */}
-      <div className="w-full relative overflow-hidden bg-gradient-to-b from-[#164373] via-[#143d6b] to-[#0f2e50]">
+      {/* ══════ 2. BODY SECTIONS CONTAINER (Sắc xanh biển tươi sáng, liền mạch & cân bằng) ══════ */}
+      <div className="w-full relative overflow-hidden bg-gradient-to-b from-[#2073bf] via-[#1b64a8] to-[#165590]">
         {/* Subtle ambient light glows for balance & continuous immersion */}
-        <div className="absolute top-1/6 -left-32 w-[600px] h-[600px] bg-cyan-400/15 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute top-1/2 -right-32 w-[600px] h-[600px] bg-blue-400/15 rounded-full blur-[160px] pointer-events-none" />
-        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-sky-400/15 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute top-1/6 -left-32 w-[600px] h-[600px] bg-cyan-300/20 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 -right-32 w-[600px] h-[600px] bg-sky-300/20 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-blue-300/20 rounded-full blur-[160px] pointer-events-none" />
 
-        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 space-y-20 relative z-10">
+        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 space-y-24 relative z-10">
 
           {/* 2. ABOUT TINPATH (Giới thiệu nền tảng) */}
-          <section className="flex flex-col py-2" id="about-tinpath">
+          <section className="flex flex-col py-2 scroll-mt-28" id="about-tinpath">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-cyan-400 text-[22px]">flag</span>
-              <span className="font-label-md text-cyan-300 uppercase tracking-wider font-bold">Về nền tảng</span>
+              <span className="material-symbols-outlined text-cyan-300 text-[22px]">flag</span>
+              <span className="font-label-md text-cyan-200 uppercase tracking-wider font-bold">Về nền tảng</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-3">
               Sứ mệnh kiến tạo tương lai số cho học sinh Quảng Ngãi
             </h2>
-            <p className="text-base sm:text-lg text-blue-100/85 mb-8 max-w-3xl leading-relaxed">
+            <p className="text-base sm:text-lg text-blue-50/90 mb-8 max-w-3xl leading-relaxed">
               Được thiết kế bám sát chương trình Giáo dục Phổ thông 2018, TinPath tối ưu hóa việc tự học và bồi dưỡng
               tư duy thuật toán cho kỳ thi tốt nghiệp THPT.
             </p>
 
             {/* 3 Core Values Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shrink-0 group-hover:scale-105 transition-transform">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 shrink-0 group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[24px]">navigation</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base sm:text-lg mb-2 group-hover:text-cyan-200 transition-colors">
                     1. Học tập có định hướng
                   </h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Hệ thống hóa toàn diện kiến thức trọng tâm theo từng chủ đề chuẩn THPT từ lớp 10 đến lớp 12, phân tách
                     rõ Tin học ứng dụng và Khoa học máy tính.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shrink-0 group-hover:scale-105 transition-transform">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 shrink-0 group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[24px]">track_changes</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base sm:text-lg mb-2 group-hover:text-cyan-200 transition-colors">
                     2. Luyện tập có mục tiêu
                   </h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Thực hành có phân cấp theo 4 mức độ: Nhận biết, Thông hiểu, Vận dụng và Vận dụng cao với bộ câu hỏi
                     chuẩn quy cách Bộ GD&ĐT.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shrink-0 group-hover:scale-105 transition-transform">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-4 group transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 shrink-0 group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[24px]">monitoring</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base sm:text-lg mb-2 group-hover:text-cyan-200 transition-colors">
                     3. Tiến bộ có thể theo dõi
                   </h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Phân tích chi tiết lịch sử làm bài, trực quan hóa radar kỹ năng và chỉ rõ lỗ hổng kiến thức để bù đắp
                     kịp thời trước kỳ thi thật.
                   </p>
@@ -470,9 +472,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </section>
 
           {/* 3. WHY CHOOSE TINPATH */}
-          <section className="flex flex-col py-2" id="features">
+          <section className="flex flex-col py-2 scroll-mt-28" id="features">
             <div className="text-center mb-8">
-              <span className="font-label-sm text-cyan-400 uppercase font-bold tracking-widest text-xs">
+              <span className="font-label-sm text-cyan-300 uppercase font-bold tracking-widest text-xs">
                 Đặc quyền học tập
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">
@@ -481,50 +483,50 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex items-center justify-center text-cyan-300 mb-3 group-hover:bg-cyan-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-3 group-hover:bg-cyan-400/30 transition-colors">
                   <span className="material-symbols-outlined text-[22px]">source</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     Kho học liệu tập trung
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Tổng hợp lý thuyết chuẩn mực, bài giảng số và bộ đề tinh tuyển toàn tỉnh.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex items-center justify-center text-cyan-300 mb-3 group-hover:bg-cyan-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-3 group-hover:bg-cyan-400/30 transition-colors">
                   <span className="material-symbols-outlined text-[22px]">category</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     Học theo chủ đề
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Cấu trúc logic chuẩn GDPT 2018, chia nhỏ bài học giúp tiếp thu nhanh.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex items-center justify-center text-cyan-300 mb-3 group-hover:bg-cyan-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-3 group-hover:bg-cyan-400/30 transition-colors">
                   <span className="material-symbols-outlined text-[22px]">fact_check</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     Luyện đề chuyên sâu
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Chấm điểm tức thì, thống kê câu sai và kèm lời giải chi tiết từng bước.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-400/25 flex items-center justify-center text-amber-300 mb-3 group-hover:bg-amber-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-300/35 flex items-center justify-center text-amber-200 mb-3 group-hover:bg-amber-400/30 transition-colors">
                   <span
                     className="material-symbols-outlined text-[22px]"
                     style={{ fontVariationSettings: "'FILL' 1" }}
@@ -536,35 +538,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     Thử thách 10 câu
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Mỗi ngày 10 câu ôn tập nhanh duy trì thói quen tư duy thuật toán.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex items-center justify-center text-cyan-300 mb-3 group-hover:bg-cyan-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-3 group-hover:bg-cyan-400/30 transition-colors">
                   <span className="material-symbols-outlined text-[22px]">neurology</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     AI cá nhân hóa
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Lộ trình học riêng biệt dựa trên năng lực và tốc độ giải bài thực tế.
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex items-center justify-center text-cyan-300 mb-3 group-hover:bg-cyan-500/25 transition-colors">
+              <div className="p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col justify-between group transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-3 group-hover:bg-cyan-400/30 transition-colors">
                   <span className="material-symbols-outlined text-[22px]">leaderboard</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-[16px] mb-1.5 group-hover:text-cyan-200 transition-colors">
                     Bảng xếp hạng
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-blue-100/90 leading-relaxed">
                     Tạo động lực thi đua học tập cùng sĩ tử từ 34 trường THPT Quảng Ngãi.
                   </p>
                 </div>
@@ -573,10 +575,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </section>
 
           {/* 5. AI PERSONALIZED LEARNING */}
-          <section className="flex flex-col my-2 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1a4b82] via-[#143e6c] to-[#0f2e52] border border-cyan-400/35 shadow-2xl relative overflow-hidden">
-            <div className="absolute -top-24 -right-24 w-80 h-80 bg-cyan-400/20 rounded-full blur-[80px] pointer-events-none" />
+          <section className="flex flex-col my-2 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#2167a5] via-[#1b578c] to-[#164b7a] border border-cyan-300/40 shadow-2xl relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-cyan-300/20 rounded-full blur-[80px] pointer-events-none" />
 
-            <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold mb-4">
+            <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-200 text-xs font-semibold mb-4">
               <span className="material-symbols-outlined text-[16px]">psychology</span>
               <span>Công nghệ Trợ lý AI Thông minh</span>
             </div>
@@ -585,44 +587,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               Mỗi học sinh một lộ trình. Mỗi bước học đều có định hướng.
             </h2>
 
-            <p className="text-sm sm:text-base text-blue-100/90 mb-6 max-w-3xl leading-relaxed">
+            <p className="text-sm sm:text-base text-blue-50/90 mb-6 max-w-3xl leading-relaxed">
               Hệ sinh thái AI phân tích dữ liệu làm bài theo thời gian thực, chủ động chỉ dẫn và xây dựng kế hoạch bứt
               phá điểm số chuẩn hóa.
             </p>
 
             {/* AI Step Process */}
             <div className="flex flex-col gap-3 mb-6">
-              <div className="p-3.5 sm:p-4 rounded-xl bg-[#0e2c50]/75 border border-blue-400/20 backdrop-blur-sm flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-cyan-500/25 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-200 text-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-[#134878]/80 border border-cyan-300/25 backdrop-blur-sm flex items-center gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-cyan-400/25 border border-cyan-300/40 flex items-center justify-center font-bold text-cyan-100 text-sm">
                   1
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="font-semibold text-white text-sm sm:text-base">Đánh giá kiến thức đầu vào</span>
-                  <span className="text-slate-300 text-xs sm:text-sm truncate">
-                    Định vị mục tiêu điểm số & năng lực nền tảng.
+                  <span className="text-blue-100/90 text-xs sm:text-sm truncate">
+                    Định vị mục tiêu điểm số &amp; năng lực nền tảng.
                   </span>
                 </div>
               </div>
 
-              <div className="p-3.5 sm:p-4 rounded-xl bg-[#0e2c50]/75 border border-blue-400/20 backdrop-blur-sm flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-cyan-500/25 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-200 text-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-[#134878]/80 border border-cyan-300/25 backdrop-blur-sm flex items-center gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-cyan-400/25 border border-cyan-300/40 flex items-center justify-center font-bold text-cyan-100 text-sm">
                   2
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="font-semibold text-white text-sm sm:text-base">Phân tích điểm yếu chuyên sâu</span>
-                  <span className="text-slate-300 text-xs sm:text-sm truncate">
+                  <span className="text-blue-100/90 text-xs sm:text-sm truncate">
                     Phát hiện chủ đề hay sai sót để ưu tiên ôn tập.
                   </span>
                 </div>
               </div>
 
-              <div className="p-3.5 sm:p-4 rounded-xl bg-[#0e2c50]/75 border border-blue-400/20 backdrop-blur-sm flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-cyan-500/25 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-200 text-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-[#134878]/80 border border-cyan-300/25 backdrop-blur-sm flex items-center gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-cyan-400/25 border border-cyan-300/40 flex items-center justify-center font-bold text-cyan-100 text-sm">
                   3
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="font-semibold text-white text-sm sm:text-base">AI Study Planner</span>
-                  <span className="text-slate-300 text-xs sm:text-sm truncate">
+                  <span className="text-blue-100/90 text-xs sm:text-sm truncate">
                     Tự động lập thời gian biểu học tập cá nhân hóa theo tuần.
                   </span>
                 </div>
@@ -630,20 +632,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Tech Stack Integration Pill Strip */}
-            <div className="p-4 rounded-xl bg-[#0b2442]/75 border border-blue-400/20 flex flex-col gap-2.5">
-              <span className="text-cyan-300 font-semibold text-xs">Cốt lõi công nghệ vận hành:</span>
+            <div className="p-4 rounded-xl bg-[#0e3b65]/80 border border-cyan-300/25 flex flex-col gap-2.5">
+              <span className="text-cyan-200 font-semibold text-xs">Cốt lõi công nghệ vận hành:</span>
               <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/25 text-cyan-200 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
                   <span className="material-symbols-outlined text-[14px]">bolt</span> Gemini 1.5 Pro
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/25 text-cyan-200 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
                   <span className="material-symbols-outlined text-[14px]">auto_stories</span> NotebookLM
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/25 text-cyan-200 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
                   <span className="material-symbols-outlined text-[14px]">cloud_done</span> Google Cloud Engine
                 </span>
               </div>
-              <p className="text-slate-300 italic text-xs mt-1">
+              <p className="text-blue-100/80 italic text-xs mt-1">
                 *Cam kết: AI là trợ lý thông minh hỗ trợ người học, đề cao vai trò định hướng sư phạm cốt lõi của giáo viên.
               </p>
             </div>
@@ -652,88 +654,88 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* 6. LEARNING RESOURCES (Học liệu chuẩn hóa) */}
           <section className="flex flex-col py-2">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-cyan-400 text-[22px]">library_books</span>
-              <span className="font-label-md text-cyan-300 uppercase tracking-wider font-bold">Học liệu chuẩn hóa</span>
+              <span className="material-symbols-outlined text-cyan-300 text-[22px]">library_books</span>
+              <span className="font-label-md text-cyan-200 uppercase tracking-wider font-bold">Học liệu chuẩn hóa</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
               Kho tài liệu ôn thi THPT tuyển chọn
             </h2>
-            <p className="text-base text-blue-100/80 mb-6">
+            <p className="text-base text-blue-50/85 mb-6">
               TinPath tổ chức và khai thác học liệu tham khảo nhằm hỗ trợ quá trình học tập, luyện tập và ôn thi liên tục.
             </p>
 
             <div className="flex flex-col gap-3.5">
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
-                <div className="w-14 h-16 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex flex-col items-center justify-center shrink-0 p-1 text-center">
-                  <span className="material-symbols-outlined text-cyan-300 text-[24px]">menu_book</span>
-                  <span className="text-[10px] text-cyan-200 font-bold leading-tight mt-0.5">THPT 12</span>
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
+                <div className="w-14 h-16 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex flex-col items-center justify-center shrink-0 p-1 text-center">
+                  <span className="material-symbols-outlined text-cyan-200 text-[24px]">menu_book</span>
+                  <span className="text-[10px] text-cyan-100 font-bold leading-tight mt-0.5">THPT 12</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-100 text-xs font-semibold">
                     Ôn thi tốt nghiệp
                   </span>
                   <h4 className="text-white font-bold text-[15px] sm:text-base group-hover:text-cyan-200 transition-colors mt-1.5 truncate">
                     Hướng dẫn ôn thi tốt nghiệp THPT môn Tin học
                   </h4>
-                  <p className="text-sm text-slate-300 mt-0.5">Tổng hợp chuyên đề & đề tham khảo mới</p>
+                  <p className="text-sm text-blue-100/90 mt-0.5">Tổng hợp chuyên đề &amp; đề tham khảo mới</p>
                 </div>
                 <button
                   onClick={() => onNavigateTab('learning')}
-                  className="w-10 h-10 rounded-full bg-cyan-500/20 hover:bg-cyan-500 border border-cyan-400/30 text-cyan-300 hover:text-white flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-cyan-400/20 hover:bg-cyan-400 border border-cyan-300/35 text-cyan-200 hover:text-slate-900 flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
                   title="Xem chuyên đề này"
                 >
                   <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                 </button>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
-                <div className="w-14 h-16 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex flex-col items-center justify-center shrink-0 p-1 text-center">
-                  <span className="material-symbols-outlined text-cyan-300 text-[24px]">terminal</span>
-                  <span className="text-[10px] text-cyan-200 font-bold leading-tight mt-0.5">ICT 12</span>
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
+                <div className="w-14 h-16 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex flex-col items-center justify-center shrink-0 p-1 text-center">
+                  <span className="material-symbols-outlined text-cyan-200 text-[24px]">terminal</span>
+                  <span className="text-[10px] text-cyan-100 font-bold leading-tight mt-0.5">ICT 12</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-100 text-xs font-semibold">
                     Tin ứng dụng
                   </span>
                   <h4 className="text-white font-bold text-[15px] sm:text-base group-hover:text-cyan-200 transition-colors mt-1.5 truncate">
                     Chuyên đề học tập Tin học 12 — Định hướng ICT
                   </h4>
-                  <p className="text-sm text-slate-300 mt-0.5">Thực hành phần mềm ứng dụng & CSDL</p>
+                  <p className="text-sm text-blue-100/90 mt-0.5">Thực hành phần mềm ứng dụng &amp; CSDL</p>
                 </div>
                 <button
                   onClick={() => onNavigateTab('learning')}
-                  className="w-10 h-10 rounded-full bg-cyan-500/20 hover:bg-cyan-500 border border-cyan-400/30 text-cyan-300 hover:text-white flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-cyan-400/20 hover:bg-cyan-400 border border-cyan-300/35 text-cyan-200 hover:text-slate-900 flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
                   title="Xem chuyên đề này"
                 >
                   <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                 </button>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
-                <div className="w-14 h-16 rounded-xl bg-cyan-500/15 border border-cyan-400/25 flex flex-col items-center justify-center shrink-0 p-1 text-center">
-                  <span className="material-symbols-outlined text-cyan-300 text-[24px]">code</span>
-                  <span className="text-[10px] text-cyan-200 font-bold leading-tight mt-0.5">CS 12</span>
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
+                <div className="w-14 h-16 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex flex-col items-center justify-center shrink-0 p-1 text-center">
+                  <span className="material-symbols-outlined text-cyan-200 text-[24px]">code</span>
+                  <span className="text-[10px] text-cyan-100 font-bold leading-tight mt-0.5">CS 12</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-100 text-xs font-semibold">
                     Khoa học máy tính
                   </span>
                   <h4 className="text-white font-bold text-[15px] sm:text-base group-hover:text-cyan-200 transition-colors mt-1.5 truncate">
                     Bài tập Tin học 12 — Định hướng CS
                   </h4>
-                  <p className="text-sm text-slate-300 mt-0.5">Lập trình thuật toán & cấu trúc dữ liệu</p>
+                  <p className="text-sm text-blue-100/90 mt-0.5">Lập trình thuật toán &amp; cấu trúc dữ liệu</p>
                 </div>
                 <button
                   onClick={() => onNavigateTab('learning')}
-                  className="w-10 h-10 rounded-full bg-cyan-500/20 hover:bg-cyan-500 border border-cyan-400/30 text-cyan-300 hover:text-white flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-cyan-400/20 hover:bg-cyan-400 border border-cyan-300/35 text-cyan-200 hover:text-slate-900 flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
                   title="Xem chuyên đề này"
                 >
                   <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                 </button>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
-                <div className="w-14 h-16 rounded-xl bg-amber-500/15 border border-amber-400/25 flex flex-col items-center justify-center shrink-0 p-1 text-center">
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex items-center gap-4 group transition-all duration-300">
+                <div className="w-14 h-16 rounded-xl bg-amber-400/20 border border-amber-300/35 flex flex-col items-center justify-center shrink-0 p-1 text-center">
                   <span
                     className="material-symbols-outlined text-amber-300 text-[24px]"
                     style={{ fontVariationSettings: "'FILL' 1" }}
@@ -743,17 +745,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <span className="text-[10px] text-amber-200 font-bold leading-tight mt-0.5">HSG TỈNH</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-400/20 border border-amber-300/35 text-amber-200 text-xs font-semibold">
                     Đề thi nâng cao
                   </span>
                   <h4 className="text-white font-bold text-[15px] sm:text-base group-hover:text-cyan-200 transition-colors mt-1.5 truncate">
                     Tuyển tập bộ đề thi chọn HSG THPT Quảng Ngãi
                   </h4>
-                  <p className="text-sm text-slate-300 mt-0.5">Dành cho đội tuyển bồi dưỡng học sinh giỏi</p>
+                  <p className="text-sm text-blue-100/90 mt-0.5">Dành cho đội tuyển bồi dưỡng học sinh giỏi</p>
                 </div>
                 <button
                   onClick={() => onNavigateTab('practice')}
-                  className="w-10 h-10 rounded-full bg-cyan-500/20 hover:bg-cyan-500 border border-cyan-400/30 text-cyan-300 hover:text-white flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-cyan-400/20 hover:bg-cyan-400 border border-cyan-300/35 text-cyan-200 hover:text-slate-900 flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer"
                   title="Xem chuyên đề này"
                 >
                   <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
@@ -765,7 +767,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* 7. TINPATH DÀNH CHO AI? */}
           <section className="flex flex-col py-2">
             <div className="text-center mb-8">
-              <span className="font-label-sm text-cyan-400 uppercase font-bold tracking-widest text-xs">
+              <span className="font-label-sm text-cyan-300 uppercase font-bold tracking-widest text-xs">
                 Hệ sinh thái phân quyền
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">
@@ -775,93 +777,93 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Role 1 */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                    <span className="w-9 h-9 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200">
                       <span className="material-symbols-outlined text-[20px]">school</span>
                     </span>
                     <span className="text-[17px] text-white font-bold group-hover:text-cyan-200 transition-colors">
                       1. Học sinh THPT
                     </span>
                   </div>
-                  <span className="px-3 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-3 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-200 text-xs font-semibold">
                     Trung tâm
                   </span>
                 </div>
-                <ul className="flex flex-col gap-2 pt-2 border-t border-blue-400/20 text-slate-300 text-sm">
+                <ul className="flex flex-col gap-2 pt-2 border-t border-cyan-300/20 text-blue-100/90 text-sm">
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
-                    <span>Học theo chủ đề & tham gia thử thách 10 câu/ngày.</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
+                    <span>Học theo chủ đề &amp; tham gia thử thách 10 câu/ngày.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Theo dõi tiến độ học tập và nhận đề xuất riêng từ AI.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Thi thử trực tuyến với trải nghiệm chấm thi chuẩn xác.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Role 2 */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                    <span className="w-9 h-9 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200">
                       <span className="material-symbols-outlined text-[20px]">co_present</span>
                     </span>
                     <span className="text-[17px] text-white font-bold group-hover:text-cyan-200 transition-colors">
                       2. Thầy Cô Giáo
                     </span>
                   </div>
-                  <span className="px-3 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-3 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-200 text-xs font-semibold">
                     Đồng hành
                   </span>
                 </div>
-                <ul className="flex flex-col gap-2 pt-2 border-t border-blue-400/20 text-slate-300 text-sm">
+                <ul className="flex flex-col gap-2 pt-2 border-t border-cyan-300/20 text-blue-100/90 text-sm">
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Tạo lớp học, giao bài tập và đề kiểm tra định kỳ linh hoạt.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Chia sẻ học liệu số hóa với học sinh toàn trường.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Báo cáo phổ điểm trực quan giúp nhận diện phổ kiến thức.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Role 3 */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-lg backdrop-blur-sm flex flex-col gap-3.5 group transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                    <span className="w-9 h-9 rounded-xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200">
                       <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
                     </span>
                     <span className="text-[17px] text-white font-bold group-hover:text-cyan-200 transition-colors">
                       3. Ban Quản Trị
                     </span>
                   </div>
-                  <span className="px-3 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+                  <span className="px-3 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 text-cyan-200 text-xs font-semibold">
                     Vận hành
                   </span>
                 </div>
-                <ul className="flex flex-col gap-2 pt-2 border-t border-blue-400/20 text-slate-300 text-sm">
+                <ul className="flex flex-col gap-2 pt-2 border-t border-cyan-300/20 text-blue-100/90 text-sm">
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Kiểm duyệt chất lượng kho đề, đồng bộ ngân hàng câu hỏi.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Quản trị người dùng, phân quyền theo từng cơ sở đào tạo.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <span className="material-symbols-outlined text-cyan-400 text-[18px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-300 text-[18px]">check_circle</span>
                     <span>Tối ưu hóa mô hình AI hỗ trợ định hướng sư phạm.</span>
                   </li>
                 </ul>
@@ -870,27 +872,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </section>
 
           {/* 8. TINPATH TẠI QUẢNG NGÃI */}
-          <section className="flex flex-col py-2" id="schools">
+          <section className="flex flex-col py-2 scroll-mt-28" id="schools">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-cyan-400 text-[22px]">apartment</span>
-              <span className="font-label-md text-cyan-300 uppercase tracking-wider font-bold">Cộng đồng địa phương</span>
+              <span className="material-symbols-outlined text-cyan-300 text-[22px]">apartment</span>
+              <span className="font-label-md text-cyan-200 uppercase tracking-wider font-bold">Cộng đồng địa phương</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
               Cùng học sinh Quảng Ngãi chinh phục Tin học
             </h2>
-            <p className="text-base text-blue-100/80 mb-6">
+            <p className="text-base text-blue-50/85 mb-6">
               Xây dựng môi trường ôn tập số bình đẳng, kết nối học sinh khắp các trường THPT từ đồng bằng đến miền núi và
               hải đảo Lý Sơn.
             </p>
 
             {/* School Search Box */}
             <div className="relative mb-4">
-              <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-[20px] text-cyan-400">search</span>
+              <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-[20px] text-cyan-300">search</span>
               <input
                 type="text"
                 value={schoolSearch}
                 onChange={(e) => setSchoolSearch(e.target.value)}
-                className="w-full h-12 pl-11 pr-4 rounded-xl bg-[#0f2c4e]/90 text-white placeholder-slate-400 border border-blue-400/30 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/25 text-sm shadow-inner outline-none transition-all"
+                className="w-full h-12 pl-11 pr-4 rounded-xl bg-[#124675]/90 text-white placeholder-blue-100/60 border border-cyan-300/35 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/30 text-sm shadow-inner outline-none transition-all"
                 placeholder="Tìm trường THPT của bạn..."
               />
             </div>
@@ -900,7 +902,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {(showAllSchools ? filteredSchools : filteredSchools.slice(0, 8)).map((sch, idx) => (
                 <span
                   key={idx}
-                  className="px-3.5 py-2 rounded-xl bg-[#13375f]/70 hover:bg-[#184272] border border-blue-400/25 hover:border-cyan-400/45 text-xs font-medium text-slate-200 hover:text-white shadow-sm transition-all"
+                  className="px-3.5 py-2 rounded-xl bg-[#195b98]/70 hover:bg-[#1f6dae] border border-cyan-300/30 hover:border-cyan-300/50 text-xs font-medium text-blue-50 hover:text-white shadow-sm transition-all"
                 >
                   {sch}
                 </span>
@@ -910,7 +912,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={() => setShowAllSchools(!showAllSchools)}
-              className="w-full py-3.5 rounded-xl bg-[#153e6b] hover:bg-[#1a4a7f] border border-blue-400/30 text-cyan-300 font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 cursor-pointer"
+              className="w-full py-3.5 rounded-xl bg-[#175690] hover:bg-[#1d65a6] border border-cyan-300/35 text-cyan-200 font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">list_alt</span>
               <span>
@@ -924,7 +926,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* 9. LEARNING JOURNEY (Lộ trình 6 bước) */}
           <section className="flex flex-col py-2">
             <div className="text-center mb-8">
-              <span className="font-label-sm text-cyan-400 uppercase font-bold tracking-widest text-xs">
+              <span className="font-label-sm text-cyan-300 uppercase font-bold tracking-widest text-xs">
                 Lộ trình bứt phá
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">
@@ -932,87 +934,87 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h2>
             </div>
 
-            <div className="flex flex-col gap-4 relative pl-4 before:content-[''] before:absolute before:left-6 before:top-4 before:bottom-4 before:w-0.5 before:bg-blue-400/30">
+            <div className="flex flex-col gap-4 relative pl-4 before:content-[''] before:absolute before:left-6 before:top-4 before:bottom-4 before:w-0.5 before:bg-cyan-300/30">
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   1
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
                   <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Đánh giá đầu vào</h4>
-                  <p className="text-sm text-slate-300">Làm bài test nhanh 15 phút xác định điểm xuất phát.</p>
+                  <p className="text-sm text-blue-100/90">Làm bài test nhanh 15 phút xác định điểm xuất phát.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   2
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
                   <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Xác định mục tiêu điểm số</h4>
-                  <p className="text-sm text-slate-300">Đặt ngưỡng điểm kỳ vọng cho kỳ thi THPT (7+, 8+, 9+).</p>
+                  <p className="text-sm text-blue-100/90">Đặt ngưỡng điểm kỳ vọng cho kỳ thi THPT (7+, 8+, 9+).</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   3
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
                   <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Học theo chủ đề</h4>
-                  <p className="text-sm text-slate-300">Ôn chắc lý thuyết & bài tập từ mức độ Nhận biết đến Vận dụng.</p>
+                  <p className="text-sm text-blue-100/90">Ôn chắc lý thuyết &amp; bài tập từ mức độ Nhận biết đến Vận dụng.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   4
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
-                  <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Luyện đề & Thử thách mỗi ngày</h4>
-                  <p className="text-sm text-slate-300">Rèn luyện phản xạ làm bài và làm quen với áp lực thời gian.</p>
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
+                  <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Luyện đề &amp; Thử thách mỗi ngày</h4>
+                  <p className="text-sm text-blue-100/90">Rèn luyện phản xạ làm bài và làm quen với áp lực thời gian.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   5
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
                   <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Phân tích kết quả bằng AI</h4>
-                  <p className="text-sm text-slate-300">Chỉ ra câu sai thường gặp, đề xuất bài tập khắc phục tức thì.</p>
+                  <p className="text-sm text-blue-100/90">Chỉ ra câu sai thường gặp, đề xuất bài tập khắc phục tức thì.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 relative">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-300/60">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-code-inline text-xs font-bold flex items-center justify-center shrink-0 z-10 shadow-[0_0_12px_rgba(6,182,212,0.5)] border border-cyan-200/70">
                   6
                 </div>
-                <div className="p-4 sm:p-5 rounded-xl bg-[#13375f]/80 hover:bg-[#184272]/90 border border-blue-400/20 hover:border-cyan-400/40 shadow-md backdrop-blur-sm flex-1 transition-all">
-                  <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Cải thiện & Bứt phá điểm số</h4>
-                  <p className="text-sm text-slate-300">Tự tin bước vào phòng thi chính thức với phong độ cao nhất.</p>
+                <div className="p-4 sm:p-5 rounded-xl bg-[#195b98]/75 hover:bg-[#1f6dae]/90 border border-cyan-300/25 hover:border-cyan-300/50 shadow-md backdrop-blur-sm flex-1 transition-all">
+                  <h4 className="font-bold text-white text-[15px] sm:text-base mb-1">Cải thiện &amp; Bứt phá điểm số</h4>
+                  <p className="text-sm text-blue-100/90">Tự tin bước vào phòng thi chính thức với phong độ cao nhất.</p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* 10. FINAL CTA & FOOTER */}
-          <section className="flex flex-col py-2" id="cta-footer">
+          <section className="flex flex-col py-2 scroll-mt-28" id="cta-footer">
             {/* Big CTA Card */}
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#1a4c82] via-[#143e6c] to-[#0f2e52] border border-cyan-400/35 shadow-2xl text-center flex flex-col items-center gap-4 mb-12 relative overflow-hidden">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-400/15 rounded-full blur-[80px] pointer-events-none" />
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#236ea8] via-[#1c5c93] to-[#154e80] border border-cyan-300/40 shadow-2xl text-center flex flex-col items-center gap-4 mb-12 relative overflow-hidden">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-300/20 rounded-full blur-[80px] pointer-events-none" />
 
-              <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 mb-1 shadow-lg">
+              <div className="w-14 h-14 rounded-2xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-1 shadow-lg">
                 <span className="material-symbols-outlined text-[32px]">stars</span>
               </div>
               <h3 className="text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold max-w-2xl">
                 Bắt đầu hành trình Tin học của bạn cùng TinPath.
               </h3>
-              <p className="text-slate-200 text-sm sm:text-base max-w-xl">
+              <p className="text-blue-50/90 text-sm sm:text-base max-w-xl">
                 Chủ động học tập, luyện tập có mục tiêu và từng bước củng cố kiến thức cho kỳ thi tốt nghiệp THPT.
               </p>
               <button
                 onClick={() => onNavigateTab('learning')}
-                className="h-13 px-8 mt-2 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] active:scale-98 transition-all cursor-pointer"
+                className="h-13 px-8 mt-2 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] active:scale-98 transition-all cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[20px]">flag</span>
                 <span>Bắt đầu học ngay miễn phí</span>
@@ -1020,15 +1022,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Detailed Footer */}
-            <footer className="flex flex-col gap-8 pt-8 text-slate-300 border-t border-blue-400/20">
+            <footer className="flex flex-col gap-8 pt-8 text-blue-100/90 border-t border-cyan-300/25">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <TinPathLogo size={32} textColor="text-white" subtextColor="text-cyan-400" />
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 font-code-inline text-[11px] text-cyan-300">
+                  <TinPathLogo size={32} textColor="text-white" subtextColor="text-cyan-300" />
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 font-code-inline text-[11px] text-cyan-200">
                     Quảng Ngãi
                   </span>
                 </div>
-                <p className="text-sm text-slate-300 max-w-xl mt-1 leading-relaxed">
+                <p className="text-sm text-blue-100/85 max-w-xl mt-1 leading-relaxed">
                   Chinh phục Tin học THPT cùng học sinh Quảng Ngãi. Nền tảng học tập số thông minh, cá nhân hóa theo
                   Chương trình GDPT 2018.
                 </p>
@@ -1036,68 +1038,68 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-cyan-400 uppercase font-bold text-xs tracking-wider">Học tập</span>
+                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Học tập</span>
                   <button
                     onClick={() => onNavigateTab('learning')}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     Theo chủ đề lớp 12
                   </button>
                   <button
                     onClick={() => onNavigateTab('practice')}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     Bộ đề thi thử 2025
                   </button>
                   <button
                     onClick={() => onNavigateTab('personalized_ai')}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     AI Study Mentor
                   </button>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-cyan-400 uppercase font-bold text-xs tracking-wider">Tài nguyên</span>
+                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Tài nguyên</span>
                   <button
                     onClick={() => onNavigateTab('learning')}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     Tài liệu tham khảo
                   </button>
                   <button
                     onClick={() => onOpenAuth()}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     Dành cho giáo viên
                   </button>
                   <button
                     onClick={() => onNavigateTab('home')}
-                    className="text-left text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
+                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
                   >
                     34 trường THPT
                   </button>
                 </div>
                 <div className="col-span-2 flex flex-col gap-2.5">
-                  <span className="text-cyan-400 uppercase font-bold text-xs tracking-wider">Hỗ trợ</span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Hỗ trợ</span>
+                  <p className="text-xs text-blue-100/80 leading-relaxed">
                     Hệ thống hoạt động trực tuyến 24/7 phục vụ giáo viên và học sinh ôn thi THPT.
                   </p>
-                  <div className="inline-flex items-center gap-2 text-cyan-300 text-xs font-semibold">
+                  <div className="inline-flex items-center gap-2 text-cyan-200 text-xs font-semibold">
                     <span className="material-symbols-outlined text-[16px]">mail</span>
                     <span>hotro@tinpath.edu.vn</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-[#0d2746]/80 border border-blue-400/20 flex flex-col gap-1.5">
-                <span className="text-slate-200 font-semibold text-xs">Ghi chú học thuật & Bản quyền:</span>
-                <p className="text-[11px] text-slate-300 leading-relaxed">
+              <div className="p-4 rounded-2xl bg-[#113f6b]/80 border border-cyan-300/20 flex flex-col gap-1.5">
+                <span className="text-slate-100 font-semibold text-xs">Ghi chú học thuật &amp; Bản quyền:</span>
+                <p className="text-[11px] text-blue-100/80 leading-relaxed">
                   Nội dung kiến thức, câu hỏi trắc nghiệm và đề luyện được biên soạn, chọn lọc phục vụ mục đích học tập phi
                   thương mại cho cộng đồng học sinh, giáo viên tỉnh Quảng Ngãi.
                 </p>
               </div>
 
-              <div className="text-center text-[11px] text-slate-400 pt-2 pb-6">
+              <div className="text-center text-[11px] text-blue-200/60 pt-2 pb-6">
                 © 2025 TinPath Quảng Ngãi. Đồng hành cùng ước mơ số.
               </div>
             </footer>
