@@ -356,6 +356,7 @@ export default function App() {
                 completedTopics={completedTopics}
                 onToggleCompleteTopic={handleToggleCompleteTopic}
                 onPracticeTopicQuiz={(tId) => handleStartTopicQuiz(tId, 10, 'all')}
+                onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
               />
             )}
 
