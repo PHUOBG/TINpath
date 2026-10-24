@@ -265,9 +265,6 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     if (roleToUse === 'teacher') {
       displayName = 'Thầy Nguyễn Trọng Bình';
       schoolName = 'THPT chuyên Lê Khiết';
-    } else if (roleToUse === 'admin') {
-      displayName = 'Quản trị viên TinPath';
-      schoolName = 'Sở GD&ĐT Quảng Ngãi';
     } else if (!displayName || displayName === 'Học sinh') {
       displayName = 'Nguyễn Văn An';
       schoolName = 'THPT chuyên Lê Khiết';
@@ -276,7 +273,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     const loginUser: UserProfile = {
       ...existingUser,
       role: roleToUse as UserRole,
-      email: emailToUse || (roleToUse === 'teacher' ? 'giaovien@tinpath.edu.vn' : roleToUse === 'admin' ? 'admin@tinpath.edu.vn' : 'hocsinh@tinpath.edu.vn'),
+      email: emailToUse || (roleToUse === 'teacher' ? 'giaovien@tinpath.edu.vn' : 'hocsinh@tinpath.edu.vn'),
       displayName,
       schoolName,
       onboardingCompleted: true,
@@ -625,31 +622,15 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                   </span>
                   <span className="text-[10px] text-gray-400 font-mono">12345678</span>
                 </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setForm((f) => ({ ...f, role: 'admin', email: 'admin@tinpath.edu.vn', password: 'password123' }));
-                    setErrors({});
-                  }}
-                  className="flex items-center justify-between text-left px-2.5 py-1.5 bg-white hover:bg-purple-100/60 border border-purple-200 rounded-lg text-xs transition-colors cursor-pointer group"
-                >
-                  <span className="font-semibold text-gray-800 flex items-center gap-1.5">
-                    🛡️ <span>Quản trị:</span>
-                    <span className="font-mono text-purple-600 group-hover:underline">admin@tinpath.edu.vn</span>
-                  </span>
-                  <span className="text-[10px] text-gray-400 font-mono">12345678</span>
-                </button>
               </div>
             </div>
 
             <div className="mb-4">
               <label className="text-xs font-semibold text-gray-600 mb-2 block">Đăng nhập với tư cách</label>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 gap-2">
                 {([
                   { id: 'student', label: 'Học sinh', icon: GraduationCap, activeClass: 'border-blue-500 bg-blue-50 text-blue-700' },
                   { id: 'teacher', label: 'Giáo viên', icon: BookOpen, activeClass: 'border-emerald-500 bg-emerald-50 text-emerald-700' },
-                  { id: 'admin', label: 'Quản trị', icon: Shield, activeClass: 'border-purple-500 bg-purple-50 text-purple-700' },
                 ] as const).map(({ id, label, icon: Icon, activeClass }) => (
                   <button key={id} type="button" onClick={() => setForm((f) => ({ ...f, role: id as UserRole }))}
                     className={`flex items-center justify-center gap-1.5 p-2 rounded-lg border-2 text-xs font-semibold transition-all ${

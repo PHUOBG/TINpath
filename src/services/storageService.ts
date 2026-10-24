@@ -123,7 +123,7 @@ export const storageService = {
     localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
   },
 
-  updateRole(role: 'student' | 'teacher' | 'admin'): UserProfile {
+  updateRole(role: UserRole): UserProfile {
     const user = this.getUserProfile();
     const updated = { ...user, role };
     this.saveUserProfile(updated);

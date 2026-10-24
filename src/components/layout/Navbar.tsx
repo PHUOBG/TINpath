@@ -68,15 +68,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         { id: 'teacher_analytics', label: 'THỐNG KÊ' },
       ];
     }
-    if (user.role === 'admin') {
-      return [
-        { id: 'admin_dashboard', label: 'DASHBOARD' },
-        { id: 'admin_users', label: 'NGƯỜI DÙNG' },
-        { id: 'admin_exams', label: 'NGÂN HÀNG ĐỀ' },
-        { id: 'admin_ai', label: 'QUẢN LÝ AI' },
-        { id: 'admin_xp', label: 'QUY TẮC XP' },
-      ];
-    }
     // Student role - Matches VNOI Navigation bar directly
     return [
       { id: 'home', label: 'TRANG CHỦ' },
@@ -111,8 +102,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onSelectTab(
                   user.role === 'teacher'
                     ? 'teacher_overview'
-                    : user.role === 'admin'
-                    ? 'admin_dashboard'
                     : 'home'
                 )
               }
@@ -316,20 +305,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <BookOpen className="w-3.5 h-3.5" /> Giáo viên
                       </span>
                       {user.role === 'teacher' && <CheckCircle2 className="w-3.5 h-3.5 text-[#38BDF8]" />}
-                    </button>
-                    <button
-                      onClick={() => {
-                        onSwitchRole('admin');
-                        setUserDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-1.5 flex items-center justify-between hover:bg-white/5 ${
-                        user.role === 'admin' ? 'text-[#38BDF8] font-bold' : 'text-gray-300'
-                      }`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <Shield className="w-3.5 h-3.5" /> Quản trị viên (Admin)
-                      </span>
-                      {user.role === 'admin' && <CheckCircle2 className="w-3.5 h-3.5 text-[#38BDF8]" />}
                     </button>
                   </div>
 

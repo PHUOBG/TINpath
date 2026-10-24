@@ -295,17 +295,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               >
                 Giáo viên
               </button>
-              <button
-                type="button"
-                onClick={() => setRole('admin')}
-                className={`flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold border transition-colors ${
-                  role === 'admin'
-                    ? 'bg-[#2878C8] text-white border-[#2878C8] shadow-xs'
-                    : 'border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300'
-                }`}
-              >
-                Quản trị viên
-              </button>
             </div>
           </div>
 

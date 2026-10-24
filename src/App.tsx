@@ -9,7 +9,6 @@ import { PersonalizedAI } from './components/student/PersonalizedAI';
 import { Leaderboard } from './components/student/Leaderboard';
 import { UserProfileView } from './components/student/UserProfileView';
 import { TeacherDashboard } from './components/teacher/TeacherDashboard';
-import { AdminDashboard } from './components/admin/AdminDashboard';
 import { GoogleToolsHub } from './components/google/GoogleToolsHub';
 import { AuthModal } from './components/auth/AuthModal';
 import { RegisterModal } from './components/auth/RegisterModal';
@@ -181,7 +180,6 @@ export default function App() {
     setIsLoggedIn(true);
     if (loggedInUser.role === 'student') setCurrentTab('home');
     else if (loggedInUser.role === 'teacher') setCurrentTab('teacher_overview');
-    else if (loggedInUser.role === 'admin') setCurrentTab('admin_dashboard');
   };
 
   // Handle logout - return to landing
@@ -202,7 +200,6 @@ export default function App() {
     setUser(updated);
     if (newRole === 'student') setCurrentTab('home');
     else if (newRole === 'teacher') setCurrentTab('teacher_overview');
-    else if (newRole === 'admin') setCurrentTab('admin_dashboard');
   };
 
   // Save profile — ghi vào Supabase + localStorage
@@ -439,9 +436,6 @@ export default function App() {
             }}
           />
         )}
-
-        {/* ADMIN VIEWS */}
-        {user.role === 'admin' && <AdminDashboard />}
       </main>
 
       <Footer

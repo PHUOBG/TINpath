@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     email TEXT NOT NULL,
     display_name TEXT NOT NULL,
     avatar_url TEXT,
-    role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'teacher', 'admin')),
+    role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'teacher')),
     province TEXT DEFAULT 'Quảng Ngãi',
     district TEXT,
     school_id TEXT,
