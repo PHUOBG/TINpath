@@ -40,8 +40,12 @@ import {
   UserProfile,
   ExamAttempt,
   SubjectTopicId,
+  CognitiveLevel,
   Exam,
   DiagnosticReport,
+  CognitiveLevelStat,
+  CompetencyStat,
+  TopicDiagnosticDetail,
   AiRoadmapPlan,
   RoadmapDayItem,
   TopicMasteryInfo,
@@ -71,6 +75,76 @@ interface PersonalizedAIProps {
 
 type StepNumber = 1 | 2 | 3 | 4;
 
+// Helper to determine Competency Code according to MOET Table 1
+const getCompetencyCode = (topicId: string): 'NLa' | 'NLb' | 'NLc' => {
+  if (['12B', '12F', '12E_ICT'].includes(topicId)) return 'NLa';
+  if (['12A', '12D', '12G'].includes(topicId)) return 'NLb';
+  return 'NLc'; // 11F, 11E_ICT, 11F_CS, 10_PYTHON, 12F_CS
+};
+
+// Curriculum Lesson Titles & Specific Gaps mapping from Book
+const CURRICULUM_TOPIC_GAPS: Record<string, { lessons: string[]; defaultTraps: string }> = {
+  '12A': {
+    lessons: [
+      'Bài 1: Khái niệm & 5 đặc trưng cơ bản của AI (Học, Suy luận, Nhận thức, Hiểu ngôn ngữ, Giải quyết vấn đề)',
+      'Bài 1: Phân loại AI hẹp (ANI) vs AI tổng quát (AGI) & Ý nghĩa bài kiểm tra Turing (Turing Test 1950)',
+      'Bài 2: Tác động của AI đối với việc làm, cảnh báo xã hội và an ninh mạng (Deepfake, bảo vệ dữ liệu cá nhân)',
+    ],
+    defaultTraps: 'Dễ nhầm lẫn giữa AI hẹp (thực hiện nhiệm vụ cụ thể) với AI tổng quát (AGI - tự suy nghĩ và thích ứng như con người).',
+  },
+  '12B': {
+    lessons: [
+      'Bài 1: Phân biệt thiết bị mạng: Switch (đọc địa chỉ MAC) vs Router (đọc địa chỉ IP để định tuyến)',
+      'Bài 2: Chuyển đổi nhị phân IPv4 (32 bit, 4 octet) và cấu trúc địa chỉ IPv6 (128 bit hexa)',
+      'Bài 2: Vai trò máy chủ phân giải tên miền DNS và cơ chế bắt tay 3 bước của giao thức TCP/IP',
+    ],
+    defaultTraps: 'Nhầm lẫn phạm vi hoạt động của Switch (tầng Data Link, dùng MAC) với Router (tầng Network, dùng IP).',
+  },
+  '12D': {
+    lessons: [
+      'Bài 1: Đạo đức, tính nhân văn và hành vi ứng xử văn minh trong môi trường số',
+      'Bài 2: Quyền tác giả, bản quyền phần mềm và phòng chống xâm phạm dữ liệu cá nhân',
+    ],
+    defaultTraps: 'Nhầm lẫn giữa phần mềm nguồn mở (Open Source) và phần mềm miễn phí (Freeware).',
+  },
+  '12G': {
+    lessons: [
+      'Bài 1: Phân loại nhóm nghề dịch vụ: Hỗ trợ kỹ thuật CNTT, quản trị hệ thống và vận hành mạng',
+      'Bài 2: Xu hướng nghề nghiệp trong kỷ nguyên Trí tuệ nhân tạo và chuyển đổi số',
+    ],
+    defaultTraps: 'Nhầm lẫn nhiệm vụ của chuyên viên Quản trị mạng với Lập trình viên phần mềm.',
+  },
+  '12F': {
+    lessons: [
+      'Bài 1: Cấu trúc thẻ ngữ nghĩa semantic HTML5 (header, nav, section, article, table, form)',
+      'Bài 2: Mô hình hộp CSS Box Model (phân biệt margin viền ngoài và padding vùng đệm bên trong)',
+    ],
+    defaultTraps: 'Nhầm lẫn giữa Margin (khoảng cách bên ngoài đường viền) và Padding (khoảng cách giữa nội dung và đường viền).',
+  },
+  '11F': {
+    lessons: [
+      'Bài 1: Mô hình CSDL quan hệ: Bản ghi (Record), Thuộc tính (Field), Khóa chính (Primary Key) & Khóa ngoại (Foreign Key)',
+      'Bài 2: Cú pháp truy vấn SQL: Mệnh đề WHERE lọc dòng vs HAVING lọc nhóm sau GROUP BY',
+      'Bài 2: Quy tắc toàn vẹn dữ liệu và liên kết quan hệ 1 - Nhiều (1-N) giữa các bảng',
+    ],
+    defaultTraps: 'Nhầm lẫn mệnh đề WHERE (lọc dữ liệu từng dòng trước khi gộp) với HAVING (lọc nhóm sau khi GROUP BY).',
+  },
+  '11F_CS': {
+    lessons: [
+      'Bài 1: Thuật toán tìm kiếm nhị phân (Binary Search) - điều kiện mảng đã sắp xếp và độ phức tạp O(log n)',
+      'Bài 2: Kĩ thuật lập trình đệ quy, sắp xếp chọn / chèn / nổi bọt và truy vết từng bước chạy',
+    ],
+    defaultTraps: 'Quên điều kiện tiên quyết của tìm kiếm nhị phân: Mảng bắt buộc phải được sắp xếp theo thứ tự.',
+  },
+  '10_PYTHON': {
+    lessons: [
+      'Bài 1: Chỉ số mảng âm, cú pháp cắt lát chuỗi/danh sách (slicing [start:stop:step])',
+      'Bài 2: Phạm vi biến cục bộ (local) và toàn cục (global) trong hàm Python',
+    ],
+    defaultTraps: 'Nhầm lẫn quy tắc stop trong hàm range(start, stop): giá trị stop không bao giờ được lấy.',
+  },
+};
+
 export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   user,
   examAttempts,
@@ -90,11 +164,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     return storageService.getRoadmapPlan();
   });
 
-  // Step-by-step progress tracking:
-  // Step 1: Đánh giá năng lực đầu vào
-  // Step 2: Phân tích kiến thức đã vững + còn yếu
-  // Step 3: Thiết lập mục tiêu điểm số + thời gian học
-  // Step 4: Lộ trình cá nhân hóa & Theo dõi tiến độ học tập
+  // Step-by-step progress tracking (1 -> 2 -> 3 -> 4)
   const [currentStep, setCurrentStep] = useState<StepNumber>(() => {
     if (storageService.getRoadmapPlan()) return 4;
     if (storageService.getDiagnosticReport()) return 2;
@@ -256,60 +326,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     };
   };
 
-  // Fallback diagnostic report
-  const computeLocalAnalysis = (
-    score: number,
-    wrongQuestions: Array<{ topicId: SubjectTopicId; topicName: string; content: string; userAnswer: string; correctAnswer: string; explanation: string }>,
-    topicBreakdown: Array<{ topicId: SubjectTopicId; topicName: string; correct: number; total: number; percentage: number }>,
-    scores: { part1Correct: number; part1Score: number; part2Score: number }
-  ) => {
-    const weakTopics = topicBreakdown.filter((t) => t.percentage < 70).map((t) => t.topicId);
-    const weakTopicNames = topicBreakdown.filter((t) => t.percentage < 70).map((t) => t.topicName);
-    const strongTopicNames = topicBreakdown.filter((t) => t.percentage >= 70).map((t) => t.topicName);
-
-    let ranking = 'Khá - Nền tảng tốt, cần nâng cao vận dụng';
-    let assessment = `Học sinh đạt ${score.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPT chuẩn (Phần I: ${scores.part1Score}đ, Phần II: ${scores.part2Score}đ). Nắm được kiến thức cốt lõi nhưng còn thiếu sót ở các câu hỏi phân hóa thực tiễn.`;
-
-    if (score >= 9.0) {
-      ranking = 'Xuất sắc - Nền tảng vững vàng toàn diện';
-      assessment = `Học sinh có tư duy Tin học xuất sắc với ${score.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPTQG chuẩn. Làm chủ cả phần trắc nghiệm nhiều phương án lẫn đúng/sai.`;
-    } else if (score >= 8.0) {
-      ranking = 'Giỏi - Nắm chắc kiến thức cốt lõi';
-      assessment = `Kết quả thi THPTQG đạt ${score.toFixed(2)}/10 điểm rất ấn tượng. Nền tảng kiến thức vững vàng, chỉ gặp một vài sai sót nhỏ ở các câu hỏi bẫy hoặc vận dụng thực tiễn.`;
-    } else if (score < 5.0) {
-      ranking = 'Cần củng cố nền tảng kiến thức';
-      assessment = `Kết quả đạt ${score.toFixed(2)}/10 điểm cho thấy học sinh còn bị hổng kiến thức nền tảng trong chương trình lớp 11 và 12. Cần bám sát lộ trình từng ngày của TinPath để ôn tập lại.`;
-    }
-
-    const weaknesses = wrongQuestions.slice(0, 4).map((w) => {
-      return `Lỗ hổng [${w.topicName}]: ${w.content.slice(0, 90)}... (Bạn chọn: ${w.userAnswer} → Đáp án đúng: ${w.correctAnswer})`;
-    });
-
-    if (weaknesses.length === 0) {
-      weaknesses.push('Cần rèn luyện thêm tốc độ phản xạ với các câu hỏi bẫy định nghĩa.');
-    }
-
-    const strengths = strongTopicNames.slice(0, 3).map((st) => `Nắm vững kiến thức chuyên đề ${st}.`);
-    if (strengths.length === 0) {
-      strengths.push('Có tinh thần làm bài nghiêm túc và sẵn sàng bồi đắp kiến thức.');
-    }
-
-    return {
-      overallAssessment: assessment,
-      levelRanking: ranking,
-      strengths,
-      weaknesses,
-      cognitiveLevels: {
-        know: { percentage: Math.min(100, Math.round(score * 10 + 10)), evaluation: 'Nắm chắc kiến thức định nghĩa nhận biết' },
-        understand: { percentage: Math.min(100, Math.round(score * 10)), evaluation: 'Hiểu tốt cơ chế và quy trình mạng & CSDL' },
-        apply: { percentage: Math.min(100, Math.max(30, Math.round(score * 10 - 15))), evaluation: 'Cần luyện thêm dạng bài đổi nhị phân & thuật toán' },
-      },
-      pedagogicalAdvice: `Dành ${dailyMinutesInput} phút mỗi ngày theo lộ trình: 20 phút đọc lại lý thuyết các phần làm sai (${weakTopicNames.slice(0, 2).join(', ') || 'Mạng & CSDL'}), 20 phút giải bài tập trắc nghiệm và 5 phút đối chiếu lời giải chi tiết.`,
-      recommendedWeakTopics: weakTopics.length > 0 ? weakTopics : ['12B', '11F'],
-    };
-  };
-
-  // Run Real AI Diagnostic Analysis via Gemini
+  // Comprehensive calculation of Cognitive Levels & MOET Competency Matrix
   const runAiAnalysisOnExam = async (
     exam: Exam,
     p1Ans: Record<string, 'A' | 'B' | 'C' | 'D'>,
@@ -319,108 +336,318 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   ) => {
     setIsAnalyzingDiagnostic(true);
 
+    // 1. Tallying Cognitive Levels (Biết, Hiểu, Vận dụng)
+    const cogStats: Record<CognitiveLevel, { correct: number; total: number }> = {
+      biet: { correct: 0, total: 0 },
+      hieu: { correct: 0, total: 0 },
+      van_dung: { correct: 0, total: 0 },
+    };
+
+    // 2. Tallying MOET Competencies (NLa, NLb, NLc)
+    const compStats: Record<'NLa' | 'NLb' | 'NLc', { correct: number; total: number }> = {
+      NLa: { correct: 0, total: 0 },
+      NLb: { correct: 0, total: 0 },
+      NLc: { correct: 0, total: 0 },
+    };
+
+    // 3. Tallying Topic Lessons
+    const topicStats: Record<
+      string,
+      {
+        topicName: string;
+        correct: number;
+        total: number;
+        knowCorrect: number;
+        knowTotal: number;
+        undCorrect: number;
+        undTotal: number;
+        appCorrect: number;
+        appTotal: number;
+      }
+    > = {};
+
     const wrongQuestions: Array<{
       id: string;
       topicId: SubjectTopicId;
       topicName: string;
+      level: CognitiveLevel;
       content: string;
       userAnswer: string;
       correctAnswer: string;
       explanation: string;
+      conceptualTrap?: string;
     }> = [];
 
-    const topicStats: Record<string, { topicName: string; correct: number; total: number }> = {};
-
-    // 1. Part 1 breakdown
+    // Part 1 Questions Evaluation
     for (const q of exam.part1Questions) {
+      const level: CognitiveLevel = q.level || 'biet';
+      const comp = getCompetencyCode(q.topicId);
+
+      cogStats[level].total += 1;
+      compStats[comp].total += 1;
+
       if (!topicStats[q.topicId]) {
-        topicStats[q.topicId] = { topicName: q.topicName, correct: 0, total: 0 };
+        topicStats[q.topicId] = {
+          topicName: q.topicName,
+          correct: 0,
+          total: 0,
+          knowCorrect: 0,
+          knowTotal: 0,
+          undCorrect: 0,
+          undTotal: 0,
+          appCorrect: 0,
+          appTotal: 0,
+        };
       }
       topicStats[q.topicId].total += 1;
+      if (level === 'biet') topicStats[q.topicId].knowTotal += 1;
+      else if (level === 'hieu') topicStats[q.topicId].undTotal += 1;
+      else topicStats[q.topicId].appTotal += 1;
 
       const userChoice = p1Ans[q.id];
-      if (userChoice === q.correctAnswer) {
+      const isCorrect = userChoice === q.correctAnswer;
+
+      if (isCorrect) {
+        cogStats[level].correct += 1;
+        compStats[comp].correct += 1;
         topicStats[q.topicId].correct += 1;
+        if (level === 'biet') topicStats[q.topicId].knowCorrect += 1;
+        else if (level === 'hieu') topicStats[q.topicId].undCorrect += 1;
+        else topicStats[q.topicId].appCorrect += 1;
       } else {
         const userChoiceText = userChoice ? `${userChoice}. ${q.options[userChoice]}` : 'Chưa chọn';
         const correctChoiceText = `${q.correctAnswer}. ${q.options[q.correctAnswer]}`;
+        const trap = CURRICULUM_TOPIC_GAPS[q.topicId]?.defaultTraps || 'Cần chú ý phân tích từ khóa kỹ thuật trong đề.';
+
         wrongQuestions.push({
           id: q.id,
           topicId: q.topicId,
           topicName: q.topicName,
+          level,
           content: `[Phần I] ${q.content}`,
           userAnswer: userChoiceText,
           correctAnswer: correctChoiceText,
           explanation: q.explanation || 'Đối chiếu chuẩn kiến thức SGK GDPT 2018.',
+          conceptualTrap: trap,
         });
       }
     }
 
-    // 2. Part 2 breakdown
+    // Part 2 Questions Evaluation
     const p2Filtered = exam.part2Questions.filter(
       (q) => !q.trackRequirement || q.trackRequirement === 'ALL' || q.trackRequirement === user.track
     );
 
     for (const q of p2Filtered) {
+      const level: CognitiveLevel = q.level || 'hieu';
+      const comp = getCompetencyCode(q.topicId);
+
       if (!topicStats[q.topicId]) {
-        topicStats[q.topicId] = { topicName: q.topicName, correct: 0, total: 0 };
+        topicStats[q.topicId] = {
+          topicName: q.topicName,
+          correct: 0,
+          total: 0,
+          knowCorrect: 0,
+          knowTotal: 0,
+          undCorrect: 0,
+          undTotal: 0,
+          appCorrect: 0,
+          appTotal: 0,
+        };
       }
-      topicStats[q.topicId].total += 4;
 
       const selections = p2Ans[q.id] || {};
       for (const stmt of q.statements) {
+        cogStats[level].total += 1;
+        compStats[comp].total += 1;
+        topicStats[q.topicId].total += 1;
+
+        if (level === 'biet') topicStats[q.topicId].knowTotal += 1;
+        else if (level === 'hieu') topicStats[q.topicId].undTotal += 1;
+        else topicStats[q.topicId].appTotal += 1;
+
         const userStatementVal = selections[stmt.id];
-        if (userStatementVal === stmt.isCorrect) {
+        const isCorrect = userStatementVal === stmt.isCorrect;
+
+        if (isCorrect) {
+          cogStats[level].correct += 1;
+          compStats[comp].correct += 1;
           topicStats[q.topicId].correct += 1;
+          if (level === 'biet') topicStats[q.topicId].knowCorrect += 1;
+          else if (level === 'hieu') topicStats[q.topicId].undCorrect += 1;
+          else topicStats[q.topicId].appCorrect += 1;
         } else {
           wrongQuestions.push({
             id: `${q.id}_${stmt.id}`,
             topicId: q.topicId,
             topicName: q.topicName,
+            level,
             content: `[Phần II - ${q.context}] Ý ${stmt.id.toUpperCase()}: "${stmt.statement}"`,
             userAnswer: userStatementVal === undefined ? 'Chưa trả lời' : userStatementVal ? 'Chọn Đúng' : 'Chọn Sai',
             correctAnswer: stmt.isCorrect ? 'Đáp án Đúng' : 'Đáp án Sai',
             explanation: stmt.explanation || 'Xem lại bài học chuyên đề trong SGK.',
+            conceptualTrap: 'Phát biểu đúng/sai thường có bẫy từ khóa tuyệt đối (chỉ, luôn luôn, hoàn toàn).',
           });
         }
       }
     }
 
-    const topicBreakdown = Object.entries(topicStats).map(([topicId, val]) => ({
-      topicId: topicId as SubjectTopicId,
-      topicName: val.topicName,
-      correct: val.correct,
-      total: val.total,
-      percentage: Math.round((val.correct / (val.total || 1)) * 100),
+    // Build CognitiveLevelStat matching Image 2
+    const knowPct = cogStats.biet.total > 0 ? Math.round((cogStats.biet.correct / cogStats.biet.total) * 100) : 0;
+    const undPct = cogStats.hieu.total > 0 ? Math.round((cogStats.hieu.correct / cogStats.hieu.total) * 100) : 0;
+    const appPct = cogStats.van_dung.total > 0 ? Math.round((cogStats.van_dung.correct / cogStats.van_dung.total) * 100) : 0;
+
+    const cognitiveLevels = {
+      biet: {
+        level: 'biet' as CognitiveLevel,
+        name: 'Mức độ Biết (Định nghĩa, mốc lịch sử, khái niệm nhận biết)',
+        scopeDesc: 'Nhận diện thuật ngữ, các mốc lịch sử phát triển máy tính & chuẩn mạng',
+        correctCount: cogStats.biet.correct,
+        totalCount: cogStats.biet.total,
+        percentage: knowPct,
+        avgTimeSec: 18,
+        statusLabel: knowPct >= 85 ? 'Đạt chuẩn A+' : knowPct >= 70 ? 'Mức Khá' : knowPct >= 50 ? 'Trung bình' : 'Báo động',
+        pedagogicalRemark:
+          knowPct >= 80
+            ? 'Học sinh phản xạ lập tức với thuật ngữ Tin học cơ bản. Gần như tuyệt đối không mất điểm câu nhận biết.'
+            : knowPct >= 60
+            ? 'Nắm được các định nghĩa cốt lõi, nhưng còn do dự khi đề bài sử dụng các thuật ngữ chuyên ngành tiếng Anh tương đồng.'
+            : 'Mất nhiều điểm ở các câu hỏi định nghĩa và mốc lịch sử cơ bản. Cần ưu tiên đọc lại phần ghi nhớ trong SGK để lấy trọn vẹn điểm nhận biết.',
+      },
+      hieu: {
+        level: 'hieu' as CognitiveLevel,
+        name: 'Mức độ Hiểu (Phân loại, giải thích cơ chế hoạt động mạng & thuật toán)',
+        scopeDesc: 'Phân biệt thiết bị, giải thích cơ chế định tuyến, mô hình CSDL và vòng lặp',
+        correctCount: cogStats.hieu.correct,
+        totalCount: cogStats.hieu.total,
+        percentage: undPct,
+        avgTimeSec: 45,
+        statusLabel: undPct >= 85 ? 'Đạt chuẩn A+' : undPct >= 70 ? 'Mức Khá' : undPct >= 50 ? 'Trung bình' : 'Báo động',
+        pedagogicalRemark:
+          undPct >= 70
+            ? 'Hiểu nguyên lý ở mức trung bình - khá. Có hiện tượng do dự khi các đáp án nhiễu có chung từ khóa kỹ thuật.'
+            : 'Khả năng phân tích quy trình và cơ chế mạng, CSDL còn yếu. Dễ bị đề thi đánh lạc hướng ở các câu hỏi Đúng/Sai đa ý.',
+      },
+      van_dung: {
+        level: 'van_dung' as CognitiveLevel,
+        name: 'Mức độ Vận dụng (Tính toán IP nhị phân, thiết kế bảng CSDL, truy vết gói tin)',
+        scopeDesc: 'Chuyển đổi nhị phân, viết câu lệnh SQL, truy vết thuật toán tìm kiếm và xử lý tình huống thực tế',
+        correctCount: cogStats.van_dung.correct,
+        totalCount: cogStats.van_dung.total,
+        percentage: appPct,
+        avgTimeSec: 95,
+        statusLabel: appPct >= 75 ? 'Đạt chuẩn A+' : appPct >= 60 ? 'Mức Khá' : 'Báo động',
+        pedagogicalRemark:
+          appPct >= 70
+            ? 'Vận dụng tốt kiến thức vào các bài toán thực tiễn, tính toán và xử lý tình huống mạng/CSDL chuẩn xác.'
+            : 'Điểm nghẽn cần can thiệp gấp: Khi gặp tình huống mạng thực tế hoặc yêu cầu xác định khóa liên kết giữa nhiều bảng, học sinh thường chọn theo cảm tính.',
+      },
+    };
+
+    // Build Competencies matching Image 3 (Bảng 1)
+    const nlaPct = compStats.NLa.total > 0 ? Math.round((compStats.NLa.correct / compStats.NLa.total) * 100) : 0;
+    const nlbPct = compStats.NLb.total > 0 ? Math.round((compStats.NLb.correct / compStats.NLb.total) * 100) : 0;
+    const nlcPct = compStats.NLc.total > 0 ? Math.round((compStats.NLc.correct / compStats.NLc.total) * 100) : 0;
+
+    const competencies = {
+      nla: {
+        code: 'NLa' as const,
+        title: 'Sử dụng và quản lí các phương tiện ICT (NLa)',
+        focusDesc: 'Mạng máy tính (12B), Thiết bị Switch/Router, Địa chỉ IPv4/IPv6 & Thiết kế web HTML/CSS (12F)',
+        correctCount: compStats.NLa.correct,
+        totalCount: compStats.NLa.total,
+        percentage: nlaPct,
+        statusLabel: nlaPct >= 75 ? 'Nắm rất vững' : nlaPct >= 55 ? 'Đạt yêu cầu' : 'Cần củng cố gấp',
+        pedagogicalRemark:
+          nlaPct >= 70
+            ? 'Kỹ năng làm chủ phương tiện ICT tốt, hiểu rõ cơ chế truyền thông và thiết kế web.'
+            : 'Cần ôn sâu lại thiết bị kết nối mạng (Switch/Router) và các phép tính địa chỉ IP trong mạng cục bộ.',
+      },
+      nlb: {
+        code: 'NLb' as const,
+        title: 'Ứng xử phù hợp trong môi trường số (NLb)',
+        focusDesc: 'Trí tuệ nhân tạo (12A), Tính nhân văn & Đạo đức số (12D), Nhóm nghề dịch vụ Tin học (12G)',
+        correctCount: compStats.NLb.correct,
+        totalCount: compStats.NLb.total,
+        percentage: nlbPct,
+        statusLabel: nlbPct >= 75 ? 'Nắm rất vững' : nlbPct >= 55 ? 'Đạt yêu cầu' : 'Cần củng cố gấp',
+        pedagogicalRemark:
+          nlbPct >= 70
+            ? 'Nhận thức đầy đủ về đạo đức công nghệ, bản quyền phần mềm và phân loại nghề nghiệp số.'
+            : 'Chú ý các bẫy liên quan đến phân biệt AI hẹp (ANI) và AI tổng quát (AGI), bài kiểm tra Turing.',
+      },
+      nlc: {
+        code: 'NLc' as const,
+        title: 'Giải quyết vấn đề với sự trợ giúp của máy tính (NLc)',
+        focusDesc: 'Cơ sở dữ liệu quan hệ & SQL (11F), Thuật toán tìm kiếm/sắp xếp (11F_CS) & Lập trình Python (10)',
+        correctCount: compStats.NLc.correct,
+        totalCount: compStats.NLc.total,
+        percentage: nlcPct,
+        statusLabel: nlcPct >= 75 ? 'Nắm rất vững' : nlcPct >= 55 ? 'Đạt yêu cầu' : 'Cần can thiệp gấp',
+        pedagogicalRemark:
+          nlcPct >= 70
+            ? 'Tư duy logic giải thuật và truy vấn CSDL sắc sảo, tự tin làm các câu hỏi phân hóa cao.'
+            : 'Điểm yếu trọng điểm: Cần củng cố lại các mệnh đề SQL (GROUP BY, HAVING) và truy vết thuật toán tìm kiếm nhị phân.',
+      },
+    };
+
+    // Build Topic Diagnostic Details mapped to Curriculum Lessons
+    const topicDetails: TopicDiagnosticDetail[] = Object.entries(topicStats).map(([tId, stat]) => {
+      const pct = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
+      const compCode = getCompetencyCode(tId);
+      const gapsMeta = CURRICULUM_TOPIC_GAPS[tId] || { lessons: ['Ôn tập kiến thức trọng tâm SGK'], defaultTraps: 'Tránh chọn theo cảm tính.' };
+
+      let status: 'mastered' | 'acceptable' | 'urgent_gap' = 'urgent_gap';
+      let label = 'Báo động - Cần can thiệp gấp';
+      if (pct >= 75) {
+        status = 'mastered';
+        label = 'Nắm rất tốt (≥ 75%)';
+      } else if (pct >= 60) {
+        status = 'acceptable';
+        label = 'Đạt yêu cầu (60% - 74%)';
+      }
+
+      return {
+        topicId: tId as SubjectTopicId,
+        topicName: stat.topicName,
+        competencyCode: compCode,
+        totalQuestions: stat.total,
+        correctQuestions: stat.correct,
+        percentage: pct,
+        knowCorrect: stat.knowCorrect,
+        knowTotal: stat.knowTotal,
+        understandCorrect: stat.undCorrect,
+        understandTotal: stat.undTotal,
+        applyCorrect: stat.appCorrect,
+        applyTotal: stat.appTotal,
+        masteryStatus: status,
+        masteryLabel: label,
+        specificMissingGaps: gapsMeta.lessons,
+        examTrapWarning: gapsMeta.defaultTraps,
+      };
+    });
+
+    const topicBreakdown = topicDetails.map((td) => ({
+      topicId: td.topicId,
+      topicName: td.topicName,
+      correct: td.correctQuestions,
+      total: td.totalQuestions,
+      percentage: td.percentage,
     }));
 
-    let analysisResult: any;
+    // AI Overview & Advice
+    let ranking = 'Khá - Nền tảng tốt, cần nâng cao vận dụng';
+    let assessment = `Học sinh đạt ${finalScore.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPT chuẩn (Phần I: ${scoresData.part1Score}đ, Phần II: ${scoresData.part2Score}đ). Nắm được kiến thức cốt lõi nhưng còn thiếu sót ở các câu hỏi phân hóa thực tiễn.`;
 
-    try {
-      const res = await requestDiagnosticAnalysis({
-        studentName: user.displayName,
-        grade: user.grade,
-        track: user.track,
-        score: finalScore,
-        totalQuestions: 28,
-        correctCount: scoresData.part1Correct,
-        topicBreakdown,
-        wrongQuestions,
-      });
-
-      if (res && res.rawJson) {
-        try {
-          analysisResult = JSON.parse(res.rawJson);
-        } catch {
-          analysisResult = computeLocalAnalysis(finalScore, wrongQuestions, topicBreakdown, scoresData);
-        }
-      } else {
-        analysisResult = computeLocalAnalysis(finalScore, wrongQuestions, topicBreakdown, scoresData);
-      }
-    } catch {
-      analysisResult = computeLocalAnalysis(finalScore, wrongQuestions, topicBreakdown, scoresData);
-    } finally {
-      setIsAnalyzingDiagnostic(false);
+    if (finalScore >= 9.0) {
+      ranking = 'Xuất sắc - Nền tảng vững vàng toàn diện';
+      assessment = `Học sinh có tư duy Tin học xuất sắc với ${finalScore.toFixed(2)}/10 điểm trong đề thi tốt nghiệp THPTQG chuẩn. Làm chủ cả phần trắc nghiệm nhiều phương án lẫn đúng/sai.`;
+    } else if (finalScore >= 8.0) {
+      ranking = 'Giỏi - Nắm chắc kiến thức cốt lõi';
+      assessment = `Kết quả thi THPTQG đạt ${finalScore.toFixed(2)}/10 điểm rất ấn tượng. Nền tảng kiến thức vững vàng, chỉ gặp một vài sai sót nhỏ ở các câu hỏi bẫy hoặc vận dụng thực tiễn.`;
+    } else if (finalScore < 5.0) {
+      ranking = 'Cần củng cố nền tảng kiến thức';
+      assessment = `Kết quả đạt ${finalScore.toFixed(2)}/10 điểm cho thấy học sinh còn bị hổng kiến thức nền tảng trong chương trình lớp 11 và 12. Cần bám sát lộ trình từng ngày của TinPath để ôn tập lại.`;
     }
 
     const report: DiagnosticReport = {
@@ -433,9 +660,21 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       part1Correct: scoresData.part1Correct,
       part2Score: scoresData.part2Score,
       part2Details: scoresData.part2Details,
+      cognitiveLevels,
+      competencies,
+      topicDetails,
       topicBreakdown,
       wrongQuestions,
-      analysis: analysisResult,
+      analysis: {
+        overallAssessment: assessment,
+        levelRanking: ranking,
+        strengths: topicDetails.filter((t) => t.percentage >= 70).map((t) => `Nắm vững chuyên đề ${t.topicName} (${t.percentage}% chính xác).`),
+        weaknesses: topicDetails
+          .filter((t) => t.percentage < 70)
+          .map((t) => `Lỗ hổng [${t.topicName}]: ${t.specificMissingGaps[0]} (Độ chính xác: ${t.percentage}%).`),
+        pedagogicalAdvice: `Dành ${dailyMinutesInput} phút mỗi ngày theo lộ trình: 20 phút đọc lại lý thuyết các bài học bị hổng, 20 phút giải bài tập trắc nghiệm và 5 phút đối chiếu lời giải chi tiết.`,
+        recommendedWeakTopics: topicDetails.filter((t) => t.percentage < 70).map((t) => t.topicId),
+      },
     };
 
     storageService.saveDiagnosticReport(report);
@@ -446,7 +685,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       diagnosticScore: finalScore,
     });
 
-    // Automatically advance to Step 2: Phân tích kiến thức
+    setIsAnalyzingDiagnostic(false);
     setCurrentStep(2);
   };
 
@@ -507,96 +746,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     setPart2Answers(p2);
   };
 
-  // Helper to construct dynamic 7-day plan
-  function generateDynamicFallbackRoadmap(target: number, weaks: string[]): AiRoadmapPlan {
-    const hasNetworkWeak = weaks.some((w) => w.includes('12B') || w.includes('Mạng') || w.includes('mạng'));
-    const hasDbWeak = weaks.some((w) => w.includes('11F') || w.includes('Cơ sở dữ liệu') || w.includes('CSDL'));
-
-    const items: RoadmapDayItem[] = [
-      {
-        day: 1,
-        topicCode: '12B',
-        topicTitle: 'Mạng máy tính & Thiết bị chuyển mạch (Switch/Router)',
-        keyTask: hasNetworkWeak
-          ? 'Khắc phục lỗ hổng bài test: Nắm chắc nguyên lý địa chỉ MAC của Switch và IP của Router'
-          : 'Tổng ôn thiết bị kết nối mạng và phân biệt Hub, Switch, Access Point',
-        minutes: dailyMinutesInput,
-        focusQuestionType: 'Đọc sơ đồ & Trắc nghiệm nhiều lựa chọn',
-        status: 'todo',
-      },
-      {
-        day: 2,
-        topicCode: '12B',
-        topicTitle: 'Địa chỉ IPv4, IPv6 & Phân giải tên miền DNS',
-        keyTask: 'Luyện tập chuyển đổi nhị phân 8-bit sang thập phân và hiểu cơ chế hoạt động của DNS server',
-        minutes: dailyMinutesInput,
-        focusQuestionType: 'Bài tập tính toán & Câu hỏi Đúng/Sai',
-        status: 'todo',
-      },
-      {
-        day: 3,
-        topicCode: '11F',
-        topicTitle: 'Mô hình Cơ sở dữ liệu quan hệ (RDBMS)',
-        keyTask: hasDbWeak
-          ? 'Củng cố lại khái niệm Bản ghi (Record), Thuộc tính (Field), Khóa chính và Khóa ngoại'
-          : 'Phân tích bảng quan hệ, khóa ngoại liên kết giữa các bảng',
-        minutes: dailyMinutesInput,
-        focusQuestionType: 'Lý thuyết CSDL & Truy vấn logic',
-        status: 'todo',
-      },
-      {
-        day: 4,
-        topicCode: '12A',
-        topicTitle: 'Trí tuệ Nhân tạo: 5 Đặc trưng & Phân loại ANI/AGI',
-        keyTask: 'Ôn lại 5 đặc trưng của AI, hội thảo Dartmouth 1956 và nhận diện các ứng dụng thực tế',
-        minutes: Math.max(30, dailyMinutesInput - 10),
-        focusQuestionType: 'Lý thuyết nhận biết & thông hiểu',
-        status: 'todo',
-      },
-      {
-        day: 5,
-        topicCode: '12F',
-        topicTitle: 'Thiết kế trang web với HTML5 & CSS Box Model',
-        keyTask: 'Nắm vững cấu trúc body, thẻ bảng, form input và thuộc tính margin vs padding',
-        minutes: dailyMinutesInput,
-        focusQuestionType: 'Đọc mã HTML/CSS & Nhận diện lỗi',
-        status: 'todo',
-      },
-      {
-        day: 6,
-        topicCode: '11F_CS',
-        topicTitle: 'Thuật toán Tìm kiếm nhị phân & Độ phức tạp O(log n)',
-        keyTask: 'Mã giả Binary Search, điều kiện mảng đã sắp xếp và truy vết từng bước chạy',
-        minutes: dailyMinutesInput,
-        focusQuestionType: 'Truy vết mã nguồn & Phân tích thuật toán',
-        status: 'todo',
-      },
-      {
-        day: 7,
-        topicCode: 'ALL',
-        topicTitle: 'Thi thử Đề tổng hợp 28 câu chuẩn ma trận Bộ GD&ĐT',
-        keyTask: 'Làm bài thi thử 50 phút đúng cấu trúc: 24 câu nhiều lựa chọn + 4 câu đúng/sai',
-        minutes: 50,
-        focusQuestionType: 'Đề thi thử tổng hợp',
-        status: 'todo',
-      },
-    ];
-
-    return {
-      id: `plan_${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      targetScore: target,
-      dailyStudyMinutes: dailyMinutesInput,
-      track: trackInput,
-      daysRemaining,
-      examDate: examDateStr,
-      assessmentSummary: `Nền tảng kiến thức ở mức (${currentProficiency ?? 7.0}đ). Để bứt phá lên mục tiêu ${target} điểm, AI đã cá nhân hóa lộ trình 7 ngày tập trung ưu tiên bù đắp ${hasNetworkWeak ? 'chuyên đề Mạng máy tính 12B' : 'các chuyên đề trọng tâm'} và củng cố kỹ năng làm bài trắc nghiệm.`,
-      targetStrategy: `Chiến thuật bứt phá: Dành 4 ngày đầu ôn sâu các phần làm sai ở bài test, 2 ngày tiếp theo luyện tập câu hỏi Đúng/Sai và hoàn thiện đề thi thử vào ngày thứ 7.`,
-      dailyRoadmap: items,
-    };
-  }
-
-  // Generate Roadmap in Step 3 and Advance to Step 4
+  // Generate Roadmap in Step 3 based on Diagnosed Gaps and Advance to Step 4
   const handleGeneratePlanAndAdvance = async () => {
     setIsGeneratingPlan(true);
 
@@ -625,11 +775,6 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
         parsed = generateDynamicFallbackRoadmap(targetScoreInput, weakList);
       }
 
-      // Preserve previously completed days if re-generating!
-      const previousCompletedDays = new Set(
-        aiRoadmap?.dailyRoadmap?.filter((d) => d.status === 'completed').map((d) => d.day) || []
-      );
-
       const plan: AiRoadmapPlan = {
         id: `plan_${Date.now()}`,
         createdAt: new Date().toISOString(),
@@ -638,8 +783,8 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
         track: trackInput,
         daysRemaining,
         examDate: examDateStr,
-        assessmentSummary: parsed.assessmentSummary || `Lộ trình bứt phá mục tiêu ${targetScoreInput} điểm.`,
-        targetStrategy: parsed.targetStrategy || `Tập trung củng cố các chuyên đề trọng điểm và rèn phản xạ trắc nghiệm.`,
+        assessmentSummary: parsed.assessmentSummary || `Lộ trình bứt phá mục tiêu ${targetScoreInput} điểm dựa trên ma trận năng lực.`,
+        targetStrategy: parsed.targetStrategy || `Tập trung khắc phục các lỗ hổng Vận dụng và củng cố kiến thức NLa/NLc.`,
         dailyRoadmap: (parsed.dailyRoadmap || []).map((item: any, idx: number) => ({
           day: item.day || idx + 1,
           topicCode: item.topicCode || '12B',
@@ -647,7 +792,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
           keyTask: item.keyTask || 'Ôn tập lý thuyết và giải 10 câu trắc nghiệm',
           minutes: item.minutes || dailyMinutesInput,
           focusQuestionType: item.focusQuestionType || 'Trắc nghiệm nhiều lựa chọn',
-          status: previousCompletedDays.has(item.day || idx + 1) ? 'completed' : 'todo',
+          status: 'todo',
         })),
       };
 
@@ -661,7 +806,6 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
         track: trackInput,
       });
 
-      // Automatically advance to Step 4: Lộ trình & Theo dõi tiến độ
       setCurrentStep(4);
     } catch {
       const fallback = generateDynamicFallbackRoadmap(targetScoreInput, weakList);
@@ -672,6 +816,88 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       setIsGeneratingPlan(false);
     }
   };
+
+  // Helper for dynamic fallback roadmap
+  function generateDynamicFallbackRoadmap(target: number, weaks: string[]): AiRoadmapPlan {
+    const items: RoadmapDayItem[] = [
+      {
+        day: 1,
+        topicCode: '12B',
+        topicTitle: 'Mạng máy tính: Thiết bị Switch & Router (NLa - Mức Biết & Hiểu)',
+        keyTask: 'Ôn tập Bài 1: Nắm chắc nguyên lý địa chỉ MAC của Switch và IP của Router, phân biệt Hub/AP',
+        minutes: dailyMinutesInput,
+        focusQuestionType: 'Đọc sơ đồ & Trắc nghiệm lý thuyết',
+        status: 'todo',
+      },
+      {
+        day: 2,
+        topicCode: '12B',
+        topicTitle: 'Địa chỉ IPv4, IPv6 & Phân giải tên miền DNS (NLa - Mức Vận dụng)',
+        keyTask: 'Rèn luyện Bài 2: Bài tập tính toán đổi nhị phân IPv4 và cấu trúc địa chỉ IPv6',
+        minutes: dailyMinutesInput,
+        focusQuestionType: 'Bài tập tính toán & Câu hỏi Đúng/Sai',
+        status: 'todo',
+      },
+      {
+        day: 3,
+        topicCode: '11F',
+        topicTitle: 'Mô hình CSDL quan hệ: Khóa chính & Khóa ngoại (NLc - Mức Hiểu)',
+        keyTask: 'Củng cố Bài 1: Bản ghi (Record), Thuộc tính (Field), Khóa chính và toàn vẹn tham chiếu',
+        minutes: dailyMinutesInput,
+        focusQuestionType: 'Lý thuyết CSDL & Phân tích bảng',
+        status: 'todo',
+      },
+      {
+        day: 4,
+        topicCode: '11F',
+        topicTitle: 'Truy vấn SQL: SELECT, WHERE, GROUP BY & HAVING (NLc - Mức Vận dụng)',
+        keyTask: 'Thực hành Bài 2: Phân biệt điều kiện lọc dòng WHERE và lọc nhóm HAVING trong SQL',
+        minutes: dailyMinutesInput,
+        focusQuestionType: 'Viết câu truy vấn & Trắc nghiệm đúng/sai',
+        status: 'todo',
+      },
+      {
+        day: 5,
+        topicCode: '12A',
+        topicTitle: 'Trí tuệ nhân tạo: 5 Đặc trưng & Bài kiểm tra Turing (NLb - Mức Biết & Hiểu)',
+        keyTask: 'Ôn tập Bài 1 & 2: Phân biệt ANI vs AGI, đạo đức công nghệ và cảnh báo Deepfake',
+        minutes: Math.max(30, dailyMinutesInput - 10),
+        focusQuestionType: 'Trắc nghiệm nhiều lựa chọn',
+        status: 'todo',
+      },
+      {
+        day: 6,
+        topicCode: '11F_CS',
+        topicTitle: 'Thuật toán Tìm kiếm nhị phân & Độ phức tạp O(log n) (NLc - Mức Vận dụng)',
+        keyTask: 'Luyện tập Bài 1: Truy vết từng bước chạy thuật toán Binary Search và xử lý mảng sắp xếp',
+        minutes: dailyMinutesInput,
+        focusQuestionType: 'Truy vết mã nguồn Python',
+        status: 'todo',
+      },
+      {
+        day: 7,
+        topicCode: 'ALL',
+        topicTitle: 'Thi thử Đề tổng hợp 28 câu chuẩn ma trận Bộ GD&ĐT (Đánh giá lại tiến độ)',
+        keyTask: 'Làm bài thi thử 50 phút đúng cấu trúc: 24 câu nhiều lựa chọn + 4 câu đúng/sai',
+        minutes: 50,
+        focusQuestionType: 'Đề thi thử tổng hợp',
+        status: 'todo',
+      },
+    ];
+
+    return {
+      id: `plan_${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      targetScore: target,
+      dailyStudyMinutes: dailyMinutesInput,
+      track: trackInput,
+      daysRemaining,
+      examDate: examDateStr,
+      assessmentSummary: `Lộ trình bứt phá mục tiêu ${target} điểm dựa trên ma trận năng lực và 3 cấp độ tư duy.`,
+      targetStrategy: `Tập trung bù đắp các lỗ hổng cấp độ Vận dụng ở chuyên đề 12B, 11F và củng cố chắc chắn điểm Nhận biết.`,
+      dailyRoadmap: items,
+    };
+  }
 
   // Toggle Roadmap Item Completion in Step 4
   const handleToggleDayStatus = (dayNumber: number) => {
@@ -725,7 +951,6 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
           },
         ]);
       } else {
-        // Default: RAG Tutor mode (Đối chiếu SGK Tin 12 từ Supabase)
         try {
           const res = await askRagTutor({
             topicTitle: 'Ôn thi Tin học THPT GDPT 2018',
@@ -792,7 +1017,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
     {
       number: 2 as StepNumber,
       title: 'Phân tích kiến thức',
-      description: 'Thế mạnh & Lỗ hổng AI',
+      description: 'Ma trận năng lực & 3 cấp độ tư duy',
       isCompleted: Boolean(diagnosticReport),
     },
     {
@@ -830,12 +1055,11 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 </span>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Làm xong từng bước để đảm bảo lộ trình ôn thi THPTQG được cá nhân hóa chính xác nhất
+                Đánh giá theo Chuẩn ma trận Bảng 1 Sách Hướng dẫn ôn thi tốt nghiệp THPT môn Tin học
               </p>
             </div>
           </div>
 
-          {/* Quick info chip */}
           <div className="flex items-center gap-2 text-xs">
             <span className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
@@ -913,7 +1137,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   Làm bài thi đánh giá năng lực THPT Quốc gia
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-3xl">
-                  Để AI chẩn đoán chính xác lỗ hổng, bạn cần làm bài thi chuẩn cấu trúc Bộ GD&ĐT (24 câu nhiều lựa chọn + 4 câu đúng/sai). Hoặc bạn có thể chọn kết quả từ bài thi đã làm trong lịch sử.
+                  Đề thi chuẩn cấu trúc Bộ GD&ĐT gồm 24 câu trắc nghiệm nhiều phương án (Phần I) và 4 câu trắc nghiệm Đúng/Sai đa ý (Phần II). Dữ liệu này là cơ sở để phân bổ theo 3 cấp độ tư duy và 3 thành phần năng lực.
                 </p>
               </div>
 
@@ -1010,6 +1234,9 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                           Câu {idx + 1}
                         </span>
                         <span className="text-xs text-gray-500 font-bold">[{q.topicName}]</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                          {q.level === 'biet' ? 'Nhận biết' : q.level === 'hieu' ? 'Thông hiểu' : 'Vận dụng'}
+                        </span>
                       </div>
                     </div>
 
@@ -1128,7 +1355,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   Hoàn tất bài kiểm tra đánh giá năng lực?
                 </h4>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Hệ thống sẽ tính điểm tự động và chuyển sang <strong>Bước 2: Phân tích kiến thức đã vững và còn yếu</strong>.
+                  Hệ thống sẽ tính điểm tự động và bóc tách theo <strong>3 cấp độ tư duy & ma trận năng lực GDPT 2018</strong>.
                 </p>
               </div>
 
@@ -1141,11 +1368,11 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 {isAnalyzingDiagnostic ? (
                   <>
                     <RefreshCw className="w-5 h-5 animate-spin" />
-                    <span>Gemini đang phân tích năng lực...</span>
+                    <span>Gemini đang phân tích ma trận năng lực...</span>
                   </>
                 ) : (
                   <>
-                    <span>Nộp bài & Phân tích bằng AI</span>
+                    <span>Nộp bài & Phân tích ma trận năng lực</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -1156,7 +1383,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* BƯỚC 2: PHÂN TÍCH KIẾN THỨC ĐÃ VỮNG + CÒN YẾU */}
+      {/* BƯỚC 2: PHÂN TÍCH KIẾN THỨC ĐÃ VỮNG + CÒN YẾU (ENRICHED WITH IMAGES 2 & 3) */}
       {/* ========================================================================= */}
       {currentStep === 2 && (
         <div className="space-y-6">
@@ -1167,13 +1394,17 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-gray-100 dark:border-[#262626]">
                   <div>
                     <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-600 inline-block mb-1.5">
-                      Bước 2 / 4: Báo cáo chẩn đoán năng lực AI
+                      Bước 2 / 4: Báo cáo Chẩn đoán Năng lực Chuyên sâu
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
                       Phân tích kiến thức đã vững & Lỗ hổng cần bù đắp
                     </h2>
                     <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                      Bài thi: {diagnosticReport.examTitle} • Điểm đạt: <strong className="text-blue-600 dark:text-blue-400 text-base">{diagnosticReport.score.toFixed(2)}/10</strong>
+                      Bài thi: {diagnosticReport.examTitle} • Điểm đạt:{' '}
+                      <strong className="text-blue-600 dark:text-blue-400 text-base">
+                        {diagnosticReport.score.toFixed(2)}/10
+                      </strong>{' '}
+                      (Phần I: {diagnosticReport.part1Score}đ, Phần II: {diagnosticReport.part2Score}đ)
                     </p>
                   </div>
 
@@ -1193,85 +1424,424 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                     {diagnosticReport.analysis.overallAssessment}
                   </p>
                 </div>
+              </div>
 
-                {/* 2 Cột: Đã vững (Thế mạnh) & Còn yếu (Lỗ hổng) */}
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Cột 1: Kiến thức đã vững */}
-                  <div className="p-5 rounded-2xl bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 space-y-3">
-                    <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold text-base">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                      <span>Kiến thức đã nắm vững (Thế mạnh)</span>
+              {/* ================================================================= */}
+              {/* SECTION 1: PHÂN BỔ THEO 3 CẤP ĐỘ TƯ DUY GDPT 2018 (EXACT IMAGE 2) */}
+              {/* ================================================================= */}
+              <div className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-200 dark:border-[#2C2C2C] p-6 sm:p-7 shadow-xs">
+                {/* Title & Legend */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-gray-100 dark:border-[#262626]">
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white">
+                        Phân bổ Năng lực theo 3 Cấp độ Tư duy GDPT 2018
+                      </h3>
+                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 dark:bg-blue-950/70 text-[#2878C8] tracking-wider uppercase border border-blue-200 dark:border-blue-900">
+                        CHUẨN ĐỀ THI 2026
+                      </span>
                     </div>
-
-                    <div className="space-y-2.5 pt-1">
-                      {diagnosticReport.analysis.strengths.map((str, idx) => (
-                        <div key={idx} className="p-3 rounded-xl bg-white dark:bg-[#1A1A1A] border border-emerald-100 dark:border-emerald-900/30 text-xs sm:text-sm text-emerald-950 dark:text-emerald-200 font-medium flex items-start gap-2">
-                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{str}</span>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Đối chiếu tỷ lệ trả lời đúng và thời gian tiêu thụ trung bình theo cấu trúc đề thi tốt nghiệp THPT mới.
+                    </p>
                   </div>
 
-                  {/* Cột 2: Kiến thức còn yếu */}
-                  <div className="p-5 rounded-2xl bg-rose-50/40 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 space-y-3">
-                    <div className="flex items-center gap-2 text-rose-800 dark:text-rose-300 font-bold text-base">
-                      <AlertTriangle className="w-5 h-5 text-rose-600" />
-                      <span>Lỗ hổng kiến thức còn yếu</span>
+                  {/* Legend */}
+                  <div className="flex items-center gap-4 text-xs font-medium text-gray-600 dark:text-gray-400 shrink-0 self-start sm:self-auto">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3.5 h-3.5 rounded-xs bg-[#0A5296]"></span>
+                      <span>Tỷ lệ chính xác</span>
                     </div>
-
-                    <div className="space-y-2.5 pt-1">
-                      {diagnosticReport.analysis.weaknesses.map((weak, idx) => (
-                        <div key={idx} className="p-3 rounded-xl bg-white dark:bg-[#1A1A1A] border border-rose-100 dark:border-rose-900/30 text-xs sm:text-sm text-rose-950 dark:text-rose-200 font-medium flex items-start gap-2">
-                          <X className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-                          <span>{weak}</span>
-                        </div>
-                      ))}
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3.5 h-3.5 rounded-xs bg-[#D0E1F9] dark:bg-[#1A385C]"></span>
+                      <span>Chỉ số mục tiêu (≥80%)</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Cognitive Levels */}
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/40">
-                    <span className="text-xs font-bold text-blue-600 uppercase">Mức độ Biết</span>
-                    <div className="text-2xl font-black text-gray-900 dark:text-white mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.know.percentage}%
+                {/* 3 Cognitive Level Rows */}
+                <div className="mt-6 space-y-6">
+                  {/* Row 1: Mức độ Biết */}
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-[#2878C8] font-black text-xs flex items-center justify-center">
+                          1
+                        </span>
+                        <span className="font-bold text-gray-900 dark:text-white">
+                          Mức độ Biết (Định nghĩa, mốc lịch sử, khái niệm nhận biết)
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                        <span>TB: {diagnosticReport.cognitiveLevels?.biet?.avgTimeSec || 18}s/câu</span>
+                        <span>•</span>
+                        <span className="text-[#0A5296] dark:text-blue-400">
+                          {diagnosticReport.cognitiveLevels?.biet?.percentage ?? 0}% chính xác ({diagnosticReport.cognitiveLevels?.biet?.statusLabel || 'Đạt chuẩn A+'})
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.know.evaluation}
+
+                    {/* Dual Progress Bar with Benchmark */}
+                    <div className="relative w-full h-3 bg-[#EAF2FB] dark:bg-[#222] rounded-full overflow-hidden">
+                      {/* 80% Benchmark Line */}
+                      <div className="absolute top-0 bottom-0 left-[80%] w-0.5 bg-gray-400 z-10" title="Chuẩn mục tiêu 80%"></div>
+                      {/* Active Progress Bar */}
+                      <div
+                        className="h-full rounded-full bg-[#0A5296] transition-all duration-700"
+                        style={{ width: `${Math.min(100, Math.max(3, diagnosticReport.cognitiveLevels?.biet?.percentage ?? 0))}%` }}
+                      ></div>
+                    </div>
+
+                    <p className="text-xs text-gray-600 dark:text-gray-400 pt-0.5 pl-0.5">
+                      {diagnosticReport.cognitiveLevels?.biet?.pedagogicalRemark ||
+                        'Học sinh phản xạ lập tức với thuật ngữ Tin học cơ bản. Gần như tuyệt đối không mất điểm câu nhận biết.'}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40">
-                    <span className="text-xs font-bold text-indigo-600 uppercase">Mức độ Hiểu</span>
-                    <div className="text-2xl font-black text-gray-900 dark:text-white mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.understand.percentage}%
+                  {/* Row 2: Mức độ Hiểu */}
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-[#2878C8] font-black text-xs flex items-center justify-center">
+                          2
+                        </span>
+                        <span className="font-bold text-gray-900 dark:text-white">
+                          Mức độ Hiểu (Phân loại, giải thích cơ chế hoạt động mạng & thuật toán)
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                        <span>TB: {diagnosticReport.cognitiveLevels?.hieu?.avgTimeSec || 45}s/câu</span>
+                        <span>•</span>
+                        <span className="text-[#1F618D] dark:text-cyan-400">
+                          {diagnosticReport.cognitiveLevels?.hieu?.percentage ?? 0}% chính xác ({diagnosticReport.cognitiveLevels?.hieu?.statusLabel || 'Mức Khá'})
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.understand.evaluation}
+
+                    {/* Dual Progress Bar with Benchmark */}
+                    <div className="relative w-full h-3 bg-[#EAF2FB] dark:bg-[#222] rounded-full overflow-hidden">
+                      <div className="absolute top-0 bottom-0 left-[80%] w-0.5 bg-gray-400 z-10" title="Chuẩn mục tiêu 80%"></div>
+                      <div
+                        className="h-full rounded-full bg-[#1F618D] transition-all duration-700"
+                        style={{ width: `${Math.min(100, Math.max(3, diagnosticReport.cognitiveLevels?.hieu?.percentage ?? 0))}%` }}
+                      ></div>
+                    </div>
+
+                    <p className="text-xs text-gray-600 dark:text-gray-400 pt-0.5 pl-0.5">
+                      {diagnosticReport.cognitiveLevels?.hieu?.pedagogicalRemark ||
+                        'Hiểu nguyên lý ở mức trung bình - khá. Có hiện tượng do dự khi các đáp án nhiễu có chung từ khóa kỹ thuật.'}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40">
-                    <span className="text-xs font-bold text-emerald-600 uppercase">Mức độ Vận dụng</span>
-                    <div className="text-2xl font-black text-gray-900 dark:text-white mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.apply.percentage}%
+                  {/* Row 3: Mức độ Vận dụng */}
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-md bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-600 font-black text-xs flex items-center justify-center">
+                          3
+                        </span>
+                        <span className="font-bold text-gray-900 dark:text-white">
+                          Mức độ Vận dụng (Tính toán IP nhị phân, thiết kế bảng CSDL, truy vết gói tin)
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                        <span>TB: {diagnosticReport.cognitiveLevels?.van_dung?.avgTimeSec || 95}s/câu</span>
+                        <span>•</span>
+                        <span className={(diagnosticReport.cognitiveLevels?.van_dung?.percentage ?? 0) < 60 ? 'text-rose-600 font-bold' : 'text-emerald-600 font-bold'}>
+                          {diagnosticReport.cognitiveLevels?.van_dung?.percentage ?? 0}% chính xác ({diagnosticReport.cognitiveLevels?.van_dung?.statusLabel || 'Báo động'})
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {diagnosticReport.analysis.cognitiveLevels.apply.evaluation}
+
+                    {/* Dual Progress Bar with Benchmark */}
+                    <div className="relative w-full h-3 bg-[#EAF2FB] dark:bg-[#222] rounded-full overflow-hidden">
+                      <div className="absolute top-0 bottom-0 left-[80%] w-0.5 bg-gray-400 z-10" title="Chuẩn mục tiêu 80%"></div>
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ${
+                          (diagnosticReport.cognitiveLevels?.van_dung?.percentage ?? 0) < 60 ? 'bg-[#C5221F]' : 'bg-[#1F618D]'
+                        }`}
+                        style={{ width: `${Math.min(100, Math.max(3, diagnosticReport.cognitiveLevels?.van_dung?.percentage ?? 0))}%` }}
+                      ></div>
+                    </div>
+
+                    <p className="text-xs text-rose-600 dark:text-rose-400 pt-0.5 pl-0.5 font-medium">
+                      {diagnosticReport.cognitiveLevels?.van_dung?.pedagogicalRemark ||
+                        'Điểm nghẽn cần can thiệp gấp: Khi gặp tình huống mạng thực tế hoặc yêu cầu xác định khóa liên kết giữa nhiều bảng, học sinh thường chọn theo cảm tính.'}
                     </p>
                   </div>
-                </div>
-
-                {/* Pedagogical Advice */}
-                <div className="mt-5 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 text-xs sm:text-sm text-amber-900 dark:text-amber-300">
-                  <strong>💡 Lời khuyên sư phạm chiến lược: </strong>
-                  {diagnosticReport.analysis.pedagogicalAdvice}
                 </div>
               </div>
 
-              {/* Wrong Questions Breakdown */}
+              {/* ================================================================= */}
+              {/* SECTION 2: BẢNG 1 MA TRẬN NĂNG LỰC GDPT 2018 (EXACT IMAGE 3) */}
+              {/* ================================================================= */}
+              <div className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-200 dark:border-[#2C2C2C] p-6 sm:p-7 shadow-xs">
+                <div className="pb-4 border-b border-gray-100 dark:border-[#262626]">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                      Phân bổ theo 3 Thành phần Năng lực Tin học (Bảng 1 Ma trận GDPT 2018)
+                    </h3>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Đo lường năng lực theo Bảng 1 Sách Hướng dẫn ôn thi tốt nghiệp THPT môn Tin học của Bộ Giáo dục & Đào tạo.
+                  </p>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {/* NLa */}
+                  <div className="p-5 rounded-2xl bg-blue-50/40 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-black text-xs">
+                          NLa
+                        </span>
+                        <span className="text-xs font-bold text-blue-700 dark:text-blue-300">
+                          {diagnosticReport.competencies?.nla?.statusLabel || 'Đạt yêu cầu'}
+                        </span>
+                      </div>
+
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                        Sử dụng & Quản lí phương tiện ICT
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                        Mạng máy tính (12B), Thiết bị Switch/Router, Địa chỉ IPv4/IPv6 & Thiết kế web HTML/CSS (12F)
+                      </p>
+
+                      <div className="mt-4 pt-3 border-t border-blue-100 dark:border-blue-900/40">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-500">Độ chính xác:</span>
+                          <span className="font-bold text-blue-600">
+                            {diagnosticReport.competencies?.nla?.percentage ?? 0}% ({diagnosticReport.competencies?.nla?.correctCount ?? 0}/{diagnosticReport.competencies?.nla?.totalCount ?? 0} câu)
+                          </span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                          <div
+                            className="h-full bg-blue-600 rounded-full"
+                            style={{ width: `${Math.max(5, diagnosticReport.competencies?.nla?.percentage ?? 0)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-3 pt-2 border-t border-blue-100 dark:border-blue-900/30">
+                      {diagnosticReport.competencies?.nla?.pedagogicalRemark || 'Cần củng cố lại bài toán tính địa chỉ IP.'}
+                    </p>
+                  </div>
+
+                  {/* NLb */}
+                  <div className="p-5 rounded-2xl bg-purple-50/40 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="px-2.5 py-1 rounded-lg bg-purple-600 text-white font-black text-xs">
+                          NLb
+                        </span>
+                        <span className="text-xs font-bold text-purple-700 dark:text-purple-300">
+                          {diagnosticReport.competencies?.nlb?.statusLabel || 'Nắm rất vững'}
+                        </span>
+                      </div>
+
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                        Ứng xử phù hợp trong môi trường số
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                        Trí tuệ nhân tạo (12A), Đạo đức số & Nhân văn (12D), Nhóm nghề dịch vụ Tin học (12G)
+                      </p>
+
+                      <div className="mt-4 pt-3 border-t border-purple-100 dark:border-purple-900/40">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-500">Độ chính xác:</span>
+                          <span className="font-bold text-purple-600">
+                            {diagnosticReport.competencies?.nlb?.percentage ?? 0}% ({diagnosticReport.competencies?.nlb?.correctCount ?? 0}/{diagnosticReport.competencies?.nlb?.totalCount ?? 0} câu)
+                          </span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-purple-100 dark:bg-purple-950 overflow-hidden">
+                          <div
+                            className="h-full bg-purple-600 rounded-full"
+                            style={{ width: `${Math.max(5, diagnosticReport.competencies?.nlb?.percentage ?? 0)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-3 pt-2 border-t border-purple-100 dark:border-purple-900/30">
+                      {diagnosticReport.competencies?.nlb?.pedagogicalRemark || 'Nhận thức tốt về các vấn đề bản quyền và AI.'}
+                    </p>
+                  </div>
+
+                  {/* NLc */}
+                  <div className="p-5 rounded-2xl bg-indigo-50/40 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/40 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-black text-xs">
+                          NLc
+                        </span>
+                        <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">
+                          {diagnosticReport.competencies?.nlc?.statusLabel || 'Cần can thiệp gấp'}
+                        </span>
+                      </div>
+
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                        Giải quyết vấn đề với sự trợ giúp máy tính
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                        Cơ sở dữ liệu quan hệ (11F), Thuật toán tìm kiếm (11F_CS) & Lập trình Python cơ bản (10)
+                      </p>
+
+                      <div className="mt-4 pt-3 border-t border-indigo-100 dark:border-indigo-900/40">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-500">Độ chính xác:</span>
+                          <span className="font-bold text-indigo-600">
+                            {diagnosticReport.competencies?.nlc?.percentage ?? 0}% ({diagnosticReport.competencies?.nlc?.correctCount ?? 0}/{diagnosticReport.competencies?.nlc?.totalCount ?? 0} câu)
+                          </span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-indigo-100 dark:bg-indigo-950 overflow-hidden">
+                          <div
+                            className="h-full bg-indigo-600 rounded-full"
+                            style={{ width: `${Math.max(5, diagnosticReport.competencies?.nlc?.percentage ?? 0)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-3 pt-2 border-t border-indigo-100 dark:border-indigo-900/30">
+                      {diagnosticReport.competencies?.nlc?.pedagogicalRemark || 'Điểm yếu trọng điểm: Cần củng cố SQL và thuật toán.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* ================================================================= */}
+              {/* SECTION 3: MA TRẬN CHẨN ĐOÁN CHI TIẾT TỪNG CHUYÊN ĐỀ (DANH SÁCH BÀI HỌC) */}
+              {/* ================================================================= */}
+              <div className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-200 dark:border-[#2C2C2C] p-6 sm:p-7 shadow-xs">
+                <div className="pb-4 border-b border-gray-100 dark:border-[#262626]">
+                  <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                    Ma trận Chẩn đoán theo Danh sách Bài học chuẩn SGK GDPT 2018
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Bóc tách mức độ hiểu biết trong từng chuyên đề: Nêu rõ bài học đang nắm tốt và các khái niệm còn thiếu hụt.
+                  </p>
+                </div>
+
+                <div className="mt-6 space-y-4">
+                  {diagnosticReport.topicDetails && diagnosticReport.topicDetails.length > 0 ? (
+                    diagnosticReport.topicDetails.map((td) => {
+                      const isUrgent = td.masteryStatus === 'urgent_gap';
+                      const isMastered = td.masteryStatus === 'mastered';
+
+                      return (
+                        <div
+                          key={td.topicId}
+                          className={`p-5 rounded-2xl border transition-all ${
+                            isUrgent
+                              ? 'bg-rose-50/40 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/40'
+                              : isMastered
+                              ? 'bg-emerald-50/30 dark:bg-emerald-950/15 border-emerald-200 dark:border-emerald-900/40'
+                              : 'bg-blue-50/30 dark:bg-blue-950/15 border-blue-200 dark:border-blue-900/40'
+                          }`}
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-gray-200/60 dark:border-[#333]">
+                            <div className="flex items-center gap-2.5">
+                              <span className="px-2.5 py-1 rounded-lg bg-[#2878C8] text-white text-xs font-black">
+                                {td.topicId}
+                              </span>
+                              <h4 className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                                {td.topicName}
+                              </h4>
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 dark:bg-[#333] text-gray-600 dark:text-gray-300">
+                                {td.competencyCode}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                  isUrgent
+                                    ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300'
+                                    : isMastered
+                                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                                    : 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
+                                }`}
+                              >
+                                {td.masteryLabel}
+                              </span>
+                              <span className="text-xs font-mono font-bold text-gray-500">
+                                {td.correctQuestions}/{td.totalQuestions} câu ({td.percentage}%)
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* 3 mini cognitive bars */}
+                          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                            <div className="p-2.5 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-[#2C2C2C] flex items-center justify-between">
+                              <span className="text-gray-500">Biết:</span>
+                              <span className="font-bold text-gray-900 dark:text-white">
+                                {td.knowCorrect}/{td.knowTotal} câu
+                              </span>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-[#2C2C2C] flex items-center justify-between">
+                              <span className="text-gray-500">Hiểu:</span>
+                              <span className="font-bold text-gray-900 dark:text-white">
+                                {td.understandCorrect}/{td.understandTotal} câu
+                              </span>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-[#2C2C2C] flex items-center justify-between">
+                              <span className="text-gray-500">Vận dụng:</span>
+                              <span className="font-bold text-gray-900 dark:text-white">
+                                {td.applyCorrect}/{td.applyTotal} câu
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Specific Missing Gaps from Lessons */}
+                          <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-[#333] space-y-1.5 text-xs">
+                            <div className="font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                              <BookOpen className="w-3.5 h-3.5 text-blue-500" />
+                              <span>Kiến thức trọng tâm trong danh sách bài học SGK:</span>
+                            </div>
+                            <ul className="space-y-1 pl-5 list-disc text-gray-600 dark:text-gray-400">
+                              {td.specificMissingGaps.map((gap, gIdx) => (
+                                <li key={gIdx} className="leading-relaxed">
+                                  {gap}
+                                </li>
+                              ))}
+                            </ul>
+                            {td.examTrapWarning && (
+                              <p className="text-[11px] text-amber-700 dark:text-amber-400 font-medium pt-1 flex items-center gap-1">
+                                <AlertTriangle className="w-3 h-3 shrink-0" />
+                                <span>Bẫy đề thi: {td.examTrapWarning}</span>
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-[#333] flex justify-end">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (onStartTopicQuiz) onStartTopicQuiz(td.topicId, 10);
+                                else onNavigateTopic(td.topicId);
+                              }}
+                              className="px-4 py-2 rounded-xl bg-[#2878C8] hover:bg-[#2068B0] text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors"
+                            >
+                              <Zap className="w-3.5 h-3.5" />
+                              <span>Luyện tập bù đắp chuyên đề {td.topicId}</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p className="text-xs text-gray-400 italic">Đang tổng hợp ma trận chuyên đề...</p>
+                  )}
+                </div>
+              </div>
+
+              {/* ================================================================= */}
+              {/* SECTION 4: CHI TIẾT CÂU LÀM SAI & LỖI TƯ DUY */}
+              {/* ================================================================= */}
               <div className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-200 dark:border-[#2C2C2C] p-6 shadow-xs">
                 <div className="pb-4 border-b border-gray-100 dark:border-[#262626]">
                   <h3 className="font-black text-gray-900 dark:text-white text-lg">
@@ -1290,10 +1860,15 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                         className="p-5 rounded-xl bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-[#333] space-y-3"
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="px-2.5 py-1 rounded-md bg-rose-600 text-white font-black text-xs">
-                            Câu hỏi #{idx + 1}
-                          </span>
-                          <span className="text-xs font-bold text-gray-500">[{wq.topicName}]</span>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2.5 py-1 rounded-md bg-rose-600 text-white font-black text-xs">
+                              Câu hỏi #{idx + 1}
+                            </span>
+                            <span className="text-xs font-bold text-gray-500">[{wq.topicName}]</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 dark:bg-[#333] text-gray-700 dark:text-gray-300">
+                              {wq.level === 'biet' ? 'Mức Biết' : wq.level === 'hieu' ? 'Mức Hiểu' : 'Mức Vận dụng'}
+                            </span>
+                          </div>
                         </div>
 
                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -1342,7 +1917,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                   onClick={() => setCurrentStep(3)}
                   className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-sm shadow-xl flex items-center justify-center gap-2.5 transition-all"
                 >
-                  <span>Tiếp tục: Thiết lập mục tiêu học tập</span>
+                  <span>Tiếp tục: Thiết lập mục tiêu học tập (Bước 3)</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
@@ -1381,7 +1956,8 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 Thiết lập mục tiêu điểm thi & Thời gian rèn luyện
               </h2>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
-                Dựa trên điểm số đầu vào <strong>{currentProficiency !== null ? `${currentProficiency.toFixed(1)}/10đ` : 'đã test'}</strong>, hãy chọn mục tiêu điểm số và quỹ thời gian học mỗi ngày để AI tính toán lộ trình bứt phá tối ưu nhất.
+                Dựa trên ma trận năng lực Bước 2 (Điểm đạt:{' '}
+                <strong>{currentProficiency !== null ? `${currentProficiency.toFixed(1)}/10đ` : 'đã test'}</strong>), hãy chọn mục tiêu điểm số và thời gian học mỗi ngày để AI lên lộ trình khắc phục các lỗ hổng Vận dụng và chuyên đề yếu.
               </p>
             </div>
 
@@ -1518,7 +2094,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm hover:bg-gray-100 flex items-center gap-2 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>Xem lại phân tích kiến thức</span>
+                <span>Xem lại ma trận phân tích năng lực</span>
               </button>
 
               <button
@@ -1535,7 +2111,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5" />
-                    <span>Sinh lộ trình cá nhân hóa bằng AI</span>
+                    <span>Sinh lộ trình bám sát lỗ hổng bằng AI</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}

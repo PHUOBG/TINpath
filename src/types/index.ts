@@ -185,6 +185,48 @@ export interface TopicMasteryInfo {
   commonMistakes: string[];
 }
 
+export interface CognitiveLevelStat {
+  level: CognitiveLevel;
+  name: string;
+  scopeDesc: string;
+  correctCount: number;
+  totalCount: number;
+  percentage: number;
+  avgTimeSec: number;
+  statusLabel: string;
+  pedagogicalRemark: string;
+}
+
+export interface CompetencyStat {
+  code: 'NLa' | 'NLb' | 'NLc';
+  title: string;
+  focusDesc: string;
+  correctCount: number;
+  totalCount: number;
+  percentage: number;
+  statusLabel: string;
+  pedagogicalRemark: string;
+}
+
+export interface TopicDiagnosticDetail {
+  topicId: SubjectTopicId;
+  topicName: string;
+  competencyCode: 'NLa' | 'NLb' | 'NLc';
+  totalQuestions: number;
+  correctQuestions: number;
+  percentage: number;
+  knowCorrect: number;
+  knowTotal: number;
+  understandCorrect: number;
+  understandTotal: number;
+  applyCorrect: number;
+  applyTotal: number;
+  masteryStatus: 'mastered' | 'acceptable' | 'urgent_gap';
+  masteryLabel: string;
+  specificMissingGaps: string[];
+  examTrapWarning: string;
+}
+
 export interface DiagnosticReport {
   id: string;
   score: number;
@@ -195,6 +237,17 @@ export interface DiagnosticReport {
   part1Correct: number;
   part2Score: number;
   part2Details: Array<{ questionId: string; correctStatements: number; score: number }>;
+  cognitiveLevels: {
+    biet: CognitiveLevelStat;
+    hieu: CognitiveLevelStat;
+    van_dung: CognitiveLevelStat;
+  };
+  competencies: {
+    nla: CompetencyStat;
+    nlb: CompetencyStat;
+    nlc: CompetencyStat;
+  };
+  topicDetails: TopicDiagnosticDetail[];
   topicBreakdown: Array<{
     topicId: SubjectTopicId;
     topicName: string;
@@ -206,21 +259,18 @@ export interface DiagnosticReport {
     id: string;
     topicId: SubjectTopicId;
     topicName: string;
+    level: CognitiveLevel;
     content: string;
     userAnswer: string;
     correctAnswer: string;
     explanation: string;
+    conceptualTrap?: string;
   }>;
   analysis: {
     overallAssessment: string;
     levelRanking: string;
     strengths: string[];
     weaknesses: string[];
-    cognitiveLevels: {
-      know: { percentage: number; evaluation: string };
-      understand: { percentage: number; evaluation: string };
-      apply: { percentage: number; evaluation: string };
-    };
     pedagogicalAdvice: string;
     recommendedWeakTopics: string[];
   };
