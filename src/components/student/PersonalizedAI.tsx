@@ -1035,7 +1035,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-12">
+    <div className="w-full space-y-6 pb-12">
       {/* ========================================================================= */}
       {/* GUIDED STEPPER NAVIGATION BAR */}
       {/* ========================================================================= */}
