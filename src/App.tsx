@@ -13,6 +13,7 @@ import { GoogleToolsHub } from './components/google/GoogleToolsHub';
 import { AuthModal } from './components/auth/AuthModal';
 import { RegisterModal } from './components/auth/RegisterModal';
 import { LandingPage } from './components/landing/LandingPage';
+import { FloatingAiBot } from './components/common/FloatingAiBot';
 
 import {
   UserProfile,
@@ -526,6 +527,11 @@ export default function App() {
             />
           </div>
         </div>
+      )}
+
+      {/* Floating AI Bot in bottom-right corner: Bot Tin Học TQT */}
+      {!activeExam && (
+        <FloatingAiBot user={user} currentTopicId={activeTopicId} />
       )}
         </>
       )}
