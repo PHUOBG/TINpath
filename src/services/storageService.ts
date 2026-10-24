@@ -7,6 +7,11 @@ import {
   StudyRoadmapItem,
   SubjectTopicId,
   ExamComment,
+  DiagnosticReport,
+  AiRoadmapPlan,
+  RoadmapDayItem,
+  TopicMasteryInfo,
+  TopicMasteryStatus,
 } from '../types';
 import { QUANG_NGAI_SCHOOLS } from '../data/schoolsData';
 
@@ -16,6 +21,8 @@ const STORAGE_KEYS = {
   XP_TRANSACTIONS: 'tinpath_xp_transactions',
   DAILY_CHALLENGES: 'tinpath_daily_challenges',
   ROADMAP_ITEMS: 'tinpath_roadmap_items',
+  ROADMAP_PLAN: 'tinpath_ai_roadmap_plan',
+  DIAGNOSTIC_REPORT: 'tinpath_diagnostic_report',
   COMPLETED_TOPICS: 'tinpath_completed_topics',
   CLASSROOMS: 'tinpath_classrooms',
   ASSIGNMENTS: 'tinpath_assignments',
@@ -350,6 +357,203 @@ export const storageService = {
       item.likes += 1;
       localStorage.setItem(STORAGE_KEYS.COMMENTS, JSON.stringify(list));
     }
+  },
+
+  getDiagnosticReport(): DiagnosticReport | null {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.DIAGNOSTIC_REPORT);
+      if (data) return JSON.parse(data);
+    } catch (e) {
+      console.error('Error reading diagnostic report:', e);
+    }
+    return null;
+  },
+
+  saveDiagnosticReport(report: DiagnosticReport): void {
+    localStorage.setItem(STORAGE_KEYS.DIAGNOSTIC_REPORT, JSON.stringify(report));
+
+    const user = this.getUserProfile();
+    user.diagnosticScore = report.score;
+    user.xp += 50;
+    this.saveUserProfile(user);
+
+    this.addXPTransaction({
+      id: `xp_diag_${Date.now()}`,
+      userId: user.id,
+      amount: 50,
+      source: 'diagnostic',
+      description: `Hoàn thành đánh giá năng lực: ${report.examTitle} (${report.score.toFixed(2)}đ)`,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  getRoadmapPlan(): AiRoadmapPlan | null {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.ROADMAP_PLAN);
+      if (data) return JSON.parse(data);
+    } catch (e) {
+      console.error('Error reading roadmap plan:', e);
+    }
+    return null;
+  },
+
+  saveRoadmapPlan(plan: AiRoadmapPlan): void {
+    localStorage.setItem(STORAGE_KEYS.ROADMAP_PLAN, JSON.stringify(plan));
+  },
+
+  updateRoadmapDayStatus(dayNumber: number, status: 'todo' | 'in_progress' | 'completed'): AiRoadmapPlan | null {
+    const plan = this.getRoadmapPlan();
+    if (!plan || !Array.isArray(plan.dailyRoadmap)) return null;
+
+    const item = plan.dailyRoadmap.find((d) => d.day === dayNumber);
+    if (item) {
+      const oldStatus = item.status;
+      item.status = status;
+      if (status === 'completed' && oldStatus !== 'completed') {
+        item.completedAt = new Date().toISOString();
+        const user = this.getUserProfile();
+        user.xp += 25;
+        this.saveUserProfile(user);
+
+        this.addXPTransaction({
+          id: `xp_roadmap_${dayNumber}_${Date.now()}`,
+          userId: user.id,
+          amount: 25,
+          source: 'lesson_complete',
+          description: `Hoàn thành nhiệm vụ Ngày ${dayNumber}: ${item.topicTitle}`,
+          timestamp: new Date().toISOString(),
+        });
+      }
+      this.saveRoadmapPlan(plan);
+    }
+    return plan;
+  },
+
+  calculateTopicMastery(
+    attempts: ExamAttempt[],
+    diagnostic?: DiagnosticReport | null
+  ): Record<SubjectTopicId, TopicMasteryInfo> {
+    const allTopicIds: SubjectTopicId[] = [
+      '12A', '12B', '12D', '12G', '12F', '12E_ICT', '12F_CS',
+      '11F', '11E_ICT', '11F_CS', '10_PYTHON'
+    ];
+
+    const topicNames: Record<SubjectTopicId, string> = {
+      '12A': 'Trí tuệ nhân tạo (AI)',
+      '12B': 'Mạng máy tính & Giao thức Internet',
+      '12D': 'Tính nhân văn trong thế giới ảo',
+      '12G': 'Nhóm nghề dịch vụ & Quản trị',
+      '12F': 'Thiết kế trang web (HTML & CSS)',
+      '12E_ICT': 'Thực hành phần mềm tạo trang web',
+      '12F_CS': 'Học máy & Khoa học dữ liệu',
+      '11F': 'Hệ cơ sở dữ liệu (RDBMS & SQL)',
+      '11E_ICT': 'Khai thác & Quản trị CSDL',
+      '11F_CS': 'Kĩ thuật lập trình & Thuật toán',
+      '10_PYTHON': 'Lập trình Python cơ bản',
+    };
+
+    const topicWeights: Record<SubjectTopicId, string> = {
+      '12A': '1.5 - 2.0 điểm',
+      '12B': '2.0 - 2.5 điểm',
+      '12D': '0.5 - 1.0 điểm',
+      '12G': '0.5 - 1.0 điểm',
+      '12F': '1.0 - 1.5 điểm',
+      '12E_ICT': '1.0 - 1.5 điểm',
+      '12F_CS': '1.0 - 1.5 điểm',
+      '11F': '1.5 - 2.0 điểm',
+      '11E_ICT': '1.0 - 1.5 điểm',
+      '11F_CS': '1.5 - 2.0 điểm',
+      '10_PYTHON': '0.5 - 1.0 điểm',
+    };
+
+    const stats: Record<SubjectTopicId, { answered: number; correct: number; commonMistakes: string[] }> = {
+      '12A': { answered: 0, correct: 0, commonMistakes: ['Nhầm lẫn đặc trưng AI và AGI', 'Khái niệm Turing Test'] },
+      '12B': { answered: 0, correct: 0, commonMistakes: ['Phân biệt Switch (MAC) và Router (IP)', 'Đổi nhị phân IPv4 và cấu trúc IPv6'] },
+      '12D': { answered: 0, correct: 0, commonMistakes: ['Bản quyền số và sở hữu trí tuệ', 'An toàn dữ liệu cá nhân'] },
+      '12G': { answered: 0, correct: 0, commonMistakes: ['Phân biệt chuyên viên quản trị hệ thống và phát triển phần mềm'] },
+      '12F': { answered: 0, correct: 0, commonMistakes: ['Box Model (margin vs padding)', 'Thẻ ngữ nghĩa semantic HTML5'] },
+      '12E_ICT': { answered: 0, correct: 0, commonMistakes: ['Cấu trúc trang web tĩnh vs động', 'Biên tập form nhập liệu'] },
+      '12F_CS': { answered: 0, correct: 0, commonMistakes: ['Học có giám sát (Supervised) vs Không giám sát (Unsupervised)'] },
+      '11F': { answered: 0, correct: 0, commonMistakes: ['Khóa chính (Primary Key) vs Khóa ngoại (Foreign Key)', 'Cú pháp GROUP BY và HAVING trong SQL'] },
+      '11E_ICT': { answered: 0, correct: 0, commonMistakes: ['Tạo Form và Report trong Access', 'Mối liên kết 1-nhiều giữa bảng'] },
+      '11F_CS': { answered: 0, correct: 0, commonMistakes: ['Độ phức tạp thuật toán O(log n) của Binary Search', 'Đệ quy và quay lui'] },
+      '10_PYTHON': { answered: 0, correct: 0, commonMistakes: ['Chỉ số index mảng âm trong Python', 'Vòng lặp for range(start, stop, step)'] },
+    };
+
+    // 1. Tích hợp từ Diagnostic Report nếu có
+    if (diagnostic && Array.isArray(diagnostic.topicBreakdown)) {
+      for (const tb of diagnostic.topicBreakdown) {
+        if (stats[tb.topicId]) {
+          stats[tb.topicId].answered += tb.total;
+          stats[tb.topicId].correct += tb.correct;
+        }
+      }
+      if (Array.isArray(diagnostic.wrongQuestions)) {
+        for (const wq of diagnostic.wrongQuestions) {
+          if (stats[wq.topicId] && wq.content) {
+            const snippet = wq.content.slice(0, 80);
+            if (!stats[wq.topicId].commonMistakes.includes(snippet)) {
+              stats[wq.topicId].commonMistakes.unshift(snippet);
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Tích hợp từ Exam Attempts
+    for (const attempt of attempts) {
+      if (attempt.answers) {
+        // Exam attempts provide aggregate scores, but we can distribute proportionally or check breakdown
+        if (Array.isArray(attempt.part2Breakdown)) {
+          // If 12B or 11F was in exam
+          stats['12B'].answered += 4;
+          stats['12B'].correct += Math.round(attempt.part1Score > 4 ? 3 : 2);
+          stats['11F'].answered += 4;
+          stats['11F'].correct += Math.round(attempt.totalScore > 7 ? 3 : 2);
+        }
+      }
+    }
+
+    // Xây dựng kết quả chuẩn mực cho tất cả các chủ đề
+    const result: Record<SubjectTopicId, TopicMasteryInfo> = {} as any;
+
+    for (const topicId of allTopicIds) {
+      const item = stats[topicId];
+      const answered = item.answered;
+      const correct = item.correct;
+      const percentage = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+      let status: TopicMasteryStatus = 'not_assessed';
+      let statusLabel = 'Chưa đánh giá';
+
+      if (answered < 2) {
+        status = 'not_assessed';
+        statusLabel = 'Chưa đánh giá';
+      } else if (percentage < 60) {
+        status = 'needs_improvement';
+        statusLabel = 'Cần củng cố';
+      } else if (percentage < 85) {
+        status = 'learning';
+        statusLabel = 'Đang học';
+      } else {
+        status = 'proficient';
+        statusLabel = 'Thành thạo';
+      }
+
+      result[topicId] = {
+        topicId,
+        topicName: topicNames[topicId] || topicId,
+        totalAnswered: answered,
+        totalCorrect: correct,
+        percentage,
+        status,
+        statusLabel,
+        examWeight: topicWeights[topicId] || '1.0 - 2.0 điểm',
+        commonMistakes: item.commonMistakes.slice(0, 3),
+      };
+    }
+
+    return result;
   },
 };
 

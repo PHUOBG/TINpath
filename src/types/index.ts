@@ -171,6 +171,86 @@ export interface StudyRoadmapItem {
   completedAt?: string;
 }
 
+export type TopicMasteryStatus = 'not_assessed' | 'needs_improvement' | 'learning' | 'proficient';
+
+export interface TopicMasteryInfo {
+  topicId: SubjectTopicId;
+  topicName: string;
+  totalAnswered: number;
+  totalCorrect: number;
+  percentage: number;
+  status: TopicMasteryStatus;
+  statusLabel: string;
+  examWeight: string;
+  commonMistakes: string[];
+}
+
+export interface DiagnosticReport {
+  id: string;
+  score: number;
+  submittedAt: string;
+  examId: string;
+  examTitle: string;
+  part1Score: number;
+  part1Correct: number;
+  part2Score: number;
+  part2Details: Array<{ questionId: string; correctStatements: number; score: number }>;
+  topicBreakdown: Array<{
+    topicId: SubjectTopicId;
+    topicName: string;
+    correct: number;
+    total: number;
+    percentage: number;
+  }>;
+  wrongQuestions: Array<{
+    id: string;
+    topicId: SubjectTopicId;
+    topicName: string;
+    content: string;
+    userAnswer: string;
+    correctAnswer: string;
+    explanation: string;
+  }>;
+  analysis: {
+    overallAssessment: string;
+    levelRanking: string;
+    strengths: string[];
+    weaknesses: string[];
+    cognitiveLevels: {
+      know: { percentage: number; evaluation: string };
+      understand: { percentage: number; evaluation: string };
+      apply: { percentage: number; evaluation: string };
+    };
+    pedagogicalAdvice: string;
+    recommendedWeakTopics: string[];
+  };
+}
+
+export interface RoadmapDayItem {
+  day: number;
+  topicCode: SubjectTopicId | 'ALL';
+  topicTitle: string;
+  keyTask: string;
+  minutes: number;
+  focusQuestionType: string;
+  status: 'todo' | 'in_progress' | 'completed';
+  completedAt?: string;
+}
+
+export interface AiRoadmapPlan {
+  id: string;
+  createdAt: string;
+  updatedAt?: string;
+  targetScore: number;
+  dailyStudyMinutes: number;
+  track: 'CS' | 'ICT';
+  daysRemaining: number;
+  examDate: string;
+  assessmentSummary: string;
+  targetStrategy: string;
+  dailyRoadmap: RoadmapDayItem[];
+}
+
 export interface StudentAnalytics {
   topicAccuracies: Record<SubjectTopicId, {
     totalAnswered: number;

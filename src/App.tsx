@@ -393,8 +393,12 @@ export default function App() {
               <PersonalizedAI
                 user={user}
                 examAttempts={examAttempts}
-                onUpdateUser={setUser}
+                onUpdateUser={handleSaveProfile}
                 onNavigateTopic={handleContinueTopic}
+                onStartExam={handleStartExam}
+                onStartTopicQuiz={handleStartTopicQuiz}
+                onStartDailyChallenge={handleStartDailyChallenge}
+                onNavigateTab={setCurrentTab}
               />
             )}
 
