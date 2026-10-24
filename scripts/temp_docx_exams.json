@@ -1,0 +1,1230 @@
+[
+  {
+    "id": "thpt_tran_quoc_tuan_2026",
+    "title": "Đề thi thử Tốt nghiệp THPT 2026 — THPT Trần Quốc Tuấn (Quảng Ngãi)",
+    "source": "Trường THPT Trần Quốc Tuấn, Sở GD&ĐT Quảng Ngãi",
+    "durationMinutes": 50,
+    "year": 2026,
+    "difficulty": "Thi thử tốt nghiệp",
+    "description": "Đề thi thử tốt nghiệp THPT 2026 môn Tin học của Trường THPT Trần Quốc Tuấn, Sở GD&ĐT Quảng Ngãi, cấu trúc chuẩn Bộ GD&ĐT gồm 24 câu trắc nghiệm và 6 câu đúng/sai.",
+    "baseXP": 120,
+    "part1Questions": [
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c1",
+        "type": "single_choice",
+        "q_num": 1,
+        "content": "Thiết bị nào sau đây có chức năng chuyên dùng cung cấp kết nối không dây cho các thành phần trong một mạng?",
+        "options": {
+          "A": "Switch.",
+          "B": "Hub.",
+          "C": "Access Point.",
+          "D": "Router."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c2",
+        "type": "single_choice",
+        "q_num": 2,
+        "content": "Giao thức mạng là gì?",
+        "options": {
+          "A": "Phần mềm giúp máy tính kết nối với Internet.",
+          "B": "Tập hợp các quy tắc và quy định về cách thức giao tiếp để truyền dữ liệu giữa các thiết bị trong mạng.",
+          "C": "Loại cáp mạng được sử dụng để kết nối các thiết bị trong mạng.",
+          "D": "Thiết bị được sử dụng để kết nối các thiết bị trong mạng."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c3",
+        "type": "single_choice",
+        "q_num": 3,
+        "content": "Phát biểu nào sau đây là đúng về Router?",
+        "options": {
+          "A": "Router chỉ hoạt động trong mạng nội bộ (LAN).",
+          "B": "Router kết nối các mạng khác nhau và định tuyến gói dữ liệu giữa chúng.",
+          "C": "Router chỉ hỗ trợ kết nối không dây.",
+          "D": "Router không cần cấu hình để hoạt động."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c4",
+        "type": "single_choice",
+        "q_num": 4,
+        "content": "Cổng nào trên một thiết bị máy tính được dùng để cắm trực tiếp dây cáp mạng có đầu RJ45?",
+        "options": {
+          "A": "Cổng Ethernet.",
+          "B": "Cổng USB.",
+          "C": "Cổng HDMI.",
+          "D": "Cổng nguồn."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c5",
+        "type": "single_choice",
+        "q_num": 5,
+        "content": "Khi truyền một tệp tin lớn qua mạng, giao thức TCP chia tệp tin đó thành nhiều phân đoạn (segment) nhỏ. Mục đích chính của việc đánh số thứ tự (Sequence Number) cho từng phân đoạn này là gì?",
+        "options": {
+          "A": "Để tăng tốc độ mã hóa dữ liệu trước khi gửi đi.",
+          "B": "Để giúp bên nhận có thể sắp xếp lại các phân đoạn đúng thứ tự ban đầu và phát hiện nếu có phân đoạn bị thiếu.",
+          "C": "Để ngăn chặn các phần mềm độc hại xâm nhập vào nội dung của gói tin.",
+          "D": "Để định tuyến gói tin đi theo con đường ngắn nhất từ nguồn đến đích."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c6",
+        "type": "single_choice",
+        "q_num": 6,
+        "content": "Trong giao thức TCP, quá trình \"Bắt tay ba bước\" (Three-way handshake) khi bắt đầu thiết lập kết nối giữa máy tính gửi và máy tính nhận có mục đích chính là gì?",
+        "options": {
+          "A": "Để nén dữ liệu giúp truyền đi nhanh hơn.",
+          "B": "Để đồng bộ hóa số thứ tự gói tin và xác nhận cả hai bên đều sẵn sàng truyền nhận dữ liệu.",
+          "C": "Để kiểm tra xem tệp tin có chứa virus hay không.",
+          "D": "Để tìm đường đi ngắn nhất giữa các Router trên mạng Internet."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c7",
+        "type": "single_choice",
+        "q_num": 7,
+        "content": "Trong các thiết bị mạng sau đây, thiết bị nào hoạt động ở tầng liên kết dữ liệu (Data link) và dùng để kết nối các thiết bị trong cùng một mạng LAN?",
+        "options": {
+          "A": "Switch.",
+          "B": "Router.",
+          "C": "Hub.",
+          "D": "Modem."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c8",
+        "type": "single_choice",
+        "q_num": 8,
+        "content": "Trong mạng LAN văn phòng, máy tính A chia sẻ một thư mục dữ liệu cho máy tính B. Hãy xác định tình huống mà máy tính B vẫn có thể truy cập được dữ liệu trong thư mục này?",
+        "options": {
+          "A": "Máy tính A đã tắt nguồn hoàn toàn để tiết kiệm điện.",
+          "B": "Cáp mạng nối giữa máy tính A và thiết bị Switch bị rút ra.",
+          "C": "Máy tính A đang hoạt động và quyền truy cập đã được cấp cho máy tính B.",
+          "D": "Máy tính B thay đổi địa chỉ IP sang một lớp mạng khác với máy tính A."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c9",
+        "type": "single_choice",
+        "q_num": 9,
+        "content": "Bạn muốn lấy tài liệu từ thư mục \"BAI_TAP\" mà bạn nhóm trưởng đã chia sẻ trên máy tính của bạn ấy trong mạng LAN. Để thực hiện việc này, bạn nên thực hiện các thao tác nào?",
+        "options": {
+          "A": "Sử dụng trình duyệt web để tìm kiếm từ khóa \"Thư mục BAI_TAP\" trên Google.",
+          "B": "Mở cửa sổ mạng (Network) trên máy tính của mình -> Tìm tên máy tính của nhóm trưởng -> Truy cập vào thư mục \"BAI_TAP\".",
+          "C": "Gửi một email cho nhóm trưởng yêu cầu cấp một địa chỉ website để tải thư mục đó về máy.",
+          "D": "Tắt tường lửa (Firewall) của máy tính mình và đợi thư mục \"BAI_TAP\" tự động hiện ra trên màn hình Desktop."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c10",
+        "type": "single_choice",
+        "q_num": 10,
+        "content": "Bạn chia sẻ một thư mục ảnh kỷ yếu cho các bạn trong lớp qua mạng LAN và chỉ thiết lập quyền truy cập là \"Read\"(chỉ đọc). Một người bạn trong lớp muốn giúp bạn xóa đi những ảnh bị mờ trong thư mục đó từ máy tính của họ. Điều gì sẽ xảy ra?",
+        "options": {
+          "A": "Người bạn đó xóa được ảnh bình thường và tệp tin sẽ biến mất khỏi máy tính của bạn.",
+          "B": "Người bạn đó vẫn nhìn thấy ảnh nhưng khi thực hiện lệnh xóa, hệ thống sẽ báo lỗi hoặc từ chối thao tác.",
+          "C": "Máy tính của người bạn đó sẽ tự động ngắt kết nối mạng LAN ngay khi nhấn phím Delete.",
+          "D": "Người bạn đó chỉ có thể xem ảnh dưới dạng trắng đen chứ không xem được ảnh màu."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c11",
+        "type": "single_choice",
+        "q_num": 11,
+        "content": "Dịch vụ lưu trữ dữ liệu trực tuyến như Google Drive, OneDrive cho phép người dùng lưu trữ, chia sẻ và chỉnh sửa tệp tin trực tiếp trên trình duyệt. Các dịch vụ này được xếp vào loại dịch vụ đám mây nào?",
+        "options": {
+          "A": "IaaS (Cung cấp hạ tầng như một dịch vụ).",
+          "B": "PaaS (Cung cấp nền tảng như một dịch vụ).",
+          "C": "SaaS (Cung cấp phần mềm như một dịch vụ).",
+          "D": "Network (Cung cấp mạng lưới kết nối)."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c12",
+        "type": "single_choice",
+        "q_num": 12,
+        "content": "Khi nói về việc ứng dụng Công nghệ thông tin trong quản lý đô thị và dịch vụ công hiện nay, phát biểu nào sau đây chưa chính xác?",
+        "options": {
+          "A": "Các ứng dụng như VNeID giúp người dân thực hiện các thủ tục hành chính mà không cần mang theo nhiều giấy tờ bản cứng.",
+          "B": "Hệ thống camera giám sát đô thị chỉ có tác dụng ghi lại hình ảnh chứ không thể hỗ trợ cảnh báo vi phạm giao thông tự động.",
+          "C": "Việc sử dụng hóa đơn điện tử giúp các cơ quan thuế quản lý minh bạch và giảm thiểu rủi ro thất thoát dữ liệu.",
+          "D": "Các cổng dịch vụ công trực tuyến giúp rút ngắn thời gian chờ đợi và giảm chi phí đi lại cho người dân."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c13",
+        "type": "single_choice",
+        "q_num": 13,
+        "content": "Trong các hành vi dưới đây, hành vi nào là biểu hiện của việc ứng xử thiếu văn hóa và vi phạm quyền riêng tư trên không gian mạng?",
+        "options": {
+          "A": "Chúc mừng sinh nhật bạn bè công khai trên dòng thời gian của họ.",
+          "B": "Tự ý công khai số điện thoại và địa chỉ nhà của người khác khi chưa được họ đồng ý.",
+          "C": "Gửi lời mời kết bạn cho những người có cùng sở thích học tập.",
+          "D": "Tham gia vào các nhóm thảo luận về kiến thức tin học trên mạng xã hội."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c14",
+        "type": "single_choice",
+        "q_num": 14,
+        "content": "Việc một cá nhân thiếu kiểm chứng mà vội vàng chia sẻ các thông tin sai sự thật, xúc phạm danh dự người khác trên mạng xã hội có thể dẫn đến hệ quả nghiêm trọng nào sau đây?",
+        "options": {
+          "A": "Làm tăng tốc độ truy cập internet cho cộng đồng người dùng.",
+          "B": "Gây tổn thương tinh thần cho nạn nhân và làm nhiễu loạn thông tin xã hội.",
+          "C": "Giúp bài viết cá nhân nhận được nhiều lượt tương tác tích cực hơn từ bạn bè.",
+          "D": "Làm cho các thuật toán của mạng xã hội hoạt động chính xác và minh bạch hơn."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c15",
+        "type": "single_choice",
+        "q_num": 15,
+        "content": "Một trong những đặc trưng quan trọng giúp phân biệt hệ thống Trí tuệ nhân tạo (AI) với các chương trình máy tính truyền thống là gì?",
+        "options": {
+          "A": "Có khả năng lưu trữ một lượng lớn dữ liệu trong bộ nhớ.",
+          "B": "Có khả năng thực hiện các phép tính toán học với tốc độ cao.",
+          "C": "Có khả năng học từ dữ liệu để tự cải thiện hiệu quả xử lý.",
+          "D": "Có khả năng kết nối với các thiết bị ngoại vi như chuột và bàn phím."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c16",
+        "type": "single_choice",
+        "q_num": 16,
+        "content": "Trong lĩnh vực giao thông thông minh, trí tuệ nhân tạo (AI) đóng vai trò cốt lõi trong việc phát triển công nghệ nào sau đây?",
+        "options": {
+          "A": "Sản xuất các loại lốp xe có độ bền cao và chống trơn trượt.",
+          "B": "Thiết kế các biển báo giao thông bằng chất liệu phản quang mới.",
+          "C": "Phát triển hệ thống xe tự lái và điều khiển luồng giao thông tự động.",
+          "D": "Xây dựng các cây cầu vượt thép để giảm thiểu ùn tắc tại các ngã tư."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c17",
+        "type": "single_choice",
+        "q_num": 17,
+        "content": "Khi soạn thảo nội dung trang web bằng HTML, cặp thẻ nào thường được dùng để tạo tiêu đề có kích thước lớn nhất?",
+        "options": {
+          "A": "<h6>",
+          "B": "<head>",
+          "C": "<title>",
+          "D": "<h1>"
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c18",
+        "type": "single_choice",
+        "q_num": 18,
+        "content": "Trong ngôn ngữ HTML, cặp thẻ nào sau đây được sử dụng để chèn một hình ảnh vào trang web?",
+        "options": {
+          "A": "<a>: anchorB. <img>: image C. <table>: tableD. <br>: break",
+          "B": "",
+          "C": "<table>: tableD. <br>: break",
+          "D": ""
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c19",
+        "type": "single_choice",
+        "q_num": 19,
+        "content": "Để thiết lập màu nền xanh lá (green) cho tất cả các đoạn văn (p ) và các mục danh sách (li) trong trang web, câu lệnh CSS nào sau đây là chính xác?",
+        "options": {
+          "A": "p li {background-color:green;}",
+          "B": "p + li {background:green;}",
+          "C": "p, li {background-color:green;}",
+          "D": "p; li {background-color:green;}"
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c20",
+        "type": "single_choice",
+        "q_num": 20,
+        "content": "Để căn giữa nội dung văn bản cho tất cả các ô (<td>) nằm trong một hàng (<tr>) và đặt màu nền cho hàng đó là màu vàng, đoạn mã HTML/CSS nào sau đây là chuẩn xác và tương thích tốt nhất với các trình duyệt?",
+        "options": {
+          "A": "<tr style=\"background-color: yellow; text-align: center;\"> <td>Mục 1</td> <td>Mục 2</td> </tr>",
+          "B": "<tr align=\"center\" color=\"yellow\"> <td>Mục 1</td> <td>Mục 2</td> </tr>",
+          "C": "<tr style=\"align: center; background: yellow;\"> <td style=\"center\">Mục 1</td> <td>Mục 2</td> </tr>",
+          "D": "<table style=\"text-align: center; background-color: yellow;\"> <tr> <td>Mục 1</td> <td>Mục 2</td> </tr> </table>"
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c21",
+        "type": "single_choice",
+        "q_num": 21,
+        "content": "Tình huống nào sau đây thể hiện khả năng học máy (Machine Learning) của AI trong lĩnh vực giải trí?",
+        "options": {
+          "A": "Người dùng nhấn nút \"Tạm dừng\" khi đang xem một bộ phim trên ứng dụng trực tuyến.",
+          "B": "Ứng dụng xem phim hiển thị danh sách tất cả các bộ phim hành động hiện có trong kho dữ liệu theo thứ tự bảng chữ cái.",
+          "C": "Ứng dụng xem phim tự động đề xuất các bộ phim mới dựa trên lịch sử xem và sở thích cá nhân của người dùng trước đó.",
+          "D": "Người dùng nhập tên phim vào ô tìm kiếm và hệ thống trả về kết quả chính xác tên bộ phim đó."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c22",
+        "type": "single_choice",
+        "q_num": 22,
+        "content": "Trong thư mục dự án có tệp index.html và một thư mục tên là images chứa ảnh logo.png. Để hiển thị logo này lên trang chủ bằng thẻ <img>, cần viết thuộc tính src như thế nào cho đúng?",
+        "options": {
+          "A": "<img src=\"logo.png\" alt=\"Logo\">",
+          "B": "<img src=\"images/logo.png\" alt=\"Logo\">",
+          "C": "<img href=\"images/logo.png\" alt=\"Logo\">",
+          "D": "<img src=\"/logo.png\" alt=\"Logo\">"
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c23",
+        "type": "single_choice",
+        "q_num": 23,
+        "content": "Khi tạo một biểu mẫu đăng ký thành viên, ở ô nhập \"Số điện thoại\", bạn muốn trình duyệt trên điện thoại di động tự động hiển thị bàn phím số thay vì bàn phím chữ để thuận tiện cho người dùng. Loại (type) nào của thẻ <input> là phù hợp nhất?",
+        "options": {
+          "A": "<input type=\"text\">",
+          "B": "<input type=\"password\">",
+          "C": "<input type=\"tel\">",
+          "D": "<input type=\"button\">"
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p1_c24",
+        "type": "single_choice",
+        "q_num": 24,
+        "content": "Một người lập trình muốn tất cả các đoạn văn (<p>)có màu xanh, nhưng riêng đoạn văn giới thiệu bản thân phải có màu đỏ. Phương án nào sau đây là chuyên nghiệp và dễ bảo trì nhất?",
+        "options": {
+          "A": "Sử dụng thuộc tính style=\"color: red;\" trực tiếp vào thẻ <p> của đoạn giới thiệu.",
+          "B": "Viết tất cả mã định dạng vào thẻ <body>.",
+          "C": "Đặt một id hoặc class riêng cho đoạn văn giới thiệu (ví dụ: <p id=\"intro\">) và định nghĩa màu đỏ cho id đó trong tệp CSS.",
+          "D": "Tạo một tệp HTML mới chỉ để chứa đoạn văn màu đỏ."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      }
+    ],
+    "part2Questions": [
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c1",
+        "type": "true_false_group",
+        "c_num": 1,
+        "context": "Khi tìm hiểu về việc định dạng giao diện trang web bằng CSS và HTML, một nhóm học sinh thảo luận về cách tối ưu hóa mã nguồn. Hãy đánh giá các phát biểu sau:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "CSS (Cascading Style Sheets) là ngôn ngữ được sử dụng để định dạng cách hiển thị các thành phần của trang web như màu sắc, phông chữ và bố cục.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Việc sử dụng CSS nội tuyến (inline style) viết trực tiếp trong thẻ HTML luôn giúp mã nguồn trang web gọn gàng và dễ bảo trì hơn so với việc dùng tệp CSS bên ngoài.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Để tất cả các thẻ tiêu đề <h2> trong website có chữ màu đỏ và căn giữa, có thể viết trong tệp CSS: h2 { color: red; text-align: center; }",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Khi muốn tạo một vùng chứa nội dung có nền màu xám và bo góc, có thể định nghĩa lớp CSS: .box { background-color: gray; border-radius: 10px; } và áp dụng cho nhiều thẻ <div> khác nhau.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ALL",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c2",
+        "type": "true_false_group",
+        "c_num": 2,
+        "context": "Trong giờ học Tin học, học sinh thiết kế một trang web giới thiệu các hợp chất hóa học và phương trình phản ứng. Hãy đánh giá các nhận định sau:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Các thẻ <b>, <i>, <u> là các thẻ định dạng văn bản cơ bản dùng để làm chữ in đậm, in nghiêng và gạch chân trong HTML.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Đoạn mã <p><strong>Axit Sunfuric</strong> là một axit mạnh.</p> sẽ hiển thị phần \"Axit Sunfuric\" với ý nghĩa nhấn mạnh và thường được trình duyệt hiển thị in đậm.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Để hiển thị đúng công thức hóa học của Axit Sunfuric (H2SO4) trên trang web, có thể sử dụng:",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Để hiển thị đúng dạng phân số của công thức nồng độ mol CM=nV trên cùng một dòng văn bản, có thể sử dụng:",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ALL",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c3",
+        "type": "true_false_group",
+        "c_num": 3,
+        "context": "Trong giờ học về mô phỏng máy tính, một nhóm học sinh đưa ra các nhận định sau:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Mô phỏng máy tính là việc sử dụng chương trình máy tính để tái tạo các hoạt động của một hệ thống thực hoặc giả định nhằm quan sát và phân tích hành vi của nó.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Phần mềm GeoGebra là một công cụ hỗ trợ mô phỏng chuyên sâu chủ yếu trong các lĩnh vực tài chính, kế toán và quản trị kinh doanh.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Một trong những ưu điểm quan trọng của phần mềm mô phỏng là cho phép người dùng thực hiện các thí nghiệm ảo có độ nguy hiểm cao hoặc chi phí đắt đỏ trong thực tế mà không gây rủi ro về người và tài sản.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Để mô phỏng sự rơi tự do của một vật cần thiết lập các tham số như độ cao ban đầu, khối lượng và gia tốc trọng trường để quan sát sự thay đổi vận tốc theo thời gian.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "CS",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c4",
+        "type": "true_false_group",
+        "c_num": 4,
+        "context": "Một nhóm học sinh viết chương trình Python sau để tìm giá trị lớn nhất trong danh sách số nguyên: A = [5, 12, 8, 20, 7, 15] max_val = A[0] for x in A: if x > max_val: max_val = x print(\"Giá trị lớn nhất là:\", max_val) Xét tính chính xác của các phát biểu:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Biến A trong chương trình trên thuộc kiểu dữ liệu danh sách (list), cho phép lưu trữ nhiều giá trị cùng một lúc.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Cấu trúc for x in A: là một vòng lặp duyệt qua từng phần tử của danh sách bắt đầu từ phần tử thứ hai đến phần tử cuối cùng.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Thuật toán đang sử dụng kỹ thuật \"lính canh\", giả định phần tử đầu tiên là lớn nhất, sau đó so sánh lần lượt để cập nhật lại giá trị lớn nhất mới.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Cần sử dụng câu lệnh if not A: để kiểm tra danh sách rỗng trước khi gán max_val = A[0]; nếu danh sách rỗng, nên thông báo “Danh sách không có dữ liệu” thay vì thực hiện thuật toán.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "CS",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c5",
+        "type": "true_false_group",
+        "c_num": 5,
+        "context": "Một câu lạc bộ (CLB) thiện nguyện trong nhà trường muốn xây dựng một website để giới thiệu các dự án đã thực hiện và kêu gọi quyên góp. Trang chủ cần có một biểu mẫu (form) để người dùng đăng ký tham gia thành viên và một bản đồ chỉ đường đến văn phòng CLB. Hãy đánh giá tính chính xác của các nhận định sau đây về quá trình thực hiện:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Các phần mềm tạo website hiện nay thường cung cấp tính năng \"Kéo và thả\" (Drag and Drop) giúp người dùng không cần biết lập trình vẫn có thể tạo được trang web.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Website sau khi thiết kế xong chỉ có thể xem được trên máy tính để bàn và không thể tự động thay đổi kích thước để hiển thị trên điện thoại di động.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Để tích hợp biểu mẫu đăng ký, người dùng có thể sử dụng các tiện ích có sẵn như Google Forms và nhúng (Embed) mã HTML hoặc liên kết vào trang web thông qua công cụ của phần mềm.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Để hiển thị bản đồ chỉ đường, học sinh có thể sử dụng dịch vụ bản đồ trực tuyến (như Google Maps), sau đó nhúng vào trang web và tùy chỉnh kích thước hiển thị cho phù hợp.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ICT",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_tran_quoc_tuan_2026_p2_c6",
+        "type": "true_false_group",
+        "c_num": 6,
+        "context": "Cửa hàng sách \"Tri Thức\" muốn chuyển đổi việc quản lý sổ sách sang sử dụng Cơ sở dữ liệu (CSDL) để theo dõi kho hàng và hóa đơn. Một nhóm học sinh đang thực hành cài đặt và kết nối hệ quản trị CSDL MySQL bằng phần mềm HeidiSQL: Hãy đánh giá tính chính xác của các nhận định sau đây:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Hệ quản trị CSDL là phần mềm cung cấp môi trường để người dùng có thể tạo lập, lưu trữ và khai thác dữ liệu một cách bảo mật và hiệu quả.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "HeidiSQL là phần mềm có giao diện đồ họa giúp người dùng tương tác với các hệ quản trị CSDL như MySQL, MariaDB.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Khi thiết lập kết nối (Session) trong HeidiSQL, thông tin \"Hostname/IP\" mặc định thường là 127.0.0.1 hoặc localhost để chỉ định rằng CSDL đang nằm ngay trên chính máy tính đang sử dụng.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Người dùng cần chọn thẻ “Data” để xem định nghĩa các cột và kiểu dữ liệu của bảng.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ICT",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      }
+    ]
+  },
+  {
+    "id": "thpt_dinh_tien_hoang_2026",
+    "title": "Đề thi thử Tốt nghiệp THPT 2026 — THPT Đinh Tiên Hoàng (Quảng Ngãi)",
+    "source": "Trường THPT Đinh Tiên Hoàng, Sở GD&ĐT Quảng Ngãi",
+    "durationMinutes": 50,
+    "year": 2026,
+    "difficulty": "Thi thử tốt nghiệp",
+    "description": "Đề thi thử tốt nghiệp THPT 2026 môn Tin học của Trường THPT Đinh Tiên Hoàng, Sở GD&ĐT Quảng Ngãi, cấu trúc chuẩn Bộ GD&ĐT gồm 24 câu trắc nghiệm và 6 câu đúng/sai.",
+    "baseXP": 120,
+    "part1Questions": [
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c1",
+        "type": "single_choice",
+        "q_num": 1,
+        "content": "Khi nhận được một tin nhắn thông báo trúng thưởng yêu cầu nhấp vào liên kết và nhập thông tin cá nhân, em nên làm gì?",
+        "options": {
+          "A": "Chia sẻ tin nhắn cho bạn bè để cùng nhận thưởng.",
+          "B": "Bỏ qua, không nhấp vào liên kết và báo cho người lớn hoặc giáo viên.",
+          "C": "Nhấp vào liên kết và nhập thông tin ngay để nhận thưởng.",
+          "D": "Trả lời tin nhắn để hỏi thêm thông tin."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c2",
+        "type": "single_choice",
+        "q_num": 2,
+        "content": "Cho đoạn mã HTML sau: Khi mở trang web trên trình duyệt và nhấp vào chữ “Tìm kiếm”, điều gì sẽ xảy ra?",
+        "options": {
+          "A": "Trang web sẽ hiển thị thêm một đoạn văn mới.",
+          "B": "Trang web sẽ bị đóng lại.",
+          "C": "Hình ảnh sẽ được hiển thị trên trang.",
+          "D": "Trình duyệt sẽ chuyển đến trang Google."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c3",
+        "type": "single_choice",
+        "q_num": 3,
+        "content": "Giao thức TCP/IP đóng vai trò gì trong mạng máy tính?",
+        "options": {
+          "A": "Lưu trữ thông tin người dùng.",
+          "B": "Điều khiển việc bật/tắt máy tính.",
+          "C": "Quy định cách các thiết bị kết nối và trao đổi dữ liệu với nhau trên mạng.",
+          "D": "Tăng tốc độ xử lí của máy tính."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c4",
+        "type": "single_choice",
+        "q_num": 4,
+        "content": "Vì sao cần sử dụng thẻ <body> trong một trang HTML?",
+        "options": {
+          "A": "Để liên kết đến tệp CSS.",
+          "B": "Để khai báo tiêu đề trang web.",
+          "C": "Để chứa các thông tin hiển thị trên trang web.",
+          "D": "Để lưu trữ dữ liệu người dùng."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c5",
+        "type": "single_choice",
+        "q_num": 5,
+        "content": "Ngôn ngữ nào sau đây được sử dụng để tạo cấu trúc cơ bản của một trang web?",
+        "options": {
+          "A": "C++.",
+          "B": "Python.",
+          "C": "Java.",
+          "D": "HTML."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c6",
+        "type": "single_choice",
+        "q_num": 6,
+        "content": "Khi tạo một liên kết đến trang web khác, vì sao cần sử dụng thuộc tính href trong thẻ <a>?",
+        "options": {
+          "A": "Để chèn hình ảnh vào liên kết.",
+          "B": "Để định dạng chữ in đậm.",
+          "C": "Để chỉ định địa chỉ trang web cần liên kết đến.",
+          "D": "Để thay đổi màu nền trang web."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c7",
+        "type": "single_choice",
+        "q_num": 7,
+        "content": "Thẻ nào trong HTML được dùng để chèn hình ảnh vào trang web?",
+        "options": {
+          "A": "<img>",
+          "B": "<a>",
+          "C": "<div>",
+          "D": "<p>"
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c8",
+        "type": "single_choice",
+        "q_num": 8,
+        "content": "Trí tuệ nhân tạo (AI) được ứng dụng trong lĩnh vực nào sau đây?",
+        "options": {
+          "A": "Ghi chép bài học bằng vở.",
+          "B": "Soạn thảo văn bản bằng tay.",
+          "C": "Vẽ tranh bằng bút chì.",
+          "D": "Nhận dạng khuôn mặt trên điện thoại."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c9",
+        "type": "single_choice",
+        "q_num": 9,
+        "content": "Vì sao khi giải quyết một bài toán bằng máy tính, người lập trình cần viết chương trình bằng các ngôn ngữ như Python hoặc C++?",
+        "options": {
+          "A": "Vì máy tính chỉ hiểu được ngôn ngữ tự nhiên của con người.",
+          "B": "Vì Python và C++ giúp biểu diễn thuật toán để máy tính thực hiện giải bài toán.",
+          "C": "Vì sử dụng Python và C++ giúp tăng dung lượng bộ nhớ máy tính.",
+          "D": "Vì Python và C++ chỉ dùng để thiết kế giao diện."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c10",
+        "type": "single_choice",
+        "q_num": 10,
+        "content": "Một lớp học muốn kết nối nhiều máy tính với nhau để chia sẻ tài liệu và sử dụng chung máy in trong cùng một phòng. Thiết bị nào sau đây là phù hợp nhất để thực hiện nhiệm vụ này?",
+        "options": {
+          "A": "Máy chiếu.",
+          "B": "Access Point.",
+          "C": "Switch.",
+          "D": "Modem."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c11",
+        "type": "single_choice",
+        "q_num": 11,
+        "content": "Ngành nghề nào sau đây không thuộc lĩnh vực tin học?",
+        "options": {
+          "A": "Thợ xây.",
+          "B": "Thiết kế đồ họa máy tính.",
+          "C": "Lập trình viên.",
+          "D": "Quản trị mạng."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c12",
+        "type": "single_choice",
+        "q_num": 12,
+        "content": "Nhu cầu nhân lực trong lĩnh vực tin học hiện nay có xu hướng như thế nào?",
+        "options": {
+          "A": "Tăng cao.",
+          "B": "Không còn cần thiết.",
+          "C": "Giảm mạnh.",
+          "D": "Không thay đổi."
+        },
+        "correctAnswer": "A",
+        "level": "biet",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c13",
+        "type": "single_choice",
+        "q_num": 13,
+        "content": "Một doanh nghiệp muốn nâng cao hiệu quả quản lí và kinh doanh. Giải pháp nào sau đây là phù hợp?",
+        "options": {
+          "A": "Không sử dụng máy tính trong công việc.",
+          "B": "Chỉ làm việc thủ công như trước.",
+          "C": "Giảm sử dụng công nghệ trong doanh nghiệp.",
+          "D": "Ứng dụng phần mềm và hệ thống tin học vào quản lí."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c14",
+        "type": "single_choice",
+        "q_num": 14,
+        "content": "Giao thức nào sau đây được sử dụng phổ biến để truyền dữ liệu trên Internet?",
+        "options": {
+          "A": "HDMI.",
+          "B": "USB.",
+          "C": "TCP/IP.",
+          "D": "VGA."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c15",
+        "type": "single_choice",
+        "q_num": 15,
+        "content": "Tại sao nghề trong lĩnh vực tin học thường yêu cầu người lao động phải học tập liên tục?",
+        "options": {
+          "A": "Vì không cần kỹ năng chuyên môn.",
+          "B": "Vì công nghệ phát triển nhanh, cần cập nhật kiến thức mới.",
+          "C": "Vì kiến thức tin học không thay đổi.",
+          "D": "Vì công việc trong lĩnh vực này rất đơn giản."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c16",
+        "type": "single_choice",
+        "q_num": 16,
+        "content": "Chọn một trong hai ngôn ngữ Python hoặc C++ để tìm hiểu chương trình sau: Chương trình viết bằng ngôn ngữ Python Chương trình viết bằng ngôn ngữ C++ Trong chương trình Python và C++ tính tổng từ 1 đến n ở trên, vai trò của vòng lặp for là gì?",
+        "options": {
+          "A": "Lặp lại việc cộng dồn các số từ 1 đến n.",
+          "B": "Khai báo biến cho chương trình.",
+          "C": "In kết quả ra màn hình.",
+          "D": "Nhập giá trị n từ bàn phím."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c17",
+        "type": "single_choice",
+        "q_num": 17,
+        "content": "Vì sao nhiều ngành nghề hiện nay cần sử dụng tin học trong công việc?",
+        "options": {
+          "A": "Vì tin học thay thế hoàn toàn con người trong mọi công việc.",
+          "B": "Vì tin học làm tăng thời gian làm việc.",
+          "C": "Vì tin học chỉ dùng để giải trí.",
+          "D": "Vì tin học giúp xử lí thông tin nhanh và nâng cao hiệu quả công việc."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c18",
+        "type": "single_choice",
+        "q_num": 18,
+        "content": "Hành vi nào sau đây là dấu hiệu của lừa đảo trên Internet?",
+        "options": {
+          "A": "Trang web yêu cầu đăng nhập để sử dụng dịch vụ quen thuộc.",
+          "B": "Email từ người lạ yêu cầu cung cấp mật khẩu hoặc thông tin cá nhân.",
+          "C": "Tìm kiếm thông tin học tập trên mạng.",
+          "D": "Xem video giải trí trên các nền tảng uy tín."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12D",
+        "topicName": "Đạo đức, pháp luật thế giới ảo"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c19",
+        "type": "single_choice",
+        "q_num": 19,
+        "content": "Phần tử nào sau đây thường được dùng để tạo tiêu đề lớn trên trang web?",
+        "options": {
+          "A": "<p>",
+          "B": "<br>",
+          "C": "<span>",
+          "D": "<h1>"
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c20",
+        "type": "single_choice",
+        "q_num": 20,
+        "content": "Một học sinh yêu thích công nghệ, muốn làm việc trong lĩnh vực có nhu cầu nhân lực cao và cơ hội phát triển tốt. Lựa chọn nào sau đây là phù hợp nhất?",
+        "options": {
+          "A": "Không cần học thêm kỹ năng nào.",
+          "B": "Chỉ sử dụng máy tính để giải trí.",
+          "C": "Theo học ngành Công nghệ thông tin hoặc Khoa học máy tính.",
+          "D": "Học nghề không liên quan đến công nghệ."
+        },
+        "correctAnswer": "A",
+        "level": "hieu",
+        "topicId": "12G",
+        "topicName": "Định hướng nghề nghiệp & Tuyển sinh CNTT"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c21",
+        "type": "single_choice",
+        "q_num": 21,
+        "content": "Ngôn ngữ lập trình nào sau đây có thể được sử dụng để viết chương trình giải quyết bài toán trên máy tính?",
+        "options": {
+          "A": "Paint và Word.",
+          "B": "Python và C++.",
+          "C": "HTML và CSS.",
+          "D": "PowerPoint và Excel."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "11F_CS",
+        "topicName": "Thuật toán và Kĩ thuật lập trình"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c22",
+        "type": "single_choice",
+        "q_num": 22,
+        "content": "Vì sao cần sử dụng thẻ <title> trong trang web HTML?",
+        "options": {
+          "A": "Để hiển thị nội dung chính trên trang.",
+          "B": "Để chèn hình ảnh vào trang.",
+          "C": "Để đặt tên cho trang web hiển thị trên tab trình duyệt.",
+          "D": "Để tạo liên kết đến trang khác."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c23",
+        "type": "single_choice",
+        "q_num": 23,
+        "content": "Vì sao trí tuệ nhân tạo (AI) có thể được sử dụng để lọc thư rác trong email?",
+        "options": {
+          "A": "Vì AI làm tăng dung lượng lưu trữ email.",
+          "B": "Vì AI có thể tự động xóa tất cả email trong hộp thư.",
+          "C": "Vì AI giúp gửi email nhanh hơn.",
+          "D": "Vì AI có khả năng phân tích nội dung email và nhận diện thư không mong muốn."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12A",
+        "topicName": "Trí tuệ nhân tạo (AI) & Học máy"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p1_c24",
+        "type": "single_choice",
+        "q_num": 24,
+        "content": "Thiết bị nào sau đây có chức năng cung cấp kết nối không dây (Wi-Fi) cho các thiết bị trong mạng?",
+        "options": {
+          "A": "Modem.",
+          "B": "Access Point.",
+          "C": "Switch.",
+          "D": "Router."
+        },
+        "correctAnswer": "A",
+        "level": "van_dung",
+        "topicId": "12B",
+        "topicName": "Mạng máy tính và Internet"
+      }
+    ],
+    "part2Questions": [
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c1",
+        "type": "true_false_group",
+        "c_num": 1,
+        "context": "Đoạn code HTML như sau:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Thẻ <p> dùng để chèn hình ảnh vào trang web.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Thẻ <h1> dùng để tạo tiêu đề lớn trên trang web.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Thẻ <title> giúp hiển thị tên trang trên tab trình duyệt.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Khi nhấp vào chữ “Truy cập”, trình duyệt sẽ chuyển đến trang web có địa chỉ https://www.example.com.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ALL",
+        "topicId": "12F",
+        "topicName": "Tạo trang web và thiết kế web"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c2",
+        "type": "true_false_group",
+        "c_num": 2,
+        "context": "Nhận định nào sau đây đúng, nhận định nào sai?",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Access Point có chức năng phát sóng Wi-Fi giúp các thiết bị không dây kết nối vào mạng.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Khi muốn chia sẻ tệp giữa các máy tính trong cùng mạng, có thể sử dụng chức năng chia sẻ tài nguyên của hệ điều hành.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Giao thức TCP/IP được dùng để điều khiển bật/tắt máy tính từ xa.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Switch là thiết bị dùng để kết nối các máy tính trong cùng một mạng nội bộ.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ALL",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c3",
+        "type": "true_false_group",
+        "c_num": 3,
+        "context": "Nhận định nào sau đây đúng, nhận định nào sai?",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Khi thiết kế mạng, cần xác định số lượng thiết bị sẽ kết nối.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Modem có chức năng chính là kết nối các máy tính trong mạng LAN với nhau.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Việc lựa chọn thiết bị mạng phù hợp giúp đảm bảo mạng hoạt động ổn định và hiệu quả.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Khi thiết kế mạng cho một lớp học, có thể sử dụng Switch để kết nối các máy tính và Access Point để cung cấp Wi-Fi cho thiết bị di động.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "CS",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c4",
+        "type": "true_false_group",
+        "c_num": 4,
+        "context": "Để biết học sinh có hiểu rõ về thuật toán hay không, giáo viên đưa ra dãy số A = [-13, 2, 3, 6, 9, 11, 25, 38, 50, 65], biết chỉ số đầu của A là 0. Với yêu cầu tìm vị trí của số 11 trong dãy A bằng cách áp dụng thuật toán tìm kiếm nhị phân và số lần lặp lại của thuật toán. Giáo viên đưa ra các nhận định sau:",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Không áp dụng thuật toán tìm kiếm nhị phân được, vì dãy A có số âm.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Tìm kiếm nhị phân sẽ có số lần lặp ít hơn tìm kiếm tuần tự.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Lần lặp đầu tiên chỉ số đầu bên trái là 0, chỉ số cuối bên phải là 9, chỉ số giữa là 7.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Tìm được số 11 ở vị trí 5 và số lần lặp là 3.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "CS",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c5",
+        "type": "true_false_group",
+        "c_num": 5,
+        "context": "Nhận định nào sau đây đúng, nhận định nào sai?",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Trong GIMP không thể cắt (crop) hoặc thay đổi kích thước ảnh.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Việc sử dụng các lớp (layer) trong GIMP giúp chỉnh sửa ảnh linh hoạt hơn mà không ảnh hưởng trực tiếp đến ảnh gốc.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "GIMP là phần mềm dùng để chỉnh sửa và thiết kế hình ảnh.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Có thể sử dụng GIMP để thiết kế một poster học tập bằng cách chèn ảnh, thêm chữ và hiệu ứng.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ICT",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      },
+      {
+        "id": "thpt_dinh_tien_hoang_2026_p2_c6",
+        "type": "true_false_group",
+        "c_num": 6,
+        "context": "Nhận định nào sau đây đúng, nhận định nào sai?",
+        "statements": [
+          {
+            "id": "a",
+            "text": "Cáp USB chỉ dùng để sạc điện, không thể truyền dữ liệu.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (a) của đề thi."
+          },
+          {
+            "id": "b",
+            "text": "Kết nối Bluetooth cho phép truyền dữ liệu không dây giữa các thiết bị ở khoảng cách gần.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (b) của đề thi."
+          },
+          {
+            "id": "c",
+            "text": "Máy tính có thể kết nối với máy in để in tài liệu.",
+            "isCorrect": true,
+            "explanation": "Mệnh đề (c) của đề thi."
+          },
+          {
+            "id": "d",
+            "text": "Khi muốn trình chiếu bài giảng từ máy tính lên màn hình lớn, có thể kết nối máy tính với máy chiếu bằng cáp HDMI.",
+            "isCorrect": false,
+            "explanation": "Mệnh đề (d) của đề thi."
+          }
+        ],
+        "level": "hieu",
+        "trackRequirement": "ICT",
+        "topicId": "11F",
+        "topicName": "Hệ cơ sở dữ liệu và Truy vấn SQL"
+      }
+    ]
+  }
+]
