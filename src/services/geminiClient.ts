@@ -170,3 +170,30 @@ export async function verifyServerXP(params: {
   }
   return res.json();
 }
+
+export async function requestRemedialExam(params: {
+  wrongQuestions: Array<{
+    id: string;
+    topicId: string;
+    content: string;
+    options: Record<'A' | 'B' | 'C' | 'D', string>;
+    correctAnswer: 'A' | 'B' | 'C' | 'D';
+    explanation?: string;
+    userAnswer?: string;
+    examTitle?: string;
+  }>;
+  mode: 'retest' | 'variation';
+  questionCount: number;
+  studentTrack: 'CS' | 'ICT';
+}) {
+  const res = await fetch('/api/gemini/generate-remedial-exam', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+}

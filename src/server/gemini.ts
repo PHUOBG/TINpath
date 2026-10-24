@@ -424,3 +424,105 @@ ${params.userQuestion}`;
   };
 }
 
+/**
+ * 10. AI Remedial Exam Generator from Wrong Mistakes (gemini-3.5-flash-lite)
+ * Dựa vào các câu sai của học sinh để sinh đề mới: làm lại hoặc biến tấu thông số / kiến thức liên quan
+ */
+export async function generateRemedialExamFromMistakes(params: {
+  wrongQuestions: Array<{
+    id: string;
+    topicId: string;
+    content: string;
+    options: Record<'A' | 'B' | 'C' | 'D', string>;
+    correctAnswer: 'A' | 'B' | 'C' | 'D';
+    explanation?: string;
+    userAnswer?: string;
+    examTitle?: string;
+  }>;
+  mode: 'retest' | 'variation';
+  questionCount: number;
+  studentTrack: 'CS' | 'ICT';
+}) {
+  const ai = getGeminiClient();
+
+  const count = Math.min(Math.max(params.questionCount || 10, 5), 24);
+  const sampleMistakes = params.wrongQuestions.slice(0, 15);
+
+  const prompt = `Bạn là Chuyên gia Khảo thí và Biên soạn Đề thi môn Tin học THPT Quốc gia (GDPT 2018) của nền tảng TinPath.
+
+Nhiệm vụ: Dựa trên ${sampleMistakes.length} câu hỏi mà học sinh đã làm sai dưới đây, hãy sinh một Đề thi ôn tập khắc phục lỗ hổng gồm chính xác ${count} câu hỏi trắc nghiệm 4 lựa chọn (Phần I).
+
+Chế độ sinh đề: ${params.mode === 'variation' ? 'BIẾN TẤU CHUYÊN SÂU (VARIATION)' : 'LÀM LẠI ĐẢO PHƯƠNG ÁN (RETEST)'}
+Định hướng học tập của học sinh: ${params.studentTrack}
+
+QUY TẮC BIÊN SOẠN BẮT BUỘC:
+${
+  params.mode === 'variation'
+    ? `- Không sao chép nguyên văn câu hỏi cũ.
+- Giữ nguyên chủ đề và mục tiêu kiến thức trọng tâm của các câu sai, nhưng hãy BIẾN TẤU:
+  + Đổi số liệu, tham số (ví dụ: đổi địa chỉ IP, đổi subnet mask, đổi giá trị biến/mảng trong Python, đổi cấu trúc bảng CSDL SQL).
+  + Đổi ngữ cảnh tình huống ứng dụng thực tế.
+  + Đổi phương thức hỏi hoặc hỏi về khía cạnh tương đương/mở rộng trong cùng bài học SGK để kiểm tra học sinh có thực sự hiểu bản chất hay không.`
+    : `- Giữ nguyên câu hỏi nhưng HÃY XÁO TRỘN thứ tự 4 đáp án A, B, C, D để học sinh không thể chọn theo thói quen hay vị trí đáp án cũ. Cập nhật lại correctAnswer và giải thích chi tiết.`
+}
+
+DANH SÁCH CÂU HỌC SINH ĐÃ LÀM SAI:
+${sampleMistakes
+  .map(
+    (q, idx) =>
+      `Câu ${idx + 1} [Chuyên đề: ${q.topicId}]:\nNội dung: ${q.content}\nĐáp án đúng: ${q.correctAnswer}\nĐáp án học sinh chọn sai: ${q.userAnswer || 'Chưa chọn'}\nGiải thích gốc: ${q.explanation || 'Không có'}`
+  )
+  .join('\n---\n')}
+
+ĐỊNH DẠNG ĐẦU RA BẮT BUỘC:
+Chỉ trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm giải thích markdown bên ngoài), theo schema:
+{
+  "title": "Đề AI Khắc Phục Lỗ Hổng: Biến tấu từ các câu làm sai",
+  "description": "Đề thi được Gemini AI tự động tổng hợp và biến tấu dựa trên các câu trắc nghiệm bạn đã chọn sai ở các bài thi thử trước đó.",
+  "questions": [
+    {
+      "id": "remedial_1",
+      "topicId": "12B",
+      "content": "Nội dung câu hỏi...",
+      "options": {
+        "A": "Nội dung lựa chọn A",
+        "B": "Nội dung lựa chọn B",
+        "C": "Nội dung lựa chọn C",
+        "D": "Nội dung lựa chọn D"
+      },
+      "correctAnswer": "A",
+      "explanation": "Giải thích chi tiết vì sao đáp án này đúng và nguyên nhân học sinh hay nhầm lẫn..."
+    }
+  ]
+}`;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-3.5-flash-lite',
+    contents: prompt,
+    config: {
+      systemInstruction: 'Bạn là chuyên gia biên soạn đề thi Tin học THPT 2018. Luôn trả về định dạng JSON thuần túy.',
+      responseMimeType: 'application/json',
+    },
+  });
+
+  const rawText = response.text || '{}';
+  let parsed: any;
+  try {
+    parsed = JSON.parse(rawText);
+  } catch {
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      parsed = JSON.parse(jsonMatch[0]);
+    } else {
+      throw new Error('Không thể phân tích dữ liệu JSON từ mô hình Gemini');
+    }
+  }
+
+  return {
+    examTitle: parsed.title || 'Đề AI Khắc Phục Lỗ Hổng Kiến Thức',
+    description: parsed.description || 'Đề thi thích ứng từ các câu sai của bạn',
+    questions: Array.isArray(parsed.questions) ? parsed.questions : [],
+    modelUsed: 'gemini-3.5-flash-lite (Adaptive Remedial Generator)',
+  };
+}
+

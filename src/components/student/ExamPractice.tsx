@@ -17,6 +17,12 @@ import {
   FileQuestion,
   Users,
   History,
+  Brain,
+  Zap,
+  Sliders,
+  Check,
+  RefreshCw,
+  Wand2,
 } from 'lucide-react';
 import { Exam, SubjectTopicId, ExamAttempt } from '../../types';
 import { OFFICIAL_EXAMS } from '../../data/officialExamsData';
@@ -24,10 +30,11 @@ import { getExams } from '../../services/supabaseDbService';
 import { TOPIC_LESSONS } from '../../data/topicsData';
 import { storageService } from '../../services/storageService';
 import { ExamCommentModal } from './ExamCommentModal';
-
+import { createRemedialExam, WrongQuestionInput } from '../../services/remedialExamService';
 
 interface ExamPracticeProps {
   onStartExam: (examId: string, isRetake?: boolean) => void;
+  onStartCustomExam?: (exam: Exam) => void;
   onStartDailyChallenge: () => void;
   onStartTopicQuiz: (topicId: SubjectTopicId, questionCount: number, level: string) => void;
   completedDailyToday: boolean;
@@ -37,6 +44,7 @@ interface ExamPracticeProps {
 
 export const ExamPractice: React.FC<ExamPracticeProps> = ({
   onStartExam,
+  onStartCustomExam,
   onStartDailyChallenge,
   onStartTopicQuiz,
   completedDailyToday,
@@ -96,6 +104,102 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
     const base = seedTakers[examId] || 18;
     const attempts = examAttempts.filter((a) => a.examId === examId).length;
     return base + attempts;
+  };
+
+  // ---------------------------------------------------------------------------
+  // AI REMEDIAL EXAM GENERATOR STATE & LOGIC (Khắc phục câu sai qua Gemini AI)
+  // ---------------------------------------------------------------------------
+  const [isGeneratingRemedial, setIsGeneratingRemedial] = useState(false);
+  const [remedialMode, setRemedialMode] = useState<'variation' | 'retest'>('variation');
+  const [remedialSource, setRemedialSource] = useState<string>('all');
+  const [remedialCount, setRemedialCount] = useState<number>(10);
+  const [generationFeedback, setGenerationFeedback] = useState<string | null>(null);
+
+  // Extract all wrong questions across exam attempts
+  const allWrongQuestions = React.useMemo<WrongQuestionInput[]>(() => {
+    const result: WrongQuestionInput[] = [];
+    const seen = new Set<string>();
+
+    examAttempts.forEach((attempt) => {
+      const exam =
+        examsList.find((e) => e.id === attempt.examId) ||
+        OFFICIAL_EXAMS.find((e) => e.id === attempt.examId);
+      if (!exam) return;
+
+      exam.part1Questions.forEach((q) => {
+        const studentAns = attempt.answers[q.id]?.selectedOption;
+        if (!studentAns || studentAns !== q.correctAnswer) {
+          const key = `${attempt.id}_${q.id}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            result.push({
+              id: q.id,
+              topicId: q.topicId as SubjectTopicId,
+              content: q.content,
+              options: q.options,
+              correctAnswer: q.correctAnswer,
+              explanation: q.explanation,
+              userAnswer: studentAns,
+              examId: attempt.examId,
+              examTitle: attempt.examTitle,
+            });
+          }
+        }
+      });
+    });
+
+    return result;
+  }, [examAttempts, examsList]);
+
+  // Active pool based on selected source exam
+  const activeWrongQuestions = React.useMemo(() => {
+    if (remedialSource === 'all') return allWrongQuestions;
+    return allWrongQuestions.filter((q) => q.examId === remedialSource);
+  }, [allWrongQuestions, remedialSource]);
+
+  // Handle generation action
+  const handleGenerateRemedialExam = async (specificAttemptExamId?: string) => {
+    const sourceId = specificAttemptExamId || remedialSource;
+    const questionsPool = sourceId === 'all'
+      ? allWrongQuestions
+      : allWrongQuestions.filter((q) => q.examId === sourceId);
+
+    if (questionsPool.length === 0) {
+      alert('Không tìm thấy câu làm sai nào trong bài thi được chọn.');
+      return;
+    }
+
+    setIsGeneratingRemedial(true);
+    setGenerationFeedback(
+      remedialMode === 'variation'
+        ? 'Gemini AI đang phân tích lỗi sai và tiến hành biến tấu câu hỏi (đổi số liệu & ngữ cảnh)...'
+        : 'Hệ thống đang xáo trộn phương án các câu sai để bạn kiểm tra lại phản xạ...'
+    );
+
+    try {
+      const { exam, modelUsed } = await createRemedialExam({
+        wrongQuestions: questionsPool,
+        mode: remedialMode,
+        questionCount: remedialCount,
+        studentTrack: (currentUser.track as 'CS' | 'ICT') || 'CS',
+      });
+
+      setGenerationFeedback(`Đã tạo thành công đề thi bằng ${modelUsed}! Đang chuyển vào phòng thi...`);
+
+      setTimeout(() => {
+        setIsGeneratingRemedial(false);
+        setGenerationFeedback(null);
+        if (onStartCustomExam) {
+          onStartCustomExam(exam);
+        } else {
+          onStartExam(exam.id, true);
+        }
+      }, 700);
+    } catch (err) {
+      console.error('Failed to generate remedial exam:', err);
+      setIsGeneratingRemedial(false);
+      setGenerationFeedback('Đã có lỗi xảy ra khi tạo đề thi.');
+    }
   };
 
   return (
@@ -481,6 +585,188 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
             </div>
           </div>
 
+          {/* AI REMEDIAL GENERATOR FEATURE BANNER & WORKSPACE */}
+          {examAttempts.length > 0 && (
+            <div className="rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 text-white border border-indigo-500/30 shadow-lg relative overflow-hidden space-y-5">
+              <div className="absolute top-0 right-0 -mt-6 -mr-6 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4 relative z-10">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-amber-300" />
+                      Gemini AI Studio • Khắc phục lỗ hổng
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 font-mono">
+                      {allWrongQuestions.length} câu làm sai
+                    </span>
+                  </div>
+
+                  <h4 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-indigo-400" />
+                    AI Sinh Đề Mới Từ Các Câu Làm Sai
+                  </h4>
+
+                  <p className="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
+                    Mô hình AI của web sẽ quét lại những câu bạn đã chọn sai trong các đề đã nộp, sau đó tạo ra đề thi mới: 
+                    <strong> làm lại trực diện</strong> hoặc <strong> biến tấu số liệu, đổi thứ tự, đổi ngữ cảnh thực tế & kiến thức liên quan</strong> để đảm bảo bạn nắm chắc bản chất, không học vẹt!
+                  </p>
+                </div>
+
+                <div className="shrink-0 flex md:flex-col items-center md:items-end justify-between gap-2">
+                  <span className="text-[11px] text-gray-400">Định hướng hiện tại</span>
+                  <span className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white font-mono font-bold text-xs">
+                    {currentUser.track === 'CS' ? 'Khoa học Máy tính (CS)' : 'Tin học Ứng dụng (ICT)'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Configuration Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                {/* 1. Generation Mode Selection */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-indigo-400" />
+                    1. Chế độ sinh đề AI:
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setRemedialMode('variation')}
+                      className={`p-2.5 rounded-xl text-left border transition-all ${
+                        remedialMode === 'variation'
+                          ? 'bg-indigo-600/50 border-indigo-400 text-white shadow-xs'
+                          : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-bold text-xs flex items-center gap-1">
+                          <Wand2 className="w-3 h-3 text-amber-300" /> Biến tấu
+                        </span>
+                        {remedialMode === 'variation' && <Check className="w-3 h-3 text-emerald-400" />}
+                      </div>
+                      <p className="text-[10px] text-gray-300 line-clamp-2 leading-tight">
+                        Đổi số liệu IP, bảng SQL, đổi ngữ cảnh & kiến thức tương đương.
+                      </p>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setRemedialMode('retest')}
+                      className={`p-2.5 rounded-xl text-left border transition-all ${
+                        remedialMode === 'retest'
+                          ? 'bg-indigo-600/50 border-indigo-400 text-white shadow-xs'
+                          : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-bold text-xs flex items-center gap-1">
+                          <RotateCcw className="w-3 h-3 text-blue-300" /> Làm lại
+                        </span>
+                        {remedialMode === 'retest' && <Check className="w-3 h-3 text-emerald-400" />}
+                      </div>
+                      <p className="text-[10px] text-gray-300 line-clamp-2 leading-tight">
+                        Giữ nguyên câu hỏi cũ nhưng xáo trộn 4 đáp án A/B/C/D.
+                      </p>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Source Selection */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                    <Filter className="w-3.5 h-3.5 text-blue-400" />
+                    2. Nguồn câu hỏi sai:
+                  </label>
+                  <select
+                    value={remedialSource}
+                    onChange={(e) => setRemedialSource(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-900/90 border border-white/20 text-xs text-white focus:outline-none focus:border-indigo-400"
+                  >
+                    <option value="all">
+                      Tất cả bài thi đã nộp ({allWrongQuestions.length} câu làm sai)
+                    </option>
+                    {examAttempts.map((att) => {
+                      const countForAtt = allWrongQuestions.filter((q) => q.examId === att.examId).length;
+                      return (
+                        <option key={att.id} value={att.examId}>
+                          {att.examTitle} ({countForAtt} câu sai)
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <p className="text-[10.5px] text-gray-400">
+                    Đang có <strong className="text-white font-mono">{activeWrongQuestions.length}</strong> câu sai trong nguồn đã chọn.
+                  </p>
+                </div>
+
+                {/* 3. Question Count & Action */}
+                <div className="space-y-2 flex flex-col justify-between">
+                  <div>
+                    <label className="text-xs font-bold text-gray-300 flex items-center gap-1.5 mb-1.5">
+                      <Zap className="w-3.5 h-3.5 text-amber-400" />
+                      3. Số lượng câu ôn tập:
+                    </label>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {[10, 15, 20].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          onClick={() => setRemedialCount(num)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                            remedialCount === num
+                              ? 'bg-amber-500 text-slate-950 font-black'
+                              : 'bg-white/10 text-gray-300 hover:bg-white/15'
+                          }`}
+                        >
+                          {num} câu
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setRemedialCount(Math.max(activeWrongQuestions.length, 5))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          remedialCount === Math.max(activeWrongQuestions.length, 5)
+                            ? 'bg-amber-500 text-slate-950 font-black'
+                            : 'bg-white/10 text-gray-300 hover:bg-white/15'
+                        }`}
+                      >
+                        Tất cả ({activeWrongQuestions.length})
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleGenerateRemedialExam()}
+                    disabled={isGeneratingRemedial || activeWrongQuestions.length === 0}
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-white font-black text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {isGeneratingRemedial ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                        <span>Đang sinh đề AI...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-4 h-4 fill-white" />
+                        <span>AI Tạo Đề & Vào Thi Ngay ➔</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Status & Feedback message */}
+              {generationFeedback && (
+                <div className="p-3 rounded-xl bg-white/10 border border-white/20 text-xs text-amber-200 flex items-center gap-2">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400 shrink-0" />
+                  <span>{generationFeedback}</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {examAttempts.length === 0 ? (
             <div className="py-14 text-center space-y-3">
               <div className="w-14 h-14 rounded-full bg-gray-100 dark:bg-[#252525] text-gray-400 mx-auto flex items-center justify-center">
@@ -503,6 +789,11 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
             </div>
           ) : (
             <div className="space-y-3.5">
+              <div className="flex items-center justify-between text-xs text-gray-500 font-bold px-1">
+                <span>DANH SÁCH BÀI THI ĐÃ NỘP</span>
+                <span>NHẤN &quot;AI BIẾN TẤU&quot; ĐỂ ÔN LẠI CÁC CÂU BỊ MẤT ĐIỂM</span>
+              </div>
+
               {examAttempts.map((attempt) => {
                 const durationMin = Math.floor(attempt.durationSeconds / 60);
                 const durationSec = attempt.durationSeconds % 60;
@@ -513,6 +804,9 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                   hour: '2-digit',
                   minute: '2-digit',
                 });
+
+                // Wrong questions for this single attempt
+                const wrongInThisAttempt = allWrongQuestions.filter((q) => q.examId === attempt.examId).length;
 
                 return (
                   <div
@@ -531,6 +825,11 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                           <Calendar className="w-3.5 h-3.5" />
                           {formattedDate}
                         </span>
+                        {wrongInThisAttempt > 0 && (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/40">
+                            {wrongInThisAttempt} câu làm sai
+                          </span>
+                        )}
                       </div>
 
                       <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300 flex-wrap">
@@ -552,8 +851,8 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 shrink-0 self-end md:self-center">
-                      <div className="text-right">
+                    <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
+                      <div className="text-right mr-1">
                         <span className="text-[11px] text-gray-500 block">Tổng điểm</span>
                         <span
                           className={`text-2xl font-black font-mono ${
@@ -571,9 +870,24 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                         </span>
                       </div>
 
+                      {/* AI Remedial Trigger Button for this specific attempt */}
+                      {wrongInThisAttempt > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleGenerateRemedialExam(attempt.examId)}
+                          disabled={isGeneratingRemedial}
+                          className="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs disabled:opacity-50"
+                          title="Dùng AI biến tấu các câu bạn đã làm sai ở đề này thành đề luyện tập mới"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                          <span>AI Biến tấu</span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => onStartExam(attempt.examId, true)}
-                        className="px-4 py-2 rounded-lg bg-[#2878C8] text-white text-xs font-bold hover:bg-[#2068B0] transition-colors flex items-center gap-1.5 shadow-xs"
+                        className="px-3.5 py-2 rounded-lg bg-gray-200 dark:bg-[#333] hover:bg-gray-300 dark:hover:bg-[#444] text-gray-800 dark:text-gray-200 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
+                        title="Làm lại nguyên vẹn đề thi này"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         Thi lại

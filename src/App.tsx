@@ -226,6 +226,12 @@ export default function App() {
     setActiveExam(found);
   };
 
+  // Start Custom Generated Exam (AI Remedial / Topic)
+  const handleStartCustomExam = (customExam: Exam) => {
+    setIsExamPracticeMode(true);
+    setActiveExam(customExam);
+  };
+
   // Start Daily 10 Challenge
   const handleStartDailyChallenge = () => {
     const dailyExam: Exam = {
@@ -382,6 +388,7 @@ export default function App() {
             {currentTab === 'practice' && (
               <ExamPractice
                 onStartExam={handleStartExam}
+                onStartCustomExam={handleStartCustomExam}
                 onStartDailyChallenge={handleStartDailyChallenge}
                 onStartTopicQuiz={handleStartTopicQuiz}
                 completedDailyToday={user.completedDailyToday}

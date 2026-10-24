@@ -10,6 +10,7 @@ import {
   analyzeVideoContent,
   generateEmbedding,
   generateRagTutorResponse,
+  generateRemedialExamFromMistakes,
 } from './gemini.ts';
 
 // Helper to parse JSON body from incoming stream
@@ -126,6 +127,19 @@ export async function handleApiRoute(req: IncomingMessage, res: ServerResponse):
         correctCount: body.correctCount ?? 7,
         topicBreakdown: body.topicBreakdown || [],
         wrongQuestions: body.wrongQuestions || [],
+      });
+      sendJson(res, 200, { success: true, ...result });
+      return true;
+    }
+
+    // 5c. AI Remedial Exam Generator from Mistakes (Gemini Flash)
+    if (url === '/api/gemini/generate-remedial-exam' && req.method === 'POST') {
+      const body = await parseJsonBody(req);
+      const result = await generateRemedialExamFromMistakes({
+        wrongQuestions: body.wrongQuestions || [],
+        mode: body.mode || 'variation',
+        questionCount: body.questionCount || 10,
+        studentTrack: body.studentTrack || 'CS',
       });
       sendJson(res, 200, { success: true, ...result });
       return true;
