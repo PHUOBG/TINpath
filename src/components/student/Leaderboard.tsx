@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   ChevronRight,
   Filter,
+  Crown,
+  Medal,
+  Sparkles,
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import { QUANG_NGAI_DISTRICTS, getSchoolRankings, SchoolRankingItem } from '../../data/schoolsData';
@@ -33,6 +36,8 @@ interface RankedStudent {
   problemsSolved: number;
   isCurrentUser: boolean;
   hasFlame?: boolean;
+  avatarUrl?: string;
+  title?: string;
 }
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({
@@ -45,6 +50,16 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('all');
   const [showRules, setShowRules] = useState(false);
+
+  // Helper for student initials
+  const getInitials = (fullName: string, username: string) => {
+    const clean = fullName.replace(/\(.*\)/, '').trim();
+    const parts = clean.split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return username.slice(0, 2).toUpperCase();
+  };
 
   // Schools / Organizations ranking from data
   const schoolRankings = useMemo(() => {
@@ -78,6 +93,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       score: 88.18,
       problemsSolved: 332,
       isCurrentUser: false,
+      avatarUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4',
+      title: 'Kiện tướng Olympic',
     },
     {
       rank: 2,
@@ -88,6 +105,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       score: 44.60,
       problemsSolved: 139,
       isCurrentUser: false,
+      avatarUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Leo&backgroundColor=c0aede',
+      title: 'Cao thủ Bậc 1',
     },
     {
       rank: 3,
@@ -98,6 +117,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       score: 66.56,
       problemsSolved: 110,
       isCurrentUser: false,
+      avatarUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka&backgroundColor=ffd5dc',
+      title: 'Tinh anh Bậc 2',
     },
     {
       rank: 4,
@@ -208,10 +229,17 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
         problemsSolved: Math.max(12, currentUser.streakDays * 3),
         isCurrentUser: true,
         hasFlame: currentUser.streakDays >= 5,
+        avatarUrl: currentUser.avatarUrl,
+        title: 'Chiến binh Tin học',
       },
       ...baseStudents.slice(4).map((s, idx) => ({ ...s, rank: idx + 6 })),
     ];
   }, [currentUser, baseStudents]);
+
+  // Top 3 Podium Students
+  const top1 = studentList[0];
+  const top2 = studentList[1];
+  const top3 = studentList[2];
 
   const filteredStudents = useMemo(() => {
     return studentList.filter(
@@ -473,6 +501,182 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       {/* ========================================================================= */}
       {activeTab === 'individual' && (
         <div className="space-y-5">
+          {/* TOP 3 PODIUM HALL OF FAME (COMPACT HEADER) */}
+          <div className="rounded-2xl bg-gradient-to-b from-amber-50/70 via-white to-gray-50/40 dark:from-[#24221b] dark:via-[#1E1E1E] dark:to-[#1A1A1A] border border-amber-200/80 dark:border-amber-900/40 p-4 sm:p-5 shadow-xs space-y-4">
+            {/* Header Title */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/50 dark:border-amber-900/30 pb-3">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-200 dark:border-amber-900/60 uppercase tracking-wider">
+                  <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span>BẢNG VÀNG VINH DANH • HALL OF FAME</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-gray-900 dark:text-white mt-1 tracking-tight">
+                  Top 3 Học Sinh Xuất Sắc Nhất
+                </h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400">
+                  Vinh danh các hạt giống tài năng dẫn đầu bảng vàng giải thuật toán & điểm rèn luyện
+                </p>
+              </div>
+
+              <div className="self-start sm:self-auto">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white dark:bg-[#252525] border border-amber-200/60 dark:border-[#383838] text-amber-800 dark:text-amber-300 shadow-xs">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  Chu kỳ đánh giá: Đợt thi thử THPT 2026
+                </span>
+              </div>
+            </div>
+
+            {/* 3-Column Podium */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 items-end pt-2 pb-0 max-w-2xl mx-auto">
+              {/* TOP 2 (HẠNG 2) - LEFT */}
+              {top2 && (
+                <div className="flex flex-col items-center">
+                  {/* Medal Icon on top */}
+                  <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-500 flex items-center justify-center text-xs shadow-xs -mb-2 z-10">
+                    🥈
+                  </div>
+                  {/* Avatar */}
+                  <div className="w-13 h-13 sm:w-16 sm:h-16 rounded-full bg-[#1b4d3e] text-white font-bold text-lg sm:text-xl flex items-center justify-center ring-3 sm:ring-4 ring-slate-300 dark:ring-slate-500 shadow-md overflow-hidden relative">
+                    {top2.avatarUrl ? (
+                      <img src={top2.avatarUrl} alt={top2.fullName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{getInitials(top2.fullName, top2.username)}</span>
+                    )}
+                  </div>
+                  {/* Badge */}
+                  <div className="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 font-extrabold text-[9px] sm:text-[10px] -mt-2 z-10 shadow-xs uppercase tracking-wider flex items-center gap-0.5">
+                    🥈 HẠNG 2
+                  </div>
+                  {/* Meta */}
+                  <div className="text-center mt-1 w-full px-1">
+                    <span className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white block truncate">
+                      {top2.fullName}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate font-mono">
+                      @{top2.username}
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-[#2A2A2A] px-1.5 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
+                      {top2.schoolName.replace('Trường THPT ', '')}
+                    </span>
+                  </div>
+                  {/* Pedestal Box */}
+                  <div className="w-full h-22 sm:h-26 rounded-t-2xl border-2 border-b-0 border-slate-300 dark:border-slate-600 bg-gradient-to-b from-slate-100/90 via-slate-50/50 to-white dark:from-slate-800/40 dark:via-slate-900/10 dark:to-[#1E1E1E] p-2 flex flex-col justify-between items-center text-center shadow-xs mt-2">
+                    <span className="text-2xl sm:text-3xl font-black text-slate-400 dark:text-slate-500 font-mono leading-none pt-0.5">
+                      2
+                    </span>
+                    <div className="space-y-0.5">
+                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 font-mono block">
+                        {top2.score} pts
+                      </span>
+                      <span className="text-[9px] sm:text-[10px] font-semibold text-slate-600 dark:text-slate-400 block truncate">
+                        🥋 {top2.title || 'Cao thủ Bậc 1'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TOP 1 (QUÁN QUÂN) - CENTER (ELEVATED) */}
+              {top1 && (
+                <div className="flex flex-col items-center">
+                  {/* Crown Icon on top */}
+                  <div
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-400 border border-amber-300 flex items-center justify-center text-xs sm:text-sm shadow-md -mb-2 z-10 animate-bounce"
+                    style={{ animationDuration: '2.5s' }}
+                  >
+                    👑
+                  </div>
+                  {/* Avatar */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#1b4d3e] text-white font-black text-xl sm:text-2xl flex items-center justify-center ring-4 ring-amber-400 shadow-xl overflow-hidden relative">
+                    {top1.avatarUrl ? (
+                      <img src={top1.avatarUrl} alt={top1.fullName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{getInitials(top1.fullName, top1.username)}</span>
+                    )}
+                  </div>
+                  {/* Badge */}
+                  <div className="px-3 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-amber-950 font-black text-[10px] sm:text-xs -mt-2.5 z-10 shadow-sm uppercase tracking-wider flex items-center gap-1">
+                    🏆 QUÁN QUÂN
+                  </div>
+                  {/* Meta */}
+                  <div className="text-center mt-1 w-full px-1">
+                    <span className="font-black text-xs sm:text-base text-gray-900 dark:text-white block truncate">
+                      {top1.fullName}
+                    </span>
+                    <span className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 block truncate font-mono">
+                      @{top1.username}
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/70 px-2 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
+                      {top1.schoolName.replace('Trường THPT ', '')}
+                    </span>
+                  </div>
+                  {/* Pedestal Box */}
+                  <div className="w-full h-30 sm:h-34 rounded-t-2xl border-2 border-b-0 border-amber-400 dark:border-amber-500 bg-gradient-to-b from-amber-100/90 via-amber-50/40 to-white dark:from-amber-950/50 dark:via-amber-900/10 dark:to-[#1E1E1E] p-2.5 flex flex-col justify-between items-center text-center shadow-md mt-2">
+                    <span className="text-3xl sm:text-4xl font-black text-amber-500 dark:text-amber-400 font-mono leading-none pt-0.5">
+                      1
+                    </span>
+                    <div className="space-y-0.5">
+                      <span className="text-xs sm:text-sm font-extrabold text-amber-900 dark:text-amber-200 font-mono block">
+                        {top1.score} pts
+                      </span>
+                      <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 dark:text-amber-300 block truncate">
+                        👑 {top1.title || 'Kiện tướng Olympic'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TOP 3 (HẠNG 3) - RIGHT */}
+              {top3 && (
+                <div className="flex flex-col items-center">
+                  {/* Medal Icon on top */}
+                  <div className="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950 border border-amber-600/50 flex items-center justify-center text-xs shadow-xs -mb-2 z-10">
+                    🥉
+                  </div>
+                  {/* Avatar */}
+                  <div className="w-13 h-13 sm:w-16 sm:h-16 rounded-full bg-[#1b4d3e] text-white font-bold text-lg sm:text-xl flex items-center justify-center ring-3 sm:ring-4 ring-amber-700/60 dark:ring-amber-700/70 shadow-md overflow-hidden relative">
+                    {top3.avatarUrl ? (
+                      <img src={top3.avatarUrl} alt={top3.fullName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{getInitials(top3.fullName, top3.username)}</span>
+                    )}
+                  </div>
+                  {/* Badge */}
+                  <div className="px-2.5 py-0.5 rounded-full bg-amber-800 text-amber-100 font-extrabold text-[9px] sm:text-[10px] -mt-2 z-10 shadow-xs uppercase tracking-wider flex items-center gap-0.5">
+                    🥉 HẠNG 3
+                  </div>
+                  {/* Meta */}
+                  <div className="text-center mt-1 w-full px-1">
+                    <span className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white block truncate">
+                      {top3.fullName}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate font-mono">
+                      @{top3.username}
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-[#2A2A2A] px-1.5 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
+                      {top3.schoolName.replace('Trường THPT ', '')}
+                    </span>
+                  </div>
+                  {/* Pedestal Box */}
+                  <div className="w-full h-18 sm:h-22 rounded-t-2xl border-2 border-b-0 border-amber-700/50 dark:border-amber-700/60 bg-gradient-to-b from-amber-100/60 via-orange-50/30 to-white dark:from-amber-950/30 dark:via-orange-950/10 dark:to-[#1E1E1E] p-2 flex flex-col justify-between items-center text-center shadow-xs mt-2">
+                    <span className="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-600 font-mono leading-none pt-0.5">
+                      3
+                    </span>
+                    <div className="space-y-0.5">
+                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 font-mono block">
+                        {top3.score} pts
+                      </span>
+                      <span className="text-[9px] sm:text-[10px] font-semibold text-amber-800 dark:text-amber-300 block truncate">
+                        🎖️ {top3.title || 'Tinh anh Bậc 2'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Search student */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             <div className="relative flex-1 sm:max-w-sm">
@@ -526,21 +730,30 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                         </span>
                       </td>
 
-                      {/* Username, Name, School */}
+                      {/* Avatar, Username, Name, School */}
                       <td className="py-3.5 px-5">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                          <div>
-                            <span className="font-bold text-sm sm:text-base text-red-600 dark:text-red-400 hover:underline cursor-pointer flex items-center gap-1.5">
-                              {st.hasFlame && <span title="Chuỗi ngày liên tục">🔥</span>}
-                              {st.username}
-                            </span>
-                            <span className="text-xs text-gray-600 dark:text-gray-400 block mt-0.5">
-                              {st.fullName}
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0c4a6e] to-[#2878C8] text-white font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden shadow-xs ring-1 ring-gray-200 dark:ring-gray-700">
+                            {st.avatarUrl ? (
+                              <img src={st.avatarUrl} alt={st.fullName} className="w-full h-full object-cover" />
+                            ) : (
+                              <span>{getInitials(st.fullName, st.username)}</span>
+                            )}
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 flex-1 min-w-0">
+                            <div>
+                              <span className="font-bold text-sm sm:text-base text-red-600 dark:text-red-400 hover:underline cursor-pointer flex items-center gap-1.5 truncate">
+                                {st.hasFlame && <span title="Chuỗi ngày liên tục">🔥</span>}
+                                {st.username}
+                              </span>
+                              <span className="text-xs text-gray-600 dark:text-gray-400 block mt-0.5 truncate">
+                                {st.fullName}
+                              </span>
+                            </div>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 italic truncate sm:ml-4">
+                              {st.schoolName}
                             </span>
                           </div>
-                          <span className="text-xs text-gray-500 dark:text-gray-400 italic">
-                            {st.schoolName}
-                          </span>
                         </div>
                       </td>
 
