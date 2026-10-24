@@ -96,6 +96,11 @@ export async function updateProfile(
 // ---------------------------------------------------------------------------
 // EXAM ATTEMPTS — Lưu và lấy lịch sử thi
 // ---------------------------------------------------------------------------
+function isUuid(str?: string): boolean {
+  if (!str) return false;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+}
+
 export async function saveExamAttempt(attempt: ExamAttempt): Promise<boolean> {
   if (!isSupabaseConfigured()) {
     const existing = LS.get<ExamAttempt[]>(STORAGE_KEYS.EXAM_ATTEMPTS) || [];
@@ -103,25 +108,49 @@ export async function saveExamAttempt(attempt: ExamAttempt): Promise<boolean> {
     return true;
   }
 
-  const { error } = await supabase.from('exam_attempts').insert({
-    id: attempt.id,
-    exam_id: attempt.examId,
-    exam_title: attempt.examTitle,
-    user_id: attempt.userId,
-    track: attempt.track,
-    started_at: attempt.startedAt,
-    submitted_at: attempt.submittedAt,
-    duration_seconds: attempt.durationSeconds,
-    total_score: attempt.totalScore,
-    part1_score: attempt.part1Score,
-    part2_score: attempt.part2Score,
-    correct_part1_count: attempt.correctPart1Count,
-    part2_breakdown: attempt.part2Breakdown,
-    answers: attempt.answers,
-    xp_earned: attempt.xpEarned,
-  });
+  try {
+    let effectiveUserId = attempt.userId;
+    if (!isUuid(effectiveUserId)) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.id) {
+        effectiveUserId = user.id;
+      } else {
+        console.warn('Không thể lưu exam_attempt vào Supabase: Người dùng chưa đăng nhập tài khoản Supabase thật.');
+        return false;
+      }
+    }
 
-  return !error;
+    const payload: any = {
+      exam_id: attempt.examId,
+      exam_title: attempt.examTitle,
+      user_id: effectiveUserId,
+      track: attempt.track,
+      started_at: attempt.startedAt,
+      submitted_at: attempt.submittedAt,
+      duration_seconds: attempt.durationSeconds,
+      total_score: attempt.totalScore,
+      part1_score: attempt.part1Score,
+      part2_score: attempt.part2Score,
+      correct_part1_count: attempt.correctPart1Count,
+      part2_breakdown: attempt.part2Breakdown,
+      answers: attempt.answers,
+      xp_earned: attempt.xpEarned,
+    };
+
+    if (isUuid(attempt.id)) {
+      payload.id = attempt.id;
+    }
+
+    const { error } = await supabase.from('exam_attempts').insert(payload);
+    if (error) {
+      console.warn('Lỗi lưu exam_attempt vào Supabase:', error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn('saveExamAttempt exception:', err);
+    return false;
+  }
 }
 
 export async function getExamAttempts(userId: string): Promise<ExamAttempt[]> {
@@ -281,31 +310,102 @@ export async function getTeacherClassrooms(teacherId: string): Promise<Classroom
   }));
 }
 
-export async function getClassroomAssignments(classroomId: string): Promise<Assignment[]> {
+export async function saveClassroom(cls: Classroom): Promise<boolean> {
   if (!isSupabaseConfigured()) {
-    return (LS.get<Assignment[]>(STORAGE_KEYS.ASSIGNMENTS) || [])
-      .filter(a => a.classroomId === classroomId);
+    return true;
   }
+  try {
+    let teacherId = cls.teacherId;
+    if (!isUuid(teacherId)) {
+      const { data: { user } } = await supabase.auth.getUser();
+      teacherId = user?.id || '';
+    }
 
-  const { data, error } = await supabase
-    .from('assignments')
-    .select('*')
-    .eq('classroom_id', classroomId)
-    .order('created_at', { ascending: false });
+    const payload: any = {
+      id: cls.id,
+      name: cls.name,
+      code: cls.code,
+      grade: cls.grade,
+      school_name: cls.schoolName,
+      teacher_name: cls.teacherName,
+      student_count: cls.studentCount || 0,
+    };
+    if (isUuid(teacherId)) {
+      payload.teacher_id = teacherId;
+    }
 
-  if (error || !data) return [];
+    const { error } = await supabase.from('classrooms').upsert(payload);
+    if (error) {
+      console.warn('Lỗi lưu classroom vào Supabase:', error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn('saveClassroom exception:', err);
+    return false;
+  }
+}
 
-  return data.map(row => ({
-    id: row.id,
-    classroomId: row.classroom_id,
-    title: row.title,
-    topicId: row.topic_id,
-    dueDate: row.due_date,
-    questionCount: row.question_count,
-    allowRetake: row.allow_retake,
-    status: row.status,
-    submissionsCount: 0,
-  }));
+export async function saveAssignment(asg: Assignment): Promise<boolean> {
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+  try {
+    const { error } = await supabase.from('assignments').upsert({
+      id: asg.id,
+      classroom_id: asg.classroomId,
+      title: asg.title,
+      topic_id: asg.topicId,
+      due_date: asg.dueDate,
+      question_count: asg.questionCount,
+      allow_retake: asg.allowRetake,
+      status: asg.status || 'active',
+    });
+    if (error) {
+      console.warn('Lỗi lưu assignment vào Supabase:', error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn('saveAssignment exception:', err);
+    return false;
+  }
+}
+
+export async function recordDailyChallengeAttempt(params: {
+  userId: string;
+  score: number;
+  totalQuestions?: number;
+  correctCount: number;
+  xpAwarded?: number;
+}): Promise<boolean> {
+  if (!isSupabaseConfigured()) return true;
+  try {
+    let effectiveUserId = params.userId;
+    if (!isUuid(effectiveUserId)) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.id) effectiveUserId = user.id;
+      else return false;
+    }
+
+    const { error } = await supabase.from('daily_challenge_attempts').upsert({
+      user_id: effectiveUserId,
+      challenge_date: new Date().toISOString().split('T')[0],
+      score: params.score,
+      total_questions: params.totalQuestions || 10,
+      correct_count: params.correctCount,
+      xp_awarded: params.xpAwarded || 30,
+    }, { onConflict: 'user_id,challenge_date' });
+
+    if (error) {
+      console.warn('Lỗi ghi daily_challenge_attempt vào Supabase:', error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn('recordDailyChallengeAttempt exception:', err);
+    return false;
+  }
 }
 
 // ---------------------------------------------------------------------------

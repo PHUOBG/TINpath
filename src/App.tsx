@@ -26,7 +26,13 @@ import { storageService } from './services/storageService';
 import { OFFICIAL_EXAMS, DAILY_CHALLENGE_POOL } from './data/officialExamsData';
 import { initAuth, googleSignIn, logout } from './services/firebaseAuth';
 import { verifyServerXP } from './services/geminiClient';
-import { saveExamAttempt, updateProfile } from './services/supabaseDbService';
+import {
+  saveExamAttempt,
+  updateProfile,
+  saveClassroom,
+  saveAssignment,
+  recordDailyChallengeAttempt,
+} from './services/supabaseDbService';
 import { onAuthStateChange } from './services/supabaseAuthService';
 import { isSupabaseConfigured } from './services/supabaseClient';
 
@@ -273,7 +279,17 @@ export default function App() {
           correctCount: attempt.correctPart1Count,
           totalQuestions: 10,
         });
-        storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, verifyRes.awardedXP || 80);
+        const awardedXP = verifyRes.awardedXP || 80;
+        storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, awardedXP);
+        if (isSupabaseConfigured()) {
+          recordDailyChallengeAttempt({
+            userId: user.id,
+            score: attempt.totalScore,
+            totalQuestions: 10,
+            correctCount: attempt.correctPart1Count,
+            xpAwarded: awardedXP,
+          }).catch(console.error);
+        }
       } catch {
         storageService.recordDailyChallengeCompleted(attempt.correctPart1Count, 80);
       }
@@ -410,10 +426,16 @@ export default function App() {
             onAddClassroom={(cls) => {
               storageService.addClassroom(cls);
               setClassrooms(storageService.getClassrooms());
+              if (isSupabaseConfigured()) {
+                saveClassroom(cls).catch(console.error);
+              }
             }}
             onAddAssignment={(assign) => {
               storageService.addAssignment(assign);
               setAssignments(storageService.getAssignments());
+              if (isSupabaseConfigured()) {
+                saveAssignment(assign).catch(console.error);
+              }
             }}
           />
         )}
