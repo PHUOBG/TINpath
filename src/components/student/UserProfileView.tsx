@@ -33,26 +33,196 @@ import { UserProfile, ExamAttempt, SubjectTopicId } from '../../types';
 import { QUANG_NGAI_DISTRICTS, getSchoolsByDistrict } from '../../data/schoolsData';
 import { storageService } from '../../services/storageService';
 
-// Curated preset avatars for TinPath
+// Curated preset avatars for TinPath (including logos in /images/avt)
 export const PRESET_AVATARS = [
+  // 1. Official & Educational Logos
   {
     id: 'tinpath-official',
     name: 'Logo TinPath',
     url: '/a_modern_clean_square_app_icon_for_an_educational_programming_platform_called-removebg-preview.png',
   },
   {
+    id: 'logo-sogd',
+    name: 'Sở GD&ĐT',
+    url: '/images/avt/logo_sogd%26dt.png',
+  },
+  {
+    id: 'logo-doan',
+    name: 'Đoàn Thanh Niên',
+    url: '/images/avt/logo_doanthanhnien.png',
+  },
+  {
+    id: 'logo-dhsp-hue',
+    name: 'ĐH Sư Phạm Huế',
+    url: encodeURI('/images/avt/Logo_Trường_Đại_học_Sư_phạm,_Đại_học_Huế.svg.webp'),
+  },
+  {
+    id: 'logo-truong',
+    name: 'Huy hiệu Trường',
+    url: '/images/avt/logo_truong.jpg',
+  },
+
+  // 2. Student & Gaming Avatars from /images/avt
+  {
+    id: 'avt-lq-chat',
+    name: 'Liên Quân',
+    url: '/images/avt/avatar-lien-quan-mobile-chat_112213720.jpg',
+  },
+  {
+    id: 'avt-krixi-meme',
+    name: 'Meme Krixi',
+    url: '/images/avt/meme-lien-quan-mobile-krixi-co-khuon-mat-meo-mo.jpg',
+  },
+  {
+    id: 'avt-jack',
+    name: 'Trạm Phát Sóng',
+    url: '/images/avt/Jack-TRAM-PHAT-SONG.jpg',
+  },
+  {
+    id: 'avt-chibi-ngac-nhien',
+    name: 'Chibi Anime',
+    url: '/images/avt/hinh-anh-anime-chibi-nu-voi-bieu-cam-ngac-nhien-997_1782013950.webp',
+  },
+  {
+    id: 'avt-screen-boy',
+    name: 'Boy Anime',
+    url: '/images/avt/Screen%20Shot%202022-09-14%20at%2007_22_04.png',
+  },
+  {
+    id: 'avt-anime-wallpaper',
+    name: 'Anime Aesthetic',
+    url: '/images/avt/thumb-1920-323073.png',
+  },
+  {
+    id: 'avt-art-1',
+    name: 'Học sinh 01',
+    url: '/images/avt/297c4b3a82fa9ad75953a9a8cf4d45b5.jpg',
+  },
+  {
+    id: 'avt-art-2',
+    name: 'Học sinh 02',
+    url: '/images/avt/e1971075a6ce611dd23c9ac7a13dd2ca.jpg',
+  },
+  {
+    id: 'avt-art-3',
+    name: 'Học sinh 03',
+    url: '/images/avt/fafc4b1052deae2438681e45ff7335a5.jpg',
+  },
+  {
+    id: 'avt-img-base-jpg',
+    name: 'Avatar 01',
+    url: '/images/avt/images.jpg',
+  },
+  {
+    id: 'avt-img-base-png',
+    name: 'Avatar 02',
+    url: '/images/avt/images.png',
+  },
+  {
+    id: 'avt-img-1-jpg',
+    name: 'Avatar 03',
+    url: '/images/avt/images%20(1).jpg',
+  },
+  {
+    id: 'avt-img-1-png',
+    name: 'Avatar 04',
+    url: '/images/avt/images%20(1).png',
+  },
+  {
+    id: 'avt-img-2-jpg',
+    name: 'Avatar 05',
+    url: '/images/avt/images%20(2).jpg',
+  },
+  {
+    id: 'avt-img-2-png',
+    name: 'Avatar 06',
+    url: '/images/avt/images%20(2).png',
+  },
+  {
+    id: 'avt-img-3-jpg',
+    name: 'Avatar 07',
+    url: '/images/avt/images%20(3).jpg',
+  },
+  {
+    id: 'avt-img-3-png',
+    name: 'Avatar 08',
+    url: '/images/avt/images%20(3).png',
+  },
+  {
+    id: 'avt-img-4-jpg',
+    name: 'Avatar 09',
+    url: '/images/avt/images%20(4).jpg',
+  },
+  {
+    id: 'avt-img-4-png',
+    name: 'Avatar 10',
+    url: '/images/avt/images%20(4).png',
+  },
+  {
+    id: 'avt-img-5-jpg',
+    name: 'Avatar 11',
+    url: '/images/avt/images%20(5).jpg',
+  },
+  {
+    id: 'avt-img-5-png',
+    name: 'Avatar 12',
+    url: '/images/avt/images%20(5).png',
+  },
+  {
+    id: 'avt-img-6-jpg',
+    name: 'Avatar 13',
+    url: '/images/avt/images%20(6).jpg',
+  },
+  {
+    id: 'avt-img-6-png',
+    name: 'Avatar 14',
+    url: '/images/avt/images%20(6).png',
+  },
+  {
+    id: 'avt-img-7-jpg',
+    name: 'Avatar 15',
+    url: '/images/avt/images%20(7).jpg',
+  },
+  {
+    id: 'avt-img-7-png',
+    name: 'Avatar 16',
+    url: '/images/avt/images%20(7).png',
+  },
+  {
+    id: 'avt-img-8-jpg',
+    name: 'Avatar 17',
+    url: '/images/avt/images%20(8).jpg',
+  },
+  {
+    id: 'avt-img-9-jpg',
+    name: 'Avatar 18',
+    url: '/images/avt/images%20(9).jpg',
+  },
+  {
+    id: 'avt-img-10-jpg',
+    name: 'Avatar 19',
+    url: '/images/avt/images%20(10).jpg',
+  },
+  {
+    id: 'avt-img-11-jpg',
+    name: 'Avatar 20',
+    url: '/images/avt/images%20(11).jpg',
+  },
+
+  // 3. Cute Vector Illustrations
+  {
     id: 'student-boy',
-    name: 'Nam sinh Tin học',
+    name: 'Nam sinh Tin',
     url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4',
   },
   {
     id: 'student-girl',
-    name: 'Nữ sinh Tin học',
+    name: 'Nữ sinh Tin',
     url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka&backgroundColor=ffd5dc',
   },
   {
     id: 'ai-robot',
-    name: 'Robot AI TinPath',
+    name: 'Robot AI',
     url: 'https://api.dicebear.com/7.x/bottts/svg?seed=PathBot2026&backgroundColor=c0aede',
   },
   {
@@ -67,22 +237,22 @@ export const PRESET_AVATARS = [
   },
   {
     id: 'cool-cat',
-    name: 'Mèo Developer',
+    name: 'Mèo Dev',
     url: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Whiskers&backgroundColor=d1d4f9',
   },
   {
     id: 'pixel-champ',
-    name: 'Chiến binh Pixel',
+    name: 'Pixel Hero',
     url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Hero12&backgroundColor=b6e3f4',
   },
   {
     id: 'scholar-girl',
-    name: 'Nữ sinh Chuyên Tin',
+    name: 'Chuyên Tin',
     url: 'https://api.dicebear.com/7.x/lorelei/svg?seed=Mimi&backgroundColor=ffd5dc',
   },
   {
     id: 'tech-guru',
-    name: 'Thần đồng Thuật toán',
+    name: 'Thần đồng Tin',
     url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=TechMaster&backgroundColor=c0aede',
   },
 ];
@@ -160,9 +330,8 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
   // Avatar Modal & State
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
-  const [avatarModalTab, setAvatarModalTab] = useState<'upload' | 'presets' | 'url'>('upload');
+  const [avatarModalTab, setAvatarModalTab] = useState<'presets' | 'upload'>('presets');
   const [selectedAvatarUrl, setSelectedAvatarUrl] = useState<string | null>(user.avatarUrl || null);
-  const [urlInput, setUrlInput] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isProcessingImage, setIsProcessingImage] = useState(false);
 
@@ -268,10 +437,9 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
   };
 
   // Avatar Management Handlers
-  const handleOpenAvatarModal = (defaultTab: 'upload' | 'presets' | 'url' = 'upload') => {
+  const handleOpenAvatarModal = (defaultTab: 'presets' | 'upload' = 'presets') => {
     setSelectedAvatarUrl(user.avatarUrl || null);
     setAvatarModalTab(defaultTab);
-    setUrlInput(user.avatarUrl?.startsWith('http') ? user.avatarUrl : '');
     setIsAvatarModalOpen(true);
   };
 
@@ -450,7 +618,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
           <div className="flex flex-col items-center text-center space-y-3.5">
             <div className="relative group">
               <div
-                onClick={() => handleOpenAvatarModal('upload')}
+                onClick={() => handleOpenAvatarModal('presets')}
                 className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-[#0c4a6e] via-[#0369a1] to-[#2878C8] text-white font-black text-3xl sm:text-4xl flex items-center justify-center shadow-md ring-4 ring-blue-100 dark:ring-blue-950/60 select-none overflow-hidden cursor-pointer relative transition-transform duration-200 group-hover:scale-102"
                 title="Nhấn để đổi ảnh đại diện"
               >
@@ -478,7 +646,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               {/* Interactive Camera Trigger Button on bottom-right */}
               <button
                 type="button"
-                onClick={() => handleOpenAvatarModal('upload')}
+                onClick={() => handleOpenAvatarModal('presets')}
                 className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-[#2878C8] hover:bg-[#1f63a6] text-white border-2 border-white dark:border-[#1E1E1E] flex items-center justify-center shadow-md transition-all hover:scale-110 cursor-pointer z-20"
                 title="Thay đổi ảnh đại diện"
               >
@@ -774,7 +942,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/70 via-sky-50/40 to-transparent dark:from-blue-950/20 dark:via-transparent border border-blue-100 dark:border-blue-900/40 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
                   <div className="relative group shrink-0">
                     <div
-                      onClick={() => handleOpenAvatarModal('upload')}
+                      onClick={() => handleOpenAvatarModal('presets')}
                       className="w-20 h-20 rounded-full bg-gradient-to-br from-[#0c4a6e] via-[#0369a1] to-[#2878C8] text-white font-black text-2xl flex items-center justify-center shadow-sm ring-3 ring-[#2878C8]/30 overflow-hidden cursor-pointer relative"
                       title="Nhấn để đổi ảnh"
                     >
@@ -820,7 +988,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
                       <button
                         type="button"
-                        onClick={() => handleOpenAvatarModal('upload')}
+                        onClick={() => handleOpenAvatarModal('presets')}
                         className="px-3.5 py-1.5 rounded-lg bg-[#2878C8] hover:bg-[#2068B0] text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
                       >
                         <Camera className="w-3.5 h-3.5" />
@@ -1056,47 +1224,84 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 </span>
               </div>
 
-              {/* Tab Selector */}
-              <div className="grid grid-cols-3 gap-1 p-1 bg-gray-100 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-200/80 dark:border-[#333]">
-                <button
-                  type="button"
-                  onClick={() => setAvatarModalTab('upload')}
-                  className={`py-2 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
-                    avatarModalTab === 'upload'
-                      ? 'bg-white dark:bg-[#1E1E1E] text-[#2878C8] shadow-xs'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  <Upload className="w-3.5 h-3.5" />
-                  <span>Tải ảnh lên</span>
-                </button>
+              {/* Tab Selector: Only Presets & Upload (URL mode removed as requested) */}
+              <div className="grid grid-cols-2 gap-1.5 p-1 bg-gray-100 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-200/80 dark:border-[#333]">
                 <button
                   type="button"
                   onClick={() => setAvatarModalTab('presets')}
-                  className={`py-2 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+                  className={`py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
                     avatarModalTab === 'presets'
                       ? 'bg-white dark:bg-[#1E1E1E] text-[#2878C8] shadow-xs'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Kho avatar</span>
+                  <span>Kho avatar & Logo ({PRESET_AVATARS.length})</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => setAvatarModalTab('url')}
-                  className={`py-2 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
-                    avatarModalTab === 'url'
+                  onClick={() => setAvatarModalTab('upload')}
+                  className={`py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+                    avatarModalTab === 'upload'
                       ? 'bg-white dark:bg-[#1E1E1E] text-[#2878C8] shadow-xs'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  <LinkIcon className="w-3.5 h-3.5" />
-                  <span>Liên kết URL</span>
+                  <Upload className="w-3.5 h-3.5 text-[#2878C8]" />
+                  <span>Tải ảnh từ máy</span>
                 </button>
               </div>
 
-              {/* TAB 1: Upload from device */}
+              {/* TAB 1: Presets & Logo collection */}
+              {avatarModalTab === 'presets' && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                      Chọn một ảnh đại diện hoặc logo yêu thích:
+                    </span>
+                    <span className="text-[11px] font-mono text-gray-400">
+                      {PRESET_AVATARS.length} ảnh có sẵn
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 max-h-80 overflow-y-auto pr-1 p-0.5">
+                    {PRESET_AVATARS.map((p) => {
+                      const isSelected = selectedAvatarUrl === p.url;
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => setSelectedAvatarUrl(p.url)}
+                          className={`relative p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 group cursor-pointer ${
+                            isSelected
+                              ? 'border-[#2878C8] bg-blue-50/80 dark:bg-blue-950/40 shadow-xs scale-105'
+                              : 'border-gray-200/80 dark:border-[#333] hover:border-blue-300 dark:hover:border-[#555] hover:bg-gray-50 dark:hover:bg-[#252525]'
+                          }`}
+                        >
+                          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-[#2C2C2C] shadow-xs ring-1 ring-gray-200 dark:ring-gray-700">
+                            <img
+                              src={p.url}
+                              alt={p.name}
+                              className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                          </div>
+                          <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300 truncate w-full text-center">
+                            {p.name}
+                          </span>
+                          {isSelected && (
+                            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2878C8] text-white flex items-center justify-center text-[10px] shadow-xs">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 2: Upload from device */}
               {avatarModalTab === 'upload' && (
                 <div className="space-y-3">
                   <input
@@ -1118,7 +1323,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       if (f) handleModalFileSelect(f);
                     }}
                     onClick={() => modalFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-gray-300 dark:border-[#444] hover:border-[#2878C8] dark:hover:border-[#2878C8] rounded-2xl p-6 text-center cursor-pointer transition-colors bg-gray-50/50 dark:bg-[#252525]/50 group"
+                    className="border-2 border-dashed border-gray-300 dark:border-[#444] hover:border-[#2878C8] dark:hover:border-[#2878C8] rounded-2xl p-7 text-center cursor-pointer transition-colors bg-gray-50/50 dark:bg-[#252525]/50 group"
                   >
                     <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/50 text-[#2878C8] flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                       <Upload className="w-6 h-6" />
@@ -1130,76 +1335,6 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       Hỗ trợ JPG, PNG, WEBP, GIF (Tự động nén tối ưu hiển thị siêu nhanh)
                     </p>
                   </div>
-                </div>
-              )}
-
-              {/* TAB 2: Presets collection */}
-              {avatarModalTab === 'presets' && (
-                <div className="space-y-3">
-                  <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 block">
-                    Chọn một avatar từ bộ sưu tập độc quyền của TinPath:
-                  </span>
-                  <div className="grid grid-cols-5 gap-3 max-h-56 overflow-y-auto pr-1">
-                    {PRESET_AVATARS.map((p) => {
-                      const isSelected = selectedAvatarUrl === p.url;
-                      return (
-                        <button
-                          key={p.id}
-                          type="button"
-                          onClick={() => setSelectedAvatarUrl(p.url)}
-                          className={`relative p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 group ${
-                            isSelected
-                              ? 'border-[#2878C8] bg-blue-50 dark:bg-blue-950/40 shadow-xs scale-105'
-                              : 'border-transparent hover:border-gray-200 dark:hover:border-[#444] hover:bg-gray-50 dark:hover:bg-[#252525]'
-                          }`}
-                        >
-                          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-[#2C2C2C] shadow-xs">
-                            <img src={p.url} alt={p.name} className="w-full h-full object-cover" />
-                          </div>
-                          <span className="text-[10px] font-medium text-gray-600 dark:text-gray-300 truncate w-full text-center">
-                            {p.name}
-                          </span>
-                          {isSelected && (
-                            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2878C8] text-white flex items-center justify-center text-[10px]">
-                              <Check className="w-2.5 h-2.5 stroke-[3]" />
-                            </div>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 3: Custom image URL */}
-              {avatarModalTab === 'url' && (
-                <div className="space-y-3">
-                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300">
-                    Dán liên kết ảnh từ internet:
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="url"
-                      value={urlInput}
-                      onChange={(e) => setUrlInput(e.target.value)}
-                      placeholder="https://example.com/my-avatar.jpg"
-                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] bg-white dark:bg-[#252525] text-gray-900 dark:text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#2878C8]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (urlInput.trim()) {
-                          setSelectedAvatarUrl(urlInput.trim());
-                        }
-                      }}
-                      className="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-[#2C2C2C] hover:bg-[#2878C8] hover:text-white text-gray-700 dark:text-gray-200 text-xs font-bold transition-colors"
-                    >
-                      Áp dụng
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-gray-400 dark:text-gray-500">
-                    Lưu ý: Đảm bảo đường link ảnh công khai và có định dạng hợp lệ.
-                  </p>
                 </div>
               )}
             </div>
