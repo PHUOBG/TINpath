@@ -700,39 +700,33 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                   </p>
                 </div>
 
-                {/* 3. Question Count & Action */}
+                {/* 3. Official THPTQG Exam Structure & Action */}
                 <div className="space-y-2 flex flex-col justify-between">
                   <div>
                     <label className="text-xs font-bold text-gray-300 flex items-center gap-1.5 mb-1.5">
-                      <Zap className="w-3.5 h-3.5 text-amber-400" />
-                      3. Số lượng câu ôn tập:
+                      <Award className="w-3.5 h-3.5 text-amber-400" />
+                      3. Cấu trúc chuẩn Đề thi THPTQG (Bộ GD&ĐT):
                     </label>
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      {[10, 15, 20].map((num) => (
-                        <button
-                          key={num}
-                          type="button"
-                          onClick={() => setRemedialCount(num)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                            remedialCount === num
-                              ? 'bg-amber-500 text-slate-950 font-black'
-                              : 'bg-white/10 text-gray-300 hover:bg-white/15'
-                          }`}
-                        >
-                          {num} câu
-                        </button>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={() => setRemedialCount(Math.max(activeWrongQuestions.length, 5))}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          remedialCount === Math.max(activeWrongQuestions.length, 5)
-                            ? 'bg-amber-500 text-slate-950 font-black'
-                            : 'bg-white/10 text-gray-300 hover:bg-white/15'
-                        }`}
-                      >
-                        Tất cả ({activeWrongQuestions.length})
-                      </button>
+                    
+                    <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between text-white font-bold">
+                        <span className="flex items-center gap-1 text-emerald-400">
+                          <Clock className="w-3.5 h-3.5" /> 50 phút
+                        </span>
+                        <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[11px]">
+                          Thang điểm 10.0
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-gray-300 space-y-0.5 leading-tight">
+                        <div className="flex justify-between">
+                          <span>• Phần I (6.0đ):</span>
+                          <strong className="text-white">24 câu trắc nghiệm (A, B, C, D)</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>• Phần II (4.0đ):</span>
+                          <strong className="text-white">4 câu Đúng/Sai (16 ý a, b, c, d)</strong>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -745,12 +739,12 @@ export const ExamPractice: React.FC<ExamPracticeProps> = ({
                     {isGeneratingRemedial ? (
                       <>
                         <RefreshCw className="w-4 h-4 animate-spin text-white" />
-                        <span>Đang sinh đề AI...</span>
+                        <span>Đang sinh đề chuẩn THPTQG...</span>
                       </>
                     ) : (
                       <>
                         <Play className="w-4 h-4 fill-white" />
-                        <span>AI Tạo Đề & Vào Thi Ngay ➔</span>
+                        <span>AI Sinh Đề Chuẩn THPTQG & Vào Thi (50p) ➔</span>
                       </>
                     )}
                   </button>
