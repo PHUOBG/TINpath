@@ -165,25 +165,25 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
             <div className="bg-white dark:bg-[#1E1E1E] p-5 rounded-xl border border-gray-200 dark:border-[#333] shadow-xs">
               <span className="text-xs font-semibold text-gray-500 block mb-1">Lớp quản lý</span>
-              <span className="text-3xl font-bold font-mono text-gray-900 dark:text-white tabular-nums">
+              <span className="text-3xl font-bold text-gray-900 dark:text-white tabular-nums">
                 {classrooms.length}
               </span>
             </div>
             <div className="bg-white dark:bg-[#1E1E1E] p-5 rounded-xl border border-gray-200 dark:border-[#333] shadow-xs">
               <span className="text-xs font-semibold text-gray-500 block mb-1">Tổng số học sinh</span>
-              <span className="text-3xl font-bold font-mono text-[#2878C8] tabular-nums">
+              <span className="text-3xl font-bold text-[#2878C8] tabular-nums">
                 {totalStudents}
               </span>
             </div>
             <div className="bg-white dark:bg-[#1E1E1E] p-5 rounded-xl border border-gray-200 dark:border-[#333] shadow-xs">
               <span className="text-xs font-semibold text-gray-500 block mb-1">Bài tập đang giao</span>
-              <span className="text-3xl font-bold font-mono text-amber-500 tabular-nums">
+              <span className="text-3xl font-bold text-amber-500 tabular-nums">
                 {assignments.filter((a) => a.status === 'active').length}
               </span>
             </div>
             <div className="bg-white dark:bg-[#1E1E1E] p-5 rounded-xl border border-gray-200 dark:border-[#333] shadow-xs">
               <span className="text-xs font-semibold text-gray-500 block mb-1">Tỷ lệ nộp bài</span>
-              <span className="text-3xl font-bold font-mono text-[#22A06B] tabular-nums">
+              <span className="text-3xl font-bold text-[#22A06B] tabular-nums">
                 87.5%
               </span>
             </div>
@@ -197,7 +197,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white">
                   Danh sách lớp học trực tuyến
                 </h3>
-                <span className="text-xs text-gray-500 font-mono">{classrooms.length} lớp</span>
+                <span className="text-xs text-gray-500">{classrooms.length} lớp</span>
               </div>
 
               <div className="space-y-3">
@@ -209,7 +209,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                     <div>
                       <h4 className="font-bold text-gray-900 dark:text-white text-base">{cls.name}</h4>
                       <div className="flex items-center gap-2.5 text-xs text-gray-500 mt-1">
-                        <span>Mã tham gia: <strong className="font-mono text-[#2878C8]">{cls.code}</strong></span>
+                        <span>Mã tham gia: <strong className="text-[#2878C8]">{cls.code}</strong></span>
                         <span>·</span>
                         <span>{cls.studentCount} học sinh</span>
                       </div>
@@ -233,7 +233,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
                   <div className="flex justify-between font-bold text-gray-900 dark:text-white text-base">
                     <span>Lê Hoàng Nam (12 Tin)</span>
-                    <span className="text-amber-600 font-mono">Điểm TB: 6.2đ</span>
+                    <span className="text-amber-600">Điểm TB: 6.2đ</span>
                   </div>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
                     Thường trả lời sai dạng câu hỏi đúng/sai chủ đề 12B (Kết nối mạng). Cần giao thêm bài tập luyện tập chuyên đề mạng.
@@ -243,7 +243,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
                   <div className="flex justify-between font-bold text-gray-900 dark:text-white text-base">
                     <span>Võ Thị Thanh Thảo (12 Tin)</span>
-                    <span className="text-amber-600 font-mono">Điểm TB: 6.5đ</span>
+                    <span className="text-amber-600">Điểm TB: 6.5đ</span>
                   </div>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
                     Cần củng cố kiến thức CSDL quan hệ 11F (khóa ngoại, các lệnh SELECT SQL).
@@ -276,7 +276,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               >
                 <div className="flex justify-between items-start">
                   <h4 className="font-bold text-base text-gray-900 dark:text-white">{c.name}</h4>
-                  <span className="px-2.5 py-1 rounded-md bg-blue-100 text-[#2878C8] font-mono font-bold text-xs">
+                  <span className="px-2.5 py-1 rounded-md bg-blue-100 text-[#2878C8] font-bold text-xs">
                     Mã: {c.code}
                   </span>
                 </div>
@@ -366,19 +366,19 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
               <div className="p-3 rounded-lg bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-[#333]">
                 <span className="text-xs text-gray-500 block mb-1">Giỏi (8.0 - 10.0đ)</span>
-                <span className="font-bold font-mono text-emerald-600 text-lg">42%</span>
+                <span className="font-bold text-emerald-600 text-lg tabular-nums">42%</span>
               </div>
               <div className="p-3 rounded-lg bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-[#333]">
                 <span className="text-xs text-gray-500 block mb-1">Khá (6.5 - 7.75đ)</span>
-                <span className="font-bold font-mono text-blue-600 text-lg">38%</span>
+                <span className="font-bold text-blue-600 text-lg tabular-nums">38%</span>
               </div>
               <div className="p-3 rounded-lg bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-[#333]">
                 <span className="text-xs text-gray-500 block mb-1">Trung bình (5.0 - 6.25đ)</span>
-                <span className="font-bold font-mono text-amber-600 text-lg">15%</span>
+                <span className="font-bold text-amber-600 text-lg tabular-nums">15%</span>
               </div>
               <div className="p-3 rounded-lg bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-[#333]">
                 <span className="text-xs text-gray-500 block mb-1">Dưới 5.0đ</span>
-                <span className="font-bold font-mono text-red-600 text-lg">5%</span>
+                <span className="font-bold text-red-600 text-lg tabular-nums">5%</span>
               </div>
             </div>
           </div>

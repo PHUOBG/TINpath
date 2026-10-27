@@ -19,7 +19,7 @@ export const ZaloCommunityCard: React.FC<ZaloCommunityCardProps> = ({ compact = 
             </span>
             <span className="uppercase tracking-wide">Nhóm Zalo thảo luận</span>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded bg-[#0068FF]/30 text-blue-300 font-mono flex items-center gap-1.5">
+          <span className="text-xs px-2 py-0.5 rounded bg-[#0068FF]/30 text-blue-300 font-medium flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             1.4k+ online
           </span>
@@ -142,7 +142,7 @@ export const ZaloCommunityCard: React.FC<ZaloCommunityCardProps> = ({ compact = 
               </text>
             </svg>
 
-            <span className="absolute bottom-1 right-1 text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-700 font-mono rounded">
+            <span className="absolute bottom-1 right-1 text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-700 font-medium rounded">
               🔍 Phóng to
             </span>
           </div>

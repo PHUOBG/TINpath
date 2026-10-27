@@ -324,7 +324,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
               <div>
                 <div className="flex items-center gap-2.5">
-                  <span className="px-2.5 py-1 rounded text-xs font-bold bg-emerald-600 text-white font-mono">
+                  <span className="px-2.5 py-1 rounded text-xs font-bold bg-emerald-600 text-white">
                     HẠNG #{userSchool.rank} TOÀN TỈNH
                   </span>
                   <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-semibold">
@@ -345,7 +345,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Số học sinh
                   </span>
-                  <span className="text-lg sm:text-xl font-bold font-mono text-gray-900 dark:text-white tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white tabular-nums">
                     {userSchool.studentCount.toLocaleString()}
                   </span>
                 </div>
@@ -354,7 +354,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Tổng số điểm
                   </span>
-                  <span className="text-lg sm:text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
                     {userSchool.totalPoints.toLocaleString()} đ
                   </span>
                 </div>
@@ -363,7 +363,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   <span className="text-xs text-gray-500 dark:text-gray-400 block font-medium">
                     Điểm TB thi thử
                   </span>
-                  <span className="text-lg sm:text-xl font-bold font-mono text-blue-600 dark:text-blue-400 tabular-nums">
+                  <span className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
                     {userSchool.avgScore.toFixed(2)} / 10
                   </span>
                 </div>
@@ -436,7 +436,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                         {/* Rank Badge */}
                         <td className="py-3.5 px-4 text-center">
                           <span
-                            className={`inline-flex items-center justify-center w-7 h-7 rounded-full font-mono font-bold text-xs sm:text-sm ${
+                            className={`inline-flex items-center justify-center w-7 h-7 rounded-full font-bold text-xs sm:text-sm ${
                               isTop1
                                 ? 'bg-amber-400 text-amber-950 shadow-xs'
                                 : isTop2
@@ -460,7 +460,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                               ({item.district})
                             </span>
                             {item.isUserSchool && (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-semibold font-mono">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 font-semibold">
                                 <CheckCircle2 className="w-3.5 h-3.5" /> Trường bạn
                               </span>
                             )}
@@ -468,22 +468,22 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                         </td>
 
                         {/* Student Count */}
-                        <td className="py-3.5 px-5 text-center font-mono font-medium text-gray-700 dark:text-gray-300 tabular-nums">
+                        <td className="py-3.5 px-5 text-center font-medium text-gray-700 dark:text-gray-300 tabular-nums">
                           {item.studentCount.toLocaleString()} em
                         </td>
 
                         {/* Total Points */}
-                        <td className="py-3.5 px-5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
+                        <td className="py-3.5 px-5 text-right font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
                           {item.totalPoints.toLocaleString()} đ
                         </td>
 
                         {/* Avg Score */}
-                        <td className="py-3.5 px-5 text-center font-mono font-semibold text-blue-600 dark:text-blue-400 tabular-nums">
+                        <td className="py-3.5 px-5 text-center font-semibold text-blue-600 dark:text-blue-400 tabular-nums">
                           {item.avgScore.toFixed(2)}
                         </td>
 
                         {/* Exams Taken */}
-                        <td className="py-3.5 px-5 text-right font-mono text-gray-600 dark:text-gray-400 tabular-nums">
+                        <td className="py-3.5 px-5 text-right text-gray-600 dark:text-gray-400 tabular-nums">
                           {item.examsTaken.toLocaleString()}
                         </td>
                       </tr>
@@ -552,7 +552,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                     <span className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white block truncate">
                       {top2.fullName}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate font-mono">
+                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate">
                       @{top2.username}
                     </span>
                     <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-[#2A2A2A] px-1.5 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
@@ -561,11 +561,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   </div>
                   {/* Pedestal Box */}
                   <div className="w-full h-22 sm:h-26 rounded-t-2xl border-2 border-b-0 border-slate-300 dark:border-slate-600 bg-gradient-to-b from-slate-100/90 via-slate-50/50 to-white dark:from-slate-800/40 dark:via-slate-900/10 dark:to-[#1E1E1E] p-2 flex flex-col justify-between items-center text-center shadow-xs mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-400 dark:text-slate-500 font-mono leading-none pt-0.5">
+                    <span className="text-2xl sm:text-3xl font-black text-slate-400 dark:text-slate-500 leading-none pt-0.5">
                       2
                     </span>
                     <div className="space-y-0.5">
-                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 font-mono block">
+                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 block">
                         {top2.score} pts
                       </span>
                       <span className="text-[9px] sm:text-[10px] font-semibold text-slate-600 dark:text-slate-400 block truncate">
@@ -603,7 +603,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                     <span className="font-black text-xs sm:text-base text-gray-900 dark:text-white block truncate">
                       {top1.fullName}
                     </span>
-                    <span className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 block truncate font-mono">
+                    <span className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 block truncate">
                       @{top1.username}
                     </span>
                     <span className="text-[9px] sm:text-[10px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-950/70 px-2 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
@@ -612,11 +612,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   </div>
                   {/* Pedestal Box */}
                   <div className="w-full h-30 sm:h-34 rounded-t-2xl border-2 border-b-0 border-amber-400 dark:border-amber-500 bg-gradient-to-b from-amber-100/90 via-amber-50/40 to-white dark:from-amber-950/50 dark:via-amber-900/10 dark:to-[#1E1E1E] p-2.5 flex flex-col justify-between items-center text-center shadow-md mt-2">
-                    <span className="text-3xl sm:text-4xl font-black text-amber-500 dark:text-amber-400 font-mono leading-none pt-0.5">
+                    <span className="text-3xl sm:text-4xl font-black text-amber-500 dark:text-amber-400 leading-none pt-0.5">
                       1
                     </span>
                     <div className="space-y-0.5">
-                      <span className="text-xs sm:text-sm font-extrabold text-amber-900 dark:text-amber-200 font-mono block">
+                      <span className="text-xs sm:text-sm font-extrabold text-amber-900 dark:text-amber-200 block">
                         {top1.score} pts
                       </span>
                       <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 dark:text-amber-300 block truncate">
@@ -651,7 +651,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                     <span className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white block truncate">
                       {top3.fullName}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate font-mono">
+                    <span className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 block truncate">
                       @{top3.username}
                     </span>
                     <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-[#2A2A2A] px-1.5 py-0.5 rounded-full inline-block truncate max-w-full mt-0.5">
@@ -660,11 +660,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   </div>
                   {/* Pedestal Box */}
                   <div className="w-full h-18 sm:h-22 rounded-t-2xl border-2 border-b-0 border-amber-700/50 dark:border-amber-700/60 bg-gradient-to-b from-amber-100/60 via-orange-50/30 to-white dark:from-amber-950/30 dark:via-orange-950/10 dark:to-[#1E1E1E] p-2 flex flex-col justify-between items-center text-center shadow-xs mt-2">
-                    <span className="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-600 font-mono leading-none pt-0.5">
+                    <span className="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-600 leading-none pt-0.5">
                       3
                     </span>
                     <div className="space-y-0.5">
-                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 font-mono block">
+                      <span className="text-[11px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 block">
                         {top3.score} pts
                       </span>
                       <span className="text-[9px] sm:text-[10px] font-semibold text-amber-800 dark:text-amber-300 block truncate">
@@ -718,13 +718,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                       }`}
                     >
                       {/* Rank */}
-                      <td className="py-3.5 px-4 text-center font-mono font-medium text-gray-700 dark:text-gray-300">
+                      <td className="py-3.5 px-4 text-center font-medium text-gray-700 dark:text-gray-300">
                         #{st.rank}
                       </td>
 
                       {/* Rating */}
                       <td className="py-3.5 px-4 text-center whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 font-mono font-bold text-red-600 dark:text-red-400 text-sm">
+                        <span className="inline-flex items-center gap-1.5 font-bold text-red-600 dark:text-red-400 text-sm">
                           <span className="w-2 h-2 rounded-full bg-red-600 inline-block" />
                           {st.rating}
                         </span>
@@ -758,12 +758,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                       </td>
 
                       {/* Score */}
-                      <td className="py-3.5 px-5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
+                      <td className="py-3.5 px-5 text-right font-bold text-emerald-600 dark:text-emerald-400 tabular-nums text-sm sm:text-base">
                         {st.score.toFixed(2)} đ
                       </td>
 
                       {/* Problems */}
-                      <td className="py-3.5 px-5 text-right font-mono text-gray-700 dark:text-gray-300 tabular-nums">
+                      <td className="py-3.5 px-5 text-right text-gray-700 dark:text-gray-300 tabular-nums">
                         {st.problemsSolved}
                       </td>
                     </tr>

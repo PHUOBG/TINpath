@@ -267,7 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <p className="text-gray-400 text-[11px] truncate">@{user.username || 'fuongchuche'}</p>
                     <div className="mt-2 flex items-center justify-between text-[11px] text-gray-300">
                       <span>{user.schoolName}</span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#2878C8] text-white font-mono uppercase text-[10px] font-semibold">
+                      <span className="px-1.5 py-0.5 rounded bg-[#2878C8] text-white uppercase text-[10px] font-semibold">
                         Lớp {user.grade}
                       </span>
                     </div>

@@ -12,6 +12,7 @@ import { TeacherDashboard } from './components/teacher/TeacherDashboard';
 import { GoogleToolsHub } from './components/google/GoogleToolsHub';
 import { AuthModal } from './components/auth/AuthModal';
 import { RegisterModal } from './components/auth/RegisterModal';
+import { LoginPage } from './components/auth/LoginPage';
 import { LandingPage } from './components/landing/LandingPage';
 import { FloatingAiBot } from './components/common/FloatingAiBot';
 
@@ -49,13 +50,21 @@ export default function App() {
     return saved.onboardingCompleted === true;
   });
 
+  // Auth view: 'landing' | 'login'
+  const [authView, setAuthView] = useState<'landing' | 'login'>('landing');
+
   // Register/Auth modal state
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('register');
 
   const handleOpenAuth = (mode: 'login' | 'register' = 'register') => {
-    setAuthModalMode(mode);
-    setIsRegisterModalOpen(true);
+    if (mode === 'login') {
+      setAuthView('login');
+      setIsRegisterModalOpen(false);
+    } else {
+      setAuthModalMode(mode);
+      setIsRegisterModalOpen(true);
+    }
   };
 
   // Navigation state (Mặc định vào dashboard sau khi đăng nhập)
@@ -175,10 +184,11 @@ export default function App() {
     setIsGoogleLoggedIn(false);
   };
 
-  // Handle successful login/registration from RegisterModal
+  // Handle successful login/registration from RegisterModal or LoginPage
   const handleLoginSuccess = (loggedInUser: UserProfile) => {
     setUser(loggedInUser);
     setIsLoggedIn(true);
+    setAuthView('landing');
     if (loggedInUser.role === 'student') setCurrentTab('home');
     else if (loggedInUser.role === 'teacher') setCurrentTab('teacher_overview');
   };
@@ -188,6 +198,7 @@ export default function App() {
     await logout();
     setIsGoogleLoggedIn(false);
     setIsLoggedIn(false);
+    setAuthView('landing');
     // Reset profile so next visit starts fresh
     const resetUser = storageService.getUserProfile();
     resetUser.onboardingCompleted = false;
@@ -320,9 +331,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f8fa] dark:bg-[#121212] text-[#202020] dark:text-[#E0E0E0] transition-colors">
-      {/* ── UNAUTHENTICATED: Show Landing Page ── */}
+      {/* ── UNAUTHENTICATED: Show Landing Page or Login Page ── */}
       {!isLoggedIn && (
         <>
+          {/* Landing Page always visible underneath */}
           <LandingPage
             user={user}
             onNavigateTab={setCurrentTab}
@@ -330,11 +342,41 @@ export default function App() {
             onStartDailyChallenge={() => handleOpenAuth('register')}
             onTakeExam={() => handleOpenAuth('register')}
           />
+
+          {/* Login Modal Overlay */}
+          {authView === 'login' && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center">
+              {/* Blurred backdrop of landing page */}
+              <div
+                className="absolute inset-0 backdrop-blur-sm bg-black/40"
+                onClick={() => setAuthView('landing')}
+              />
+              {/* Login Card */}
+              <div className="relative z-10 w-full max-w-[480px] mx-4">
+                <LoginPage
+                  onBackToHome={() => setAuthView('landing')}
+                  onLoginSuccess={(loggedInUser) => {
+                    handleLoginSuccess(loggedInUser);
+                  }}
+                  onSwitchToRegister={() => {
+                    setAuthView('landing');
+                    handleOpenAuth('register');
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Register Modal */}
           <RegisterModal
             isOpen={isRegisterModalOpen}
             onClose={() => setIsRegisterModalOpen(false)}
             onLoginSuccess={handleLoginSuccess}
             initialMode={authModalMode}
+            onSwitchToLogin={() => {
+              setIsRegisterModalOpen(false);
+              setAuthView('login');
+            }}
           />
         </>
       )}
@@ -358,7 +400,7 @@ export default function App() {
           />
 
       {/* Main View Area: Tràn rộng sang 2 bên trái phải, dịch xuống cho cân xứng với top navbar */}
-      <main className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-8 xl:px-8 2xl:px-10 pt-8 sm:pt-10 md:pt-12 pb-14 sm:pb-16">
+      <main className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-8 xl:px-8 2xl:px-10 pt-5 sm:pt-6 md:pt-8 pb-14 sm:pb-16">
         {/* STUDENT VIEWS */}
         {user.role === 'student' && (
           <>

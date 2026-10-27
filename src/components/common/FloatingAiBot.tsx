@@ -386,7 +386,7 @@ Dựa theo chương trình Tin học GDPT 2018 (SGK Kết nối tri thức & Cá
                 </button>
               </div>
 
-              <span className="text-[10px] text-gray-400 dark:text-gray-500 font-mono hidden sm:inline">
+              <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium hidden sm:inline">
                 GDPT 2018
               </span>
             </div>

@@ -53,7 +53,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '12A') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <Cpu className="w-4 h-4" /> Sơ đồ minh hoạ: 5 Đặc trưng cốt lõi của Trí tuệ Nhân tạo (AI)
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-center">
@@ -77,7 +77,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '12B') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <Network className="w-4 h-4" /> Mô hình cấu trúc mạng LAN kết nối Internet qua Router & Switch
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-white/80 dark:bg-[#1A1A1A] rounded-xl border border-blue-100 dark:border-blue-900/30 text-xs text-center font-medium">
@@ -109,7 +109,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '12D') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <ShieldCheck className="w-4 h-4" /> Nguyên tắc 5 KHÔNG ứng xử nhân văn & Tuân thủ Luật An ninh mạng
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-xs text-center font-medium">
@@ -141,7 +141,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '12F') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <Globe className="w-4 h-4" /> Mô hình hộp CSS Box Model (4 Lớp từ ngoài vào trong)
         </div>
         <div className="p-4 rounded-xl bg-amber-100/70 border border-amber-300 text-center font-bold text-xs text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
@@ -163,7 +163,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '11F') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <Database className="w-4 h-4" /> Liên kết CSDL Quan hệ: Khoá chính (Primary Key) và Khoá ngoại (Foreign Key)
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -171,7 +171,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
             <div className="font-bold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-1.5">
               <span>BẢNG LỚP (Bảng Cha)</span>
             </div>
-            <div className="font-mono text-[11.5px] p-2 bg-blue-50/50 dark:bg-blue-950/30 rounded border border-blue-100 dark:border-blue-900/30">
+            <div className="text-[11.5px] p-2 bg-blue-50/50 dark:bg-blue-950/30 rounded border border-blue-100 dark:border-blue-900/30">
               <div>🔑 <strong className="text-blue-800 dark:text-blue-300">MaLop</strong> (Khoá chính)</div>
               <div className="text-gray-600 dark:text-gray-400">· TenLop, GiaoVienCN</div>
             </div>
@@ -181,7 +181,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
             <div className="font-bold text-indigo-700 dark:text-indigo-400 mb-1 flex items-center gap-1.5">
               <span>BẢNG HỌC SINH (Bảng Con)</span>
             </div>
-            <div className="font-mono text-[11.5px] p-2 bg-indigo-50/50 dark:bg-indigo-950/30 rounded border border-indigo-100 dark:border-indigo-900/30">
+            <div className="text-[11.5px] p-2 bg-indigo-50/50 dark:bg-indigo-950/30 rounded border border-indigo-100 dark:border-indigo-900/30">
               <div>🔑 <strong>MaHS</strong> (Khoá chính)</div>
               <div>🔗 <strong className="text-indigo-800 dark:text-indigo-300">MaLop</strong> (Khoá ngoại tham chiếu)</div>
               <div className="text-gray-600 dark:text-gray-400">· HoTen, NgaySinh, Diem</div>
@@ -195,7 +195,7 @@ const TopicIllustration: React.FC<{ topicId: SubjectTopicId }> = ({ topicId }) =
   if (topicId === '11F_CS') {
     return (
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#1A2333] dark:via-[#151D2A] dark:to-[#1E1E2E] border border-blue-200/80 dark:border-blue-900/40 my-4 shadow-xs">
-        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider font-mono">
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase tracking-wider">
           <Binary className="w-4 h-4" /> So sánh độ phức tạp thuật toán tìm kiếm và sắp xếp
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
@@ -231,7 +231,7 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
   onOpenLeaderboard,
 }) => {
   const [selectedTopicId, setSelectedTopicId] = useState<SubjectTopicId>(initialTopicId);
-  const [sidebarView, setSidebarView] = useState<'topics_list' | 'lesson_outline'>('lesson_outline');
+  const [sidebarView, setSidebarView] = useState<'topics_list' | 'lesson_outline'>('topics_list');
   const [activeSectionId, setActiveSectionId] = useState<string>('muc-tieu');
   const [searchQuery, setSearchQuery] = useState('');
   const [gradeFilter, setGradeFilter] = useState<'all' | '12' | '11' | '10'>('all');
@@ -256,6 +256,22 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
     return matchSearch && matchGrade && matchTrack;
   });
 
+  // Group filtered topics by grade
+  const grade12Topics = filteredTopics.filter((t) => t.grade === '12');
+  const grade11Topics = filteredTopics.filter((t) => t.grade === '11');
+  const grade10Topics = filteredTopics.filter((t) => t.grade === '10');
+
+  // Helper for topic badge label matching the design
+  const getTopicBadge = (topic: TopicLesson) => {
+    if (topic.grade === '10' || topic.id === '10_PYTHON') {
+      return 'Kiến thức Lớp 10';
+    }
+    if (topic.id.includes('_')) {
+      return topic.id.replace('_', '(') + ')';
+    }
+    return topic.id;
+  };
+
   const activeTopic: TopicLesson = TOPIC_LESSONS[selectedTopicId] || TOPIC_LESSONS['12D'] || TOPIC_LESSONS['12A'];
   const isCompleted = Boolean(completedTopics[selectedTopicId]);
 
@@ -272,7 +288,6 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
     setQuizScore(0);
     setViewMode('reading');
     setActiveSectionId('muc-tieu');
-    setSidebarView('lesson_outline');
   }, [selectedTopicId]);
 
   // Scroll to section helper
@@ -354,127 +369,358 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* 1. TOP HEADER BANNER (Bao gồm ô tìm kiếm và bộ lọc đưa về chỗ cũ) */}
-      <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-4 sm:p-5 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-5">
+      {/* 1. PAGE HEADER — compact with progress indicator */}
+      <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] px-5 py-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-[#2878C8] shrink-0">
+            <BookOpen className="w-5 h-5" />
+          </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-[#2878C8] dark:bg-blue-950/60 dark:text-[#60A5FA]">
-                Chuẩn SGK & Sách Hướng Dẫn Ôn Thi Tốt Nghiệp THPT (Bộ GD&ĐT)
-              </span>
-            </div>
-            <h2 className="text-lg sm:text-2xl font-bold text-[#202020] dark:text-white flex items-center gap-2 mt-1.5">
-              <BookOpen className="w-5 h-5 text-[#2878C8]" />
+            <h2 className="text-lg sm:text-xl font-bold text-[#202020] dark:text-white leading-tight">
               Học tập kiến thức Tin học THPT
             </h2>
-            <p className="text-[13px] text-gray-600 dark:text-gray-400 mt-0.5">
-              Hệ thống hóa toàn bộ kiến thức theo chuẩn chương trình GDPT 2018 (Lớp 10, 11, 12)
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Hệ thống hóa kiến thức chuẩn GDPT 2018 (Lớp 10, 11, 12)
             </p>
-          </div>
-
-          {/* Ô tìm kiếm đưa về chỗ cũ */}
-          <div className="relative w-full md:w-96">
-            <Search className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tra cứu bài học, khái niệm (SQL, TCP, AI...)"
-              className="w-full pl-10 pr-3.5 py-2 rounded-lg border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] text-sm focus:outline-none focus:border-[#2878C8]"
-            />
           </div>
         </div>
 
-        {/* Bộ lọc Segmented Controls đưa về chỗ cũ */}
-        <div className="mt-4 pt-3.5 border-t border-gray-100 dark:border-[#2C2C2C] flex flex-wrap items-center justify-between gap-3 text-sm">
-          {/* Lọc Khối */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1.5 rounded-lg">
-            <span className="text-xs text-gray-600 dark:text-gray-400 px-2.5 font-medium">Khối:</span>
-            {(['all', '12', '11', '10'] as const).map((g) => (
-              <button
-                key={g}
-                onClick={() => setGradeFilter(g)}
-                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-colors ${
-                  gradeFilter === g
-                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                {g === 'all' ? 'Tất cả' : `Lớp ${g}`}
-              </button>
-            ))}
+        {/* Tiến độ chuyên đề pill — right side */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="text-right leading-tight">
+            <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Tiến độ chuyên đề</div>
+            <div className="text-base font-bold text-[#2878C8] dark:text-[#60A5FA] tabular-nums mt-0.5">
+              {Object.values(completedTopics).filter(Boolean).length} / {Object.keys(TOPIC_LESSONS).length} bài&nbsp;
+              <span className="text-gray-400 text-xs sm:text-sm font-normal">
+                ({Math.round((Object.values(completedTopics).filter(Boolean).length / (Object.keys(TOPIC_LESSONS).length || 1)) * 100)}%)
+              </span>
+            </div>
           </div>
-
-          {/* Lọc Định hướng */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1.5 rounded-lg">
-            <span className="text-xs text-gray-600 dark:text-gray-400 px-2.5 font-medium">Định hướng:</span>
-            {[
-              { id: 'all', label: 'Tất cả' },
-              { id: 'ALL', label: 'Chung (80%)' },
-              { id: 'CS', label: 'Khoa học máy tính' },
-              { id: 'ICT', label: 'Tin học ứng dụng' },
-            ].map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setTrackFilter(t.id as any)}
-                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-colors ${
-                  trackFilter === t.id
-                    ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+          <div className="w-20 h-2 rounded-full bg-gray-100 dark:bg-[#333]">
+            <div
+              className="h-full rounded-full bg-[#2878C8] transition-all duration-500"
+              style={{ width: `${Math.round((Object.values(completedTopics).filter(Boolean).length / (Object.keys(TOPIC_LESSONS).length || 1)) * 100)}%` }}
+            />
           </div>
         </div>
       </div>
 
       {/* 2. MAIN WORKSPACE: LEFT SIDEBAR & RIGHT DETAIL */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT PANEL: Danh sách chủ đề & Bài học navigation */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* LEFT PANEL: MỤC LỤC CHUYÊN ĐỀ (Khớp chuẩn thiết kế) */}
         <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-3.5 space-y-3">
-          <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-4 shadow-xs sticky top-20">
-            {/* Top switcher: Danh sách chủ đề vs Bài học */}
-            <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#252525] p-1 rounded-xl mb-3">
-              <button
-                onClick={() => setSidebarView('topics_list')}
-                className={`flex-1 py-1.5 text-center text-xs sm:text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                  sidebarView === 'topics_list'
-                    ? 'bg-white text-[#2878C8] shadow-xs dark:bg-[#333] dark:text-[#60A5FA]'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                <List className="w-3.5 h-3.5" /> Danh sách chủ đề
-              </button>
-              <button
-                onClick={() => setSidebarView('lesson_outline')}
-                className={`flex-1 py-1.5 text-center text-xs sm:text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                  sidebarView === 'lesson_outline'
-                    ? 'bg-white text-[#2878C8] shadow-xs dark:bg-[#333] dark:text-[#60A5FA]'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" /> Bài học
-              </button>
+          <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl border border-gray-200 dark:border-[#333] shadow-xs sticky top-20 overflow-hidden">
+            {/* Header */}
+            <div className="px-4 py-3.5 border-b border-gray-100 dark:border-[#2C2C2C] flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4.5 h-4.5 text-[#2878C8]" />
+                <span className="text-sm sm:text-[15px] font-bold text-gray-900 dark:text-white uppercase tracking-wide">
+                  MỤC LỤC CHUYÊN ĐỀ
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSidebarView(sidebarView === 'topics_list' ? 'lesson_outline' : 'topics_list')}
+                  className="text-xs font-semibold text-gray-500 hover:text-[#2878C8] dark:text-gray-400 dark:hover:text-[#60A5FA] flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-[#282828]"
+                  title={sidebarView === 'topics_list' ? 'Xem mục lục nội dung bài học' : 'Xem danh sách chuyên đề'}
+                >
+                  {sidebarView === 'topics_list' ? (
+                    <><BookOpen className="w-3.5 h-3.5" /> Mục lục bài</>
+                  ) : (
+                    <><Layers className="w-3.5 h-3.5" /> Tất cả bài</>
+                  )}
+                </button>
+                <span className="text-xs font-bold text-[#2878C8] bg-blue-50 dark:bg-blue-950/60 dark:text-[#60A5FA] px-2.5 py-0.5 rounded-full shrink-0">
+                  {filteredTopics.length} bài
+                </span>
+              </div>
             </div>
 
-            {/* VIEW A: BÀI HỌC (Outline cấu trúc bài học hiện tại) */}
+            {/* VIEW A: DANH SÁCH CHUYÊN ĐỀ (Chuẩn layout thiết kế đính kèm) */}
+            {sidebarView === 'topics_list' && (
+              <div className="p-3.5 sm:p-4 space-y-3.5">
+                {/* Search input */}
+                <div className="relative">
+                  <Search className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Tìm kiếm chuyên đề..."
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#151515] text-sm text-gray-800 dark:text-gray-200 placeholder:text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#2878C8] focus:ring-1 focus:ring-[#2878C8]/20 transition-all shadow-2xs"
+                  />
+                </div>
+
+                {/* Khối Filter - Segmented Control */}
+                <div className="bg-gray-100/80 dark:bg-[#252525] p-1 rounded-xl flex items-center gap-0.5">
+                  {(['all', '12', '11', '10'] as const).map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => setGradeFilter(g)}
+                      className={`flex-1 py-2 rounded-lg text-xs sm:text-[13px] font-semibold transition-all text-center ${
+                        gradeFilter === g
+                          ? 'bg-white dark:bg-[#333] text-gray-900 dark:text-white shadow-xs font-bold'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                      }`}
+                    >
+                      {g === 'all' ? 'Tất cả' : `Lớp ${g}`}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Định hướng Filter */}
+                <div className="flex items-center gap-1.5 text-xs sm:text-[13px] pb-1">
+                  <span className="text-gray-500 dark:text-gray-400 text-xs font-semibold mr-1 shrink-0">Định hướng:</span>
+                  {[
+                    { id: 'all', label: 'Tất cả' },
+                    { id: 'CS', label: 'CS' },
+                    { id: 'ICT', label: 'ICT' },
+                  ].map((t) => {
+                    const isActive = trackFilter === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => setTrackFilter(t.id as any)}
+                        className={`px-3 py-1 rounded-md text-xs sm:text-[13px] font-semibold transition-all ${
+                          isActive
+                            ? 'bg-[#1D7BF2] text-white shadow-xs font-bold'
+                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Grouped Topics List with smooth scrolling */}
+                <div className="space-y-4 overflow-y-auto max-h-[580px] pr-1 pt-1">
+                  {/* Nhóm Lớp 12 */}
+                  {grade12Topics.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs sm:text-[12.5px] font-bold text-[#1D7BF2] dark:text-[#60A5FA] uppercase tracking-wider px-1">
+                        <span>LỚP 12 · TRỌNG TÂM THI THPT</span>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">({grade12Topics.length})</span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {grade12Topics.map((topic) => {
+                          const isSelected = topic.id === selectedTopicId;
+                          const completed = Boolean(completedTopics[topic.id]);
+                          const badgeText = getTopicBadge(topic);
+
+                          return (
+                            <button
+                              key={topic.id}
+                              onClick={() => setSelectedTopicId(topic.id)}
+                              className={`w-full text-left px-3.5 py-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+                                isSelected
+                                  ? 'border-[#2878C8] bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-[#2878C8]/30 shadow-xs'
+                                  : 'border-transparent hover:bg-gray-50/90 dark:hover:bg-[#252525] group'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                <span
+                                  className={`px-2.5 py-1 rounded-lg text-xs sm:text-[12px] font-bold shrink-0 transition-colors ${
+                                    isSelected
+                                      ? 'bg-[#2878C8] text-white shadow-xs'
+                                      : 'bg-gray-100 text-gray-700 dark:bg-[#282828] dark:text-gray-300'
+                                  }`}
+                                >
+                                  {badgeText}
+                                </span>
+                                <span
+                                  className={`text-[13.5px] sm:text-[14.5px] leading-snug truncate transition-colors ${
+                                    isSelected
+                                      ? 'font-bold text-[#2878C8] dark:text-[#60A5FA]'
+                                      : 'font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white'
+                                  }`}
+                                >
+                                  {topic.title}
+                                </span>
+                                {topic.track && topic.track !== 'ALL' && (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 shrink-0">
+                                    {topic.track}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="shrink-0 flex items-center">
+                                {completed ? (
+                                  <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                                ) : (
+                                  <Circle
+                                    className={`w-4.5 h-4.5 shrink-0 transition-colors ${
+                                      isSelected ? 'text-[#2878C8]' : 'text-gray-300 dark:text-gray-600'
+                                    }`}
+                                  />
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nhóm Lớp 11 */}
+                  {grade11Topics.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs sm:text-[12.5px] font-bold text-[#8B5CF6] dark:text-[#A78BFA] uppercase tracking-wider px-1 pt-1.5">
+                        <span>LỚP 11 · CƠ SỞ NÂNG CAO</span>
+                        <span className="text-[#8B5CF6] dark:text-[#A78BFA] font-bold">({grade11Topics.length})</span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {grade11Topics.map((topic) => {
+                          const isSelected = topic.id === selectedTopicId;
+                          const completed = Boolean(completedTopics[topic.id]);
+                          const badgeText = getTopicBadge(topic);
+
+                          return (
+                            <button
+                              key={topic.id}
+                              onClick={() => setSelectedTopicId(topic.id)}
+                              className={`w-full text-left px-3.5 py-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+                                isSelected
+                                  ? 'border-[#2878C8] bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-[#2878C8]/30 shadow-xs'
+                                  : 'border-transparent hover:bg-gray-50/90 dark:hover:bg-[#252525] group'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                <span
+                                  className={`px-2.5 py-1 rounded-lg text-xs sm:text-[12px] font-bold shrink-0 transition-colors ${
+                                    isSelected
+                                      ? 'bg-[#2878C8] text-white shadow-xs'
+                                      : 'bg-gray-100 text-gray-700 dark:bg-[#282828] dark:text-gray-300'
+                                  }`}
+                                >
+                                  {badgeText}
+                                </span>
+                                <span
+                                  className={`text-[13.5px] sm:text-[14.5px] leading-snug truncate transition-colors ${
+                                    isSelected
+                                      ? 'font-bold text-[#2878C8] dark:text-[#60A5FA]'
+                                      : 'font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white'
+                                  }`}
+                                >
+                                  {topic.title}
+                                </span>
+                                {topic.track && topic.track !== 'ALL' && (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 shrink-0">
+                                    {topic.track}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="shrink-0 flex items-center">
+                                {completed ? (
+                                  <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                                ) : (
+                                  <Circle
+                                    className={`w-4.5 h-4.5 shrink-0 transition-colors ${
+                                      isSelected ? 'text-[#2878C8]' : 'text-gray-300 dark:text-gray-600'
+                                    }`}
+                                  />
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nhóm Lớp 10 */}
+                  {grade10Topics.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs sm:text-[12.5px] font-bold text-[#10B981] dark:text-[#34D399] uppercase tracking-wider px-1 pt-1.5">
+                        <span>LỚP 10 · KHỞI ĐẦU NỀN TẢNG</span>
+                        <span className="text-[#10B981] dark:text-[#34D399] font-bold">({grade10Topics.length})</span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {grade10Topics.map((topic) => {
+                          const isSelected = topic.id === selectedTopicId;
+                          const completed = Boolean(completedTopics[topic.id]);
+                          const badgeText = getTopicBadge(topic);
+
+                          return (
+                            <button
+                              key={topic.id}
+                              onClick={() => setSelectedTopicId(topic.id)}
+                              className={`w-full text-left px-3.5 py-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+                                isSelected
+                                  ? 'border-[#2878C8] bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-[#2878C8]/30 shadow-xs'
+                                  : 'border-transparent hover:bg-gray-50/90 dark:hover:bg-[#252525] group'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                <span
+                                  className={`px-2.5 py-1 rounded-lg text-xs sm:text-[12px] font-bold shrink-0 transition-colors ${
+                                    isSelected
+                                      ? 'bg-[#2878C8] text-white shadow-xs'
+                                      : 'bg-gray-100 text-gray-700 dark:bg-[#282828] dark:text-gray-300'
+                                  }`}
+                                >
+                                  {badgeText}
+                                </span>
+                                <span
+                                  className={`text-[13.5px] sm:text-[14.5px] leading-snug truncate transition-colors ${
+                                    isSelected
+                                      ? 'font-bold text-[#2878C8] dark:text-[#60A5FA]'
+                                      : 'font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white'
+                                  }`}
+                                >
+                                  {topic.title}
+                                </span>
+                                {topic.track && topic.track !== 'ALL' && (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 shrink-0">
+                                    {topic.track}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="shrink-0 flex items-center">
+                                {completed ? (
+                                  <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                                ) : (
+                                  <Circle
+                                    className={`w-4.5 h-4.5 shrink-0 transition-colors ${
+                                      isSelected ? 'text-[#2878C8]' : 'text-gray-300 dark:text-gray-600'
+                                    }`}
+                                  />
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {filteredTopics.length === 0 && (
+                    <div className="p-6 text-center text-sm text-gray-400">
+                      Không tìm thấy chuyên đề phù hợp với bộ lọc.
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* VIEW B: MỤC LỤC NỘI DUNG BÀI HỌC (Outline cấu trúc bài học hiện tại) */}
             {sidebarView === 'lesson_outline' && (
-              <div className="space-y-1">
-                <div className="flex items-center justify-between px-2 py-1 mb-1">
+              <div className="p-3.5 sm:p-4 space-y-3">
+                <div className="flex items-center justify-between px-1 py-1 mb-1">
                   <div>
-                    <span className="text-[11px] font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase font-mono">
+                    <span className="text-xs font-bold text-[#2878C8] dark:text-[#60A5FA] uppercase">
                       {activeTopic.code} · LỚP {activeTopic.grade}
                     </span>
-                    <h3 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate">
+                    <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white truncate">
                       {activeTopic.title}
                     </h3>
                   </div>
                   <button
                     onClick={() => setSidebarView('topics_list')}
-                    className="text-[11px] font-semibold text-gray-500 hover:text-[#2878C8] shrink-0"
+                    className="text-xs font-semibold text-gray-500 hover:text-[#2878C8] shrink-0"
                     title="Xem tất cả chủ đề"
                   >
                     Đổi bài
@@ -491,7 +737,7 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                         key={item.id}
                         onClick={() => scrollToSection(item.id)}
                         className={`w-full text-left transition-all rounded-lg ${
-                          isSubItem ? 'pl-6 pr-3 py-1.5 text-xs text-gray-600 dark:text-gray-400' : 'px-3 py-2 text-xs sm:text-[13px] font-medium'
+                          isSubItem ? 'pl-6 pr-3 py-1.5 text-xs sm:text-[13px] text-gray-600 dark:text-gray-400' : 'px-3 py-2 text-xs sm:text-sm font-medium'
                         } ${
                           isActive
                             ? 'bg-blue-50 text-[#2878C8] font-bold dark:bg-blue-950/50 dark:text-[#60A5FA] ring-1 ring-[#2878C8]/25'
@@ -505,206 +751,168 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                 </div>
               </div>
             )}
-
-            {/* VIEW B: DANH SÁCH CHỦ ĐỀ (Bỏ danh sách chủ đề ra ngoài) */}
-            {sidebarView === 'topics_list' && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-500 px-1 pb-1">
-                  <span>TẤT CẢ CHỦ ĐỀ ({filteredTopics.length})</span>
-                  <span>Trạng thái</span>
-                </div>
-
-                <div className="space-y-1.5 overflow-y-auto max-h-[520px] pr-1">
-                  {filteredTopics.map((topic) => {
-                    const isSelected = topic.id === selectedTopicId;
-                    const completed = Boolean(completedTopics[topic.id]);
-
-                    return (
-                      <button
-                        key={topic.id}
-                        onClick={() => {
-                          setSelectedTopicId(topic.id);
-                          setSidebarView('lesson_outline'); // Click vào chuyển ngay sang "Bài học"
-                        }}
-                        className={`w-full text-left p-3 rounded-xl border transition-all flex items-start justify-between gap-2.5 ${
-                          isSelected
-                            ? 'bg-blue-50 dark:bg-blue-950/40 border-[#2878C8] ring-1 ring-[#2878C8]/20'
-                            : 'bg-white dark:bg-[#1A1A1A] border-gray-200 dark:border-[#333] hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 text-xs font-mono">
-                            <span className="font-bold text-[#2878C8]">{topic.code}</span>
-                            <span className="text-gray-400">·</span>
-                            <span className="text-gray-500">Lớp {topic.grade}</span>
-                            {topic.track && topic.track !== 'ALL' && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[10px] font-bold">
-                                {topic.track}
-                              </span>
-                            )}
-                          </div>
-                          <h4 className="text-xs sm:text-[13px] font-bold text-gray-900 dark:text-white truncate mt-0.5">
-                            {topic.title}
-                          </h4>
-                          <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                            {topic.summary}
-                          </p>
-                        </div>
-
-                        <div className="shrink-0 mt-0.5">
-                          {completed ? (
-                            <CheckCircle2 className="w-4 h-4 text-[#22A06B]" />
-                          ) : (
-                            <Circle className="w-4 h-4 text-gray-300 dark:text-gray-600" />
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         {/* RIGHT PANEL: NỘI DUNG BÀI HỌC HOẶC BÀI LUYỆN TRẮC NGHIỆM */}
-        <div className="lg:col-span-8 xl:col-span-8 2xl:col-span-8.5 space-y-6">
+        <div className="lg:col-span-8 xl:col-span-8 2xl:col-span-8.5 space-y-5">
           {/* VIEW MODE 1: NỘI DUNG BÀI HỌC (Trình bày tách ra từng mục, màu xanh nhạt trùng màu web) */}
           {viewMode === 'reading' && (
-            <div className="space-y-6">
-              {/* Card tiêu đề bài học */}
-              <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 dark:border-[#2C2C2C] pb-4">
-                  <div className="flex items-center gap-2.5 text-xs sm:text-sm font-mono">
-                    <span className="px-2.5 py-1 rounded-md bg-blue-50 text-[#2878C8] dark:bg-blue-950/60 dark:text-[#60A5FA] font-bold">
+            <div className="space-y-4">
+              {/* Card tiêu đề bài học — clean single-card layout */}
+              <div className="bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-5 sm:p-6 shadow-xs">
+                {/* Meta row: code · grade · weight + action buttons */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2.5 text-sm flex-wrap">
+                    <span className="px-3 py-1 rounded-md bg-blue-50 text-[#2878C8] dark:bg-blue-950/60 dark:text-[#60A5FA] font-bold">
                       {activeTopic.code}
                     </span>
-                    <span className="text-gray-600 dark:text-gray-400 font-semibold">Khối Lớp {activeTopic.grade}</span>
-                    <span className="text-gray-400">·</span>
-                    <span className="text-gray-600 dark:text-gray-400 font-medium">{activeTopic.examWeight}</span>
+                    <span className="text-gray-600 dark:text-gray-400 font-medium">Khối Lớp {activeTopic.grade}</span>
+                    <span className="text-gray-300 dark:text-gray-600">|</span>
+                    <span className="text-gray-600 dark:text-gray-400">{activeTopic.examWeight}</span>
                   </div>
 
-                  {/* Toggle đã học xong */}
-                  <button
-                    onClick={() => onToggleCompleteTopic(activeTopic.id)}
-                    className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                      isCompleted
-                        ? 'bg-emerald-50 text-[#22A06B] border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-800'
-                        : 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-200'
-                    }`}
-                  >
-                    {isCompleted ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 text-[#22A06B]" /> Đã hoàn thành (+20 XP)
-                      </>
-                    ) : (
-                      <>
-                        <Circle className="w-4 h-4" /> Đánh dấu đã học xong
-                      </>
-                    )}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {/* Toggle đã học xong */}
+                    <button
+                      onClick={() => onToggleCompleteTopic(activeTopic.id)}
+                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                        isCompleted
+                          ? 'bg-emerald-50 text-[#22A06B] border border-emerald-200 dark:bg-emerald-950/40 dark:border-emerald-800'
+                          : 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-200 border border-transparent'
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <><CheckCircle className="w-4 h-4 text-[#22A06B]" /> Đã học xong</>
+                      ) : (
+                        <><Circle className="w-4 h-4" /> Đánh dấu đã học xong</>
+                      )}
+                    </button>
+
+                    {/* Luyện tập button */}
+                    <button
+                      onClick={() => setViewMode('quiz')}
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold bg-[#2878C8] text-white hover:bg-[#1D7BF2] transition-colors shadow-xs"
+                    >
+                      Luyện tập <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-3.5">
+                {/* Main topic title */}
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight">
                   {activeTopic.title}
                 </h1>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
-                  {activeTopic.summary}
-                </p>
+
+                {/* Summary in a subtle blue info box */}
+                <div className="mt-4 p-4 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#2878C8] flex items-center justify-center shrink-0 mt-0.5">
+                    <BookOpen className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <p className="text-[14.5px] sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                    {activeTopic.summary}
+                  </p>
+                </div>
 
                 {/* Sơ đồ hình ảnh minh hoạ cho chủ đề */}
                 <TopicIllustration topicId={activeTopic.id} />
               </div>
 
-              {/* Mục tiêu bài học (Tách thành Card riêng) */}
-              <section id="muc-tieu" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-3">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-[#2878C8]">
+              {/* YÊU CẦU CẦN ĐẠT CHƯƠNG TRÌNH — combined card */}
+              <section id="muc-tieu" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-5 sm:p-6 shadow-xs space-y-4">
+                {/* Section label */}
+                <div className="flex items-center gap-2 pb-3 border-b border-gray-100 dark:border-[#2C2C2C]">
+                  <div className="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-[#2878C8] shrink-0">
                     <Target className="w-4 h-4" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                    Mục tiêu bài học
-                  </h3>
+                  <span className="text-xs sm:text-[13px] font-bold text-[#2878C8] uppercase tracking-wider">YÊU CẦU CẦN ĐẠT CHƯƠNG TRÌNH</span>
                 </div>
-                <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 pt-1">
+
+                {/* Requirements bullet list */}
+                <ul className="space-y-2.5 text-sm sm:text-base text-gray-800 dark:text-gray-200">
                   {activeTopic.objectives?.map((obj, i) => (
                     <li key={i} className="flex items-start gap-2.5 leading-relaxed">
-                      <CheckCircle2 className="w-4.5 h-4.5 text-[#2878C8] shrink-0 mt-0.5" />
+                      <span className="w-2 h-2 rounded-full bg-[#2878C8] shrink-0 mt-2" />
                       <span>{obj}</span>
                     </li>
                   ))}
                 </ul>
-              </section>
 
-              {/* Mức độ kiến thức và kĩ năng cần đạt (Tách thành Card riêng) */}
-              <section id="muc-do" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-3">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-[#2878C8]">
-                    <BarChart2 className="w-4 h-4" />
+                {/* Standards 3-col pills */}
+                {activeTopic.standards && activeTopic.standards.length > 0 && (
+                  <div className="flex flex-wrap gap-2.5 pt-1">
+                    {activeTopic.standards.map((std, i) => (
+                      <div key={i} className="flex-1 min-w-[140px] p-3.5 rounded-lg border border-gray-100 dark:border-[#2C2C2C] bg-gray-50 dark:bg-[#252525] space-y-1.5">
+                        <span className="text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
+                          {std.level}
+                        </span>
+                        <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed pt-0.5">
+                          {std.desc}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                    Mức độ kiến thức và kĩ năng cần đạt
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
-                  {activeTopic.standards?.map((std, i) => (
-                    <div
-                      key={i}
-                      className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/70 dark:bg-[#252525] space-y-1.5"
-                    >
-                      <span className="text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
-                        {std.level}
-                      </span>
-                      <p className="text-xs sm:text-[13px] text-gray-700 dark:text-gray-300 leading-relaxed pt-1">
-                        {std.desc}
+                )}
+
+                {/* Warm-up inline (collapsed) */}
+                {activeTopic.warmUp && (
+                  <details id="khoi-dong" className="group scroll-mt-24">
+                    <summary className="cursor-pointer list-none flex items-center gap-2 text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-400 select-none">
+                      <Compass className="w-4 h-4" />
+                      <span>Câu hỏi khởi động</span>
+                      <ChevronRight className="w-4 h-4 group-open:rotate-90 transition-transform" />
+                    </summary>
+                    <div className="mt-2 p-4 rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/40 dark:bg-amber-950/20 space-y-2">
+                      <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed italic">"{activeTopic.warmUp.context}"</p>
+                      <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-2 pt-0.5">
+                        <HelpCircle className="w-4 h-4 shrink-0" />{activeTopic.warmUp.question}
                       </p>
                     </div>
-                  ))}
-                </div>
+                  </details>
+                )}
               </section>
 
-              {/* Hoạt động khởi động (Tách thành Card riêng) */}
-              <section id="khoi-dong" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-3">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-amber-600">
-                    <Compass className="w-4 h-4" />
+              {/* CÁC KHÁI NIỆM TRỌNG TÂM — 2-column card grid */}
+              {activeTopic.keyConcepts && activeTopic.keyConcepts.length > 0 && (
+                <section id="khai-niem" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-5 sm:p-6 shadow-xs">
+                  <div className="flex items-center gap-2 pb-3 mb-4 border-b border-gray-100 dark:border-[#2C2C2C]">
+                    <span className="text-xs sm:text-[13px] font-bold text-[#2878C8] uppercase tracking-wider">CÁC KHÁI NIỆM TRỌNG TÂM</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                    Hoạt động khởi động
-                  </h3>
-                </div>
-                <div className="p-4.5 rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/40 dark:bg-amber-950/20 space-y-2">
-                  <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed italic">
-                    "{activeTopic.warmUp?.context}"
-                  </p>
-                  <p className="text-sm font-semibold text-amber-900 dark:text-amber-300 flex items-center gap-2 pt-1">
-                    <HelpCircle className="w-4.5 h-4.5 shrink-0" />
-                    <span>{activeTopic.warmUp?.question}</span>
-                  </p>
-                </div>
-              </section>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {activeTopic.keyConcepts.map((kc, i) => (
+                      <div key={i} className="p-4.5 rounded-xl border border-gray-100 dark:border-[#2C2C2C] bg-gray-50/50 dark:bg-[#252525] space-y-2">
+                        <h4 className="text-base sm:text-lg font-bold text-[#2878C8] dark:text-[#60A5FA]">{kc.term}</h4>
+                        <p className="text-sm sm:text-[15px] text-gray-800 dark:text-gray-200 leading-relaxed">{kc.definition}</p>
+                        {kc.example && (
+                          <p className="text-xs sm:text-sm text-gray-500 italic pt-0.5">VD: {kc.example}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Các phần lý thuyết chính (Mỗi mục tách thành Card độc lập rõ ràng) */}
               {activeTopic.mainSections?.map((sec) => (
-                <section key={sec.id} id={sec.id} className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-4">
-                  <div className="border-b border-gray-100 dark:border-[#2C2C2C] pb-2.5">
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex items-baseline gap-2">
-                      <span className="text-[#2878C8] font-mono">{sec.number}</span>
+                <section key={sec.id} id={sec.id} className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-5 sm:p-6 shadow-xs space-y-4">
+                  <div className="border-b border-gray-100 dark:border-[#2C2C2C] pb-3">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <span className="text-[#2878C8] tabular-nums font-bold text-xl">{sec.number}</span>
                       <span>{sec.title.replace(/^[0-9]+\.\s*/, '')}</span>
                     </h3>
                   </div>
 
-                  <div className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line space-y-3">
+                  <div className="text-[14.5px] sm:text-[15.5px] text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line space-y-3">
                     {sec.content}
                   </div>
 
                   {sec.table && (
                     <div className="overflow-x-auto my-3 border border-gray-200 dark:border-[#333] rounded-xl">
-                      <table className="w-full text-left text-xs sm:text-sm">
+                      <table className="w-full text-left text-sm sm:text-[15px]">
                         <thead className="bg-blue-50/90 dark:bg-blue-950/50 text-gray-900 dark:text-white border-b border-gray-200 dark:border-[#333]">
                           <tr>
                             {sec.table.headers.map((h, idx) => (
-                              <th key={idx} className="p-3 font-bold">
+                              <th key={idx} className="p-3.5 font-bold">
                                 {h}
                               </th>
                             ))}
@@ -714,7 +922,7 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                           {sec.table.rows.map((row, rIdx) => (
                             <tr key={rIdx} className="hover:bg-gray-50/50 dark:hover:bg-[#252525]">
                               {row.map((cell, cIdx) => (
-                                <td key={cIdx} className="p-3 text-gray-700 dark:text-gray-300">
+                                <td key={cIdx} className="p-3.5 text-gray-800 dark:text-gray-200">
                                   {cell}
                                 </td>
                               ))}
@@ -736,17 +944,17 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                     <div
                       key={sub.id}
                       id={sub.id}
-                      className="scroll-mt-24 p-4.5 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/60 dark:bg-[#222] space-y-2 mt-3"
+                      className="scroll-mt-24 p-5 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/60 dark:bg-[#222] space-y-2 mt-3"
                     >
-                      <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white flex items-baseline gap-2">
-                        <span className="text-[#2878C8] font-mono">{sub.letter}</span>
+                      <h4 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-baseline gap-2">
+                        <span className="text-[#2878C8]">{sub.letter}</span>
                         <span>{sub.title.replace(/^[a-z]\)\s*/, '')}</span>
                       </h4>
-                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm sm:text-[15px] text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
                         {sub.content}
                       </p>
                       {sub.codeSnippet && (
-                        <pre className="p-3 rounded-lg bg-[#181818] text-sky-400 font-mono text-xs overflow-x-auto border border-[#333] mt-2">
+                        <pre className="p-3.5 rounded-lg bg-[#181818] text-sky-400 font-mono text-xs overflow-x-auto border border-[#333] mt-2">
                           <code>{sub.codeSnippet}</code>
                         </pre>
                       )}
@@ -755,140 +963,136 @@ export const TopicLearning: React.FC<TopicLearningProps> = ({
                 </section>
               ))}
 
-              {/* Ghi nhớ cốt lõi (Tách thành Card riêng) */}
-              <section id="ghi-nho" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-3">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-[#2878C8]">
-                    <Bookmark className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                    Ghi nhớ
-                  </h3>
+              {/* Ghi nhớ cốt lõi — compact highlighted card */}
+              <section id="ghi-nho" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] overflow-hidden shadow-xs">
+                <div className="px-5 py-3.5 border-b border-gray-100 dark:border-[#2C2C2C] flex items-center gap-2">
+                  <Bookmark className="w-4 h-4 text-[#2878C8]" />
+                  <span className="text-xs sm:text-[13px] font-bold text-[#2878C8] uppercase tracking-wider">Ghi nhớ cốt lõi</span>
                 </div>
-                <div className="p-4.5 rounded-xl border border-blue-200 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-950/20 space-y-2">
-                  <ul className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
-                    {activeTopic.memoryNotes?.map((note, i) => (
-                      <li key={i} className="flex items-start gap-2.5 leading-relaxed font-medium">
-                        <Sparkles className="w-4 h-4 text-[#2878C8] shrink-0 mt-0.5" />
-                        <span>{note}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
-
-              {/* Luyện tập (Tách thành Card riêng với nút làm bài trắc nghiệm chuẩn sách) */}
-              <section id="luyen-tap" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-[#2878C8]">
-                      <Edit3 className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                        Luyện tập
-                      </h3>
-                      <p className="text-xs text-gray-500">
-                        {activeTopic.practiceQuestions?.length || 0} câu hỏi trắc nghiệm trích từ Sách Hướng dẫn ôn thi (Bộ GD&ĐT)
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setViewMode('quiz')}
-                    className="px-5 py-2.5 rounded-xl bg-[#2878C8] text-white hover:bg-[#1D7BF2] font-bold text-xs sm:text-sm flex items-center gap-2 shadow-xs transition-all self-start sm:self-auto"
-                  >
-                    Luyện trắc nghiệm chủ đề này <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-
-                <div className="space-y-3">
-                  {activeTopic.practiceQuestions?.slice(0, 3).map((q) => (
-                    <div
-                      key={q.id}
-                      className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/50 dark:bg-[#222]"
-                    >
-                      <p className="font-bold text-sm text-gray-900 dark:text-white">{q.question}</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2.5">
-                        {Object.entries(q.options).map(([key, val]) => (
-                          <div
-                            key={key}
-                            className="text-xs sm:text-sm p-2 rounded-lg bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300"
-                          >
-                            <span className="font-bold mr-1.5">{key}.</span> {val}
-                          </div>
-                        ))}
-                      </div>
+                <div className="px-5 py-4 space-y-3">
+                  {activeTopic.memoryNotes?.map((note, i) => (
+                    <div key={i} className="flex items-start gap-3 p-3.5 rounded-lg bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30">
+                      <Sparkles className="w-4 h-4 text-[#2878C8] shrink-0 mt-0.5" />
+                      <span className="text-sm sm:text-[15px] font-medium text-gray-850 dark:text-gray-150 leading-relaxed">{note}</span>
                     </div>
                   ))}
                 </div>
               </section>
 
-              {/* Vận dụng (Tách thành Card riêng) */}
-              <section id="van-dung" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] p-6 shadow-xs space-y-4">
-                <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-[#2C2C2C]">
-                  <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-amber-600">
-                    <Lightbulb className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                    Vận dụng
-                  </h3>
+              {/* Luyện tập — clean CTA card */}
+              <section id="luyen-tap" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] overflow-hidden shadow-xs">
+                <div className="px-5 py-3.5 border-b border-gray-100 dark:border-[#2C2C2C] flex items-center gap-2">
+                  <Edit3 className="w-4 h-4 text-[#2878C8]" />
+                  <span className="text-xs sm:text-[13px] font-bold text-[#2878C8] uppercase tracking-wider">Luyện tập trắc nghiệm</span>
                 </div>
-
-                <div className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/70 dark:bg-[#252525] text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  <span className="font-bold text-gray-900 dark:text-white mr-1.5">Tình huống thực tế:</span>
-                  {activeTopic.application?.realLife}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4.5 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40">
-                    <h4 className="text-sm font-bold text-[#2878C8] flex items-center gap-2 mb-2">
-                      <Lightbulb className="w-4 h-4" /> Kinh nghiệm làm bài
-                    </h4>
-                    <ul className="space-y-1.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300 list-disc pl-4.5 leading-relaxed">
-                      {activeTopic.application?.tips?.map((tip, i) => (
-                        <li key={i}>{tip}</li>
-                      ))}
-                    </ul>
+                <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[15px] sm:text-base font-bold text-gray-900 dark:text-white">
+                      {activeTopic.practiceQuestions?.length || 0} câu hỏi trắc nghiệm chủ đề
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">Trích từ Sách Hướng dẫn ôn thi Tốt nghiệp THPT (Bộ GD&ĐT)</p>
                   </div>
+                  <button
+                    onClick={() => setViewMode('quiz')}
+                    className="px-6 py-2.5 rounded-xl bg-[#2878C8] text-white hover:bg-[#1D7BF2] font-bold text-sm sm:text-[15px] flex items-center gap-2 shadow-xs transition-all shrink-0"
+                  >
+                    Luyện tập <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+                {/* Preview 2 questions */}
+                {activeTopic.practiceQuestions && activeTopic.practiceQuestions.length > 0 && (
+                  <div className="px-5 pb-4 space-y-3 border-t border-gray-100 dark:border-[#2C2C2C] pt-4">
+                    {activeTopic.practiceQuestions.slice(0, 2).map((q, qi) => (
+                      <div key={q.id} className="p-4 rounded-lg border border-gray-100 dark:border-[#2C2C2C] bg-gray-50/50 dark:bg-[#252525]">
+                        <p className="text-sm font-semibold text-gray-850 dark:text-gray-150 leading-relaxed mb-2.5">
+                          <span className="text-[#2878C8] font-bold mr-1.5">{qi + 1}.</span>{q.question}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {Object.entries(q.options).map(([key, val]) => (
+                            <div key={key} className="text-xs sm:text-[13px] p-2 rounded bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-[#333] text-gray-700 dark:text-gray-300">
+                              <span className="font-bold text-gray-800 dark:text-gray-200 mr-1.5">{key}.</span>{val}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    {activeTopic.practiceQuestions.length > 2 && (
+                      <p className="text-xs text-gray-400 text-center pt-1">+ {activeTopic.practiceQuestions.length - 2} câu tiếp theo...</p>
+                    )}
+                  </div>
+                )}
+              </section>
 
-                  <div className="p-4.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
-                    <h4 className="text-sm font-bold text-amber-700 dark:text-amber-400 flex items-center gap-2 mb-2">
-                      <AlertTriangle className="w-4 h-4" /> Bẫy đề thi hay nhầm lẫn
-                    </h4>
-                    <ul className="space-y-1.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300 list-disc pl-4.5 leading-relaxed">
-                      {activeTopic.application?.examTraps?.map((trap, i) => (
-                        <li key={i}>{trap}</li>
-                      ))}
-                    </ul>
+              {/* Vận dụng — compact 3-tab card */}
+              <section id="van-dung" className="scroll-mt-24 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] overflow-hidden shadow-xs">
+                <div className="px-5 py-3.5 border-b border-gray-100 dark:border-[#2C2C2C] flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4 text-amber-600" />
+                  <span className="text-xs sm:text-[13px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Vận dụng & Kinh nghiệm</span>
+                </div>
+                <div className="px-5 py-4 space-y-3.5">
+                  {activeTopic.application?.realLife && (
+                    <p className="text-sm text-gray-750 dark:text-gray-300 leading-relaxed">
+                      <span className="font-bold text-gray-900 dark:text-white">Tình huống thực tế: </span>
+                      {activeTopic.application.realLife}
+                    </p>
+                  )}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    <div className="p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 space-y-2">
+                      <div className="flex items-center gap-1.5">
+                        <Lightbulb className="w-4 h-4 text-[#2878C8]" />
+                        <span className="text-sm font-bold text-[#2878C8]">Kinh nghiệm làm bài</span>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {activeTopic.application?.tips?.map((tip, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-750 dark:text-gray-300 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#2878C8] shrink-0 mt-2" />{tip}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 space-y-2">
+                      <div className="flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-amber-600" />
+                        <span className="text-sm font-bold text-amber-700 dark:text-amber-400">Bẫy đề thi hay nhầm lẫn</span>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {activeTopic.application?.examTraps?.map((trap, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-750 dark:text-gray-300 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 mt-2" />{trap}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </section>
 
               {/* Chuyển chủ đề trước / sau */}
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center justify-between gap-3 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-200 dark:border-[#333] px-5 py-3.5 shadow-xs">
                 <button
                   disabled={!prevTopicId}
                   onClick={() => prevTopicId && setSelectedTopicId(prevTopicId)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-all ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all ${
                     prevTopicId
-                      ? 'border border-gray-300 dark:border-[#444] text-gray-700 dark:text-gray-300 hover:bg-gray-100'
-                      : 'opacity-40 cursor-not-allowed text-gray-400'
+                      ? 'text-gray-700 dark:text-gray-300 hover:text-[#2878C8]'
+                      : 'opacity-30 cursor-not-allowed text-gray-400'
                   }`}
                 >
-                  <ChevronLeft className="w-4 h-4" /> Bài trước
+                  <ChevronLeft className="w-4.5 h-4.5" /> Bài trước
                 </button>
+
+                <span className="text-xs font-semibold text-gray-400">{activeTopic.code}</span>
 
                 <button
                   disabled={!nextTopicId}
                   onClick={() => nextTopicId && setSelectedTopicId(nextTopicId)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-all ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all ${
                     nextTopicId
-                      ? 'border border-gray-300 dark:border-[#444] text-gray-700 dark:text-gray-300 hover:bg-gray-100'
-                      : 'opacity-40 cursor-not-allowed text-gray-400'
+                      ? 'text-gray-700 dark:text-gray-300 hover:text-[#2878C8]'
+                      : 'opacity-30 cursor-not-allowed text-gray-400'
                   }`}
                 >
-                  Bài sau <ChevronRight className="w-4 h-4" />
+                  Bài sau <ChevronRight className="w-4.5 h-4.5" />
                 </button>
               </div>
             </div>

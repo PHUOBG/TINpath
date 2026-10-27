@@ -1473,7 +1473,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                      <div className="flex items-center gap-2 text-xs font-bold text-gray-500 pl-7 sm:pl-0">
                         <span>TB: {diagnosticReport.cognitiveLevels?.biet?.avgTimeSec || 18}s/câu</span>
                         <span>•</span>
                         <span className="text-[#0A5296] dark:text-blue-400">
@@ -1511,7 +1511,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                      <div className="flex items-center gap-2 text-xs font-bold text-gray-500 pl-7 sm:pl-0">
                         <span>TB: {diagnosticReport.cognitiveLevels?.hieu?.avgTimeSec || 45}s/câu</span>
                         <span>•</span>
                         <span className="text-[#1F618D] dark:text-cyan-400">
@@ -1547,7 +1547,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-500 pl-7 sm:pl-0">
+                      <div className="flex items-center gap-2 text-xs font-bold text-gray-500 pl-7 sm:pl-0">
                         <span>TB: {diagnosticReport.cognitiveLevels?.van_dung?.avgTimeSec || 95}s/câu</span>
                         <span>•</span>
                         <span className={(diagnosticReport.cognitiveLevels?.van_dung?.percentage ?? 0) < 60 ? 'text-rose-600 font-bold' : 'text-emerald-600 font-bold'}>
@@ -1768,7 +1768,7 @@ export const PersonalizedAI: React.FC<PersonalizedAIProps> = ({
                               >
                                 {td.masteryLabel}
                               </span>
-                              <span className="text-xs font-mono font-bold text-gray-500">
+                              <span className="text-xs font-bold text-gray-500">
                                 {td.correctQuestions}/{td.totalQuestions} câu ({td.percentage}%)
                               </span>
                             </div>

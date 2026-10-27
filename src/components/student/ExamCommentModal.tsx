@@ -115,7 +115,7 @@ export const ExamCommentModal: React.FC<ExamCommentModalProps> = ({
                       <span className="text-xs text-gray-400 ml-1.5">({cm.userSchool})</span>
                     </div>
                   </div>
-                  <span className="text-xs text-gray-400 flex items-center gap-1 font-mono">
+                  <span className="text-xs text-gray-400 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" /> {cm.createdAt}
                   </span>
                 </div>

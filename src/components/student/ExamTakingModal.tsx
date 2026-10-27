@@ -430,7 +430,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           <div className="bg-[#121620] border border-gray-800/80 rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-6 text-white my-auto animate-in fade-in zoom-in-95 duration-200">
             {/* Header Title */}
             <div className="text-center space-y-1.5 border-b border-gray-800/60 pb-5">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-white">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
                 {getExamDisplayCode(exam)}
               </h2>
               <p className="text-gray-400 text-sm font-medium">
@@ -529,7 +529,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               <AlertTriangle className="w-9 h-9 text-amber-500" />
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-bold font-serif text-white tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               Bạn đã thoát toàn màn hình
             </h3>
 
@@ -537,7 +537,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               Vui lòng quay lại chế độ toàn màn hình để tiếp tục làm bài
             </p>
 
-            <div className="p-2.5 rounded-lg bg-red-950/60 border border-red-800/50 text-xs text-red-300 font-mono">
+            <div className="p-2.5 rounded-lg bg-red-950/60 border border-red-800/50 text-xs text-red-300">
               Cảnh báo vi phạm: <strong className="text-white font-bold">{violationsCount} / 3 lần</strong>
               {violationsCount >= 3 ? (
                 <span className="block mt-1 text-red-400 font-bold">Đã đạt giới hạn! Đang tự động nộp bài...</span>
@@ -587,7 +587,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           {!isSubmitted ? (
             <>
               <div
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-mono font-bold ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-bold ${
                   secondsRemaining < 300
                     ? 'bg-red-950/80 text-red-400 border border-red-800 animate-pulse'
                     : 'bg-[#2A2A2A] text-amber-400 border border-[#444]'
@@ -606,7 +606,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
             </>
           ) : (
             <div className="flex items-center gap-3">
-              <span className="text-sm px-3.5 py-1.5 rounded-lg bg-[#22A06B] text-white font-bold font-mono">
+              <span className="text-sm px-3.5 py-1.5 rounded-lg bg-[#22A06B] text-white font-bold tabular-nums">
                 Đã nộp bài · {completedAttempt?.totalScore.toFixed(2)} / 10 điểm
               </span>
               <button
@@ -627,12 +627,12 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
           <div className="w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[92vw] mx-auto space-y-6">
             {/* Question Header & Meta */}
             <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-[#333] pb-3">
-              <div className="flex items-center gap-2 font-mono">
+              <div className="flex items-center gap-2">
                 <span className="font-bold text-[#2878C8]">
                   {currentItem.part === 1 ? 'PHẦN I — Câu trắc nghiệm (D1)' : 'PHẦN II — Trắc nghiệm đúng/sai (D2)'}
                 </span>
                 <span>·</span>
-                <span>Câu số {currentQuestionIndex + 1} / {allQuestions.length}</span>
+                <span className="tabular-nums">Câu số {currentQuestionIndex + 1} / {allQuestions.length}</span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -689,7 +689,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               {currentItem.part === 1 ? (
                 <>
                   <div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-relaxed">
-                    <span className="font-mono text-[#2878C8] mr-2">Câu {currentQuestionIndex + 1}.</span>
+                    <span className="text-[#2878C8] mr-2 tabular-nums">Câu {currentQuestionIndex + 1}.</span>
                     {(currentQ as SingleChoiceQuestion).content}
                   </div>
 
@@ -739,7 +739,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                   {/* Explanation shown after submission */}
                   {isSubmitted && (
                     <div className="p-4.5 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-sm space-y-1.5">
-                      <span className="font-bold text-[#22A06B] flex items-center gap-1.5 font-mono">
+                      <span className="font-bold text-[#22A06B] flex items-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4" /> Đáp án đúng: {(currentQ as SingleChoiceQuestion).correctAnswer}
                       </span>
                       <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -769,7 +769,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                           className="p-4 rounded-xl border border-gray-200 dark:border-[#333] bg-white dark:bg-[#1A1A1A] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm sm:text-base"
                         >
                           <div className="flex items-start gap-2.5 flex-1 pr-2">
-                            <span className="font-mono font-bold text-[#2878C8] uppercase shrink-0">
+                            <span className="font-bold text-[#2878C8] uppercase shrink-0">
                               {stmt.id})
                             </span>
                             <span className="leading-relaxed">{stmt.text}</span>
@@ -815,7 +815,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                           key={stmt.id}
                           className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] text-sm"
                         >
-                          <span className="font-mono font-bold mr-2 uppercase">
+                          <span className="font-bold mr-2 uppercase">
                             {stmt.id}) Đáp án chuẩn: {stmt.isCorrect ? 'ĐÚNG' : 'SAI'}
                           </span>
                           <span className="text-gray-600 dark:text-gray-400">{stmt.explanation}</span>
@@ -877,7 +877,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                     <button
                       key={q.id}
                       onClick={() => setCurrentQuestionIndex(idx)}
-                      className={`h-8 rounded-lg text-sm font-mono transition-colors flex items-center justify-center ${bg}`}
+                      className={`h-8 rounded-lg text-sm tabular-nums transition-colors flex items-center justify-center ${bg}`}
                     >
                       {idx + 1}
                     </button>
@@ -906,7 +906,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
                     <button
                       key={q.id}
                       onClick={() => setCurrentQuestionIndex(globalIdx)}
-                      className={`h-8 rounded-lg text-sm font-mono transition-colors flex items-center justify-center ${bg}`}
+                      className={`h-8 rounded-lg text-sm tabular-nums transition-colors flex items-center justify-center ${bg}`}
                     >
                       {idx + 1}
                     </button>
@@ -929,7 +929,7 @@ export const ExamTakingModal: React.FC<ExamTakingModalProps> = ({
               <div className="space-y-2.5">
                 <div className="text-center p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300">
                   <span className="text-xs font-bold text-[#22A06B] block">Kết quả hoàn thành</span>
-                  <span className="text-xl font-bold font-mono text-emerald-800 dark:text-emerald-300">
+                  <span className="text-xl font-bold text-emerald-800 dark:text-emerald-300 tabular-nums">
                     {completedAttempt?.totalScore.toFixed(2)}đ
                   </span>
                   <span className="text-xs text-gray-600 dark:text-gray-400 block mt-0.5">

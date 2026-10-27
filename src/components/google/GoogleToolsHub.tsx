@@ -597,7 +597,7 @@ export const GoogleToolsHub: React.FC<GoogleToolsHubProps> = ({
                       <div key={i} className="p-2 rounded bg-gray-50 dark:bg-[#252525] flex justify-between items-center">
                         <div>
                           <p className="font-bold">{c.name}</p>
-                          <p className="text-gray-500 font-mono text-[10px]">{c.email}</p>
+                          <p className="text-gray-500 text-[10px]">{c.email}</p>
                         </div>
                         <button className="px-2 py-0.5 rounded bg-blue-100 text-[#2878C8] text-[10px] font-bold">
                           Mời học nhóm
@@ -653,7 +653,7 @@ export const GoogleToolsHub: React.FC<GoogleToolsHubProps> = ({
                       <select
                         value={imageResolution}
                         onChange={(e) => setImageResolution(e.target.value as any)}
-                        className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] font-mono font-bold text-[#2878C8]"
+                        className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] font-bold text-[#2878C8]"
                       >
                         <option value="1K">1K (1024 x 1024 / Nhanh)</option>
                         <option value="2K">2K (2048 x 2048 / Chuẩn nét)</option>
@@ -666,7 +666,7 @@ export const GoogleToolsHub: React.FC<GoogleToolsHubProps> = ({
                       <select
                         value={imageRatio}
                         onChange={(e) => setImageRatio(e.target.value as any)}
-                        className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] font-mono"
+                        className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212]"
                       >
                         <option value="16:9">16:9 (Ngang chuẩn bài giảng)</option>
                         <option value="4:3">4:3 (Khung hình học tập)</option>
@@ -744,7 +744,7 @@ export const GoogleToolsHub: React.FC<GoogleToolsHubProps> = ({
                     <select
                       value={videoRatio}
                       onChange={(e) => setVideoRatio(e.target.value as any)}
-                      className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212] font-mono"
+                      className="w-full px-3 py-1.5 rounded border border-gray-300 dark:border-[#444] bg-white dark:bg-[#121212]"
                     >
                       <option value="16:9">16:9 (Landscape - màn hình ngang bài giảng)</option>
                       <option value="9:16">9:16 (Portrait - video dọc di động)</option>

@@ -64,8 +64,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ══════ LANDING NAVBAR ══════ */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#1b66a8]/95 backdrop-blur-md shadow-lg border-b border-cyan-300/30'
-          : 'bg-[#1e6fb8]/90 backdrop-blur-md border-b border-cyan-300/20'
+          ? 'bg-[#071626]/96 backdrop-blur-lg shadow-[0_2px_20px_rgba(0,0,0,0.4)] border-b border-white/10'
+          : 'bg-[#071626]/88 backdrop-blur-md border-b border-white/8'
       }`}>
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex items-center justify-between h-14">
@@ -164,20 +164,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </header>
       {/* ══════ END NAVBAR ══════ */}
 
-      {/* ══════ 1. EXPANSIVE HERO SECTION (Sắc xanh biển tươi sáng & cân bằng đối xứng) ══════ */}
-      <section className="w-full relative overflow-hidden bg-gradient-to-b from-[#1e6fb8] via-[#2884d8] to-[#2073bf] text-white pt-36 sm:pt-40 lg:pt-44 pb-20 sm:pb-28 lg:pb-32">
-        {/* Subtle glowing ambient orbs - lighter ocean & cyan luminous glows */}
-        <div className="absolute top-1/4 left-10 w-[520px] h-[520px] bg-cyan-300/35 rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-300/30 rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-sky-200/25 rounded-full blur-[150px] pointer-events-none" />
+      {/* ══════ 1. EXPANSIVE HERO SECTION (Trọn vẹn 100vh màn hình đầu tiên) ══════ */}
+      <section className="min-h-screen w-full relative overflow-hidden bg-gradient-to-b from-[#0d2d52] via-[#1a4a7a] to-[#0d2d52] text-white flex flex-col justify-between pt-14 sm:pt-16 lg:pt-14 pb-2 select-none">
+        {/* Subtle glowing ambient orbs */}
+        <div className="absolute top-1/4 left-10 w-[520px] h-[520px] bg-cyan-300/30 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-300/25 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-sky-200/20 rounded-full blur-[150px] pointer-events-none" />
 
-        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10 flex-1 flex items-center my-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center w-full py-10 sm:py-14 lg:py-16">
 
             {/* ── Left Column: Content, CTAs & Tech Support ── */}
             <div className="lg:col-span-7 flex flex-col">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#175388]/90 border border-cyan-300/40 text-xs font-medium text-cyan-200 shadow-sm mb-6">
+              <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#175388]/90 border border-cyan-300/40 text-xs font-medium text-cyan-200 shadow-sm mb-4 sm:mb-5">
                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
                 <span className="text-blue-100">GDPT 2018</span>
                 <span className="text-cyan-400">•</span>
@@ -185,28 +185,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-[1.15] mb-5">
+              <h1 className="text-2xl sm:text-3xl lg:text-[40px] xl:text-[44px] font-extrabold text-white tracking-tight leading-[1.15] mb-3.5 sm:mb-4">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-sky-100 to-white">TinPath:</span>{' '}
                 Hành trình chinh phục Tin học THPT bắt đầu từ đây.
               </h1>
 
               {/* Subtitle */}
-              <p className="text-base sm:text-lg text-blue-50/95 leading-relaxed max-w-2xl mb-8">
+              <p className="text-sm sm:text-base text-blue-50/95 leading-relaxed max-w-2xl mb-5 sm:mb-6">
                 Nền tảng đồng hành cùng học sinh Quảng Ngãi trong hành trình ôn thi tốt nghiệp THPT môn Tin học với hệ thống học theo chuyên đề, ngân hàng đề thi chuẩn hóa và lộ trình cá nhân hóa bằng Trí tuệ Nhân tạo.
               </p>
 
               {/* Dual CTAs */}
-              <div className="flex flex-wrap items-center gap-3.5 mb-8">
+              <div className="flex flex-wrap items-center gap-3.5 mb-5 sm:mb-6">
                 <button
                   onClick={() => onOpenAuth('register')}
-                  className="h-12 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-white font-semibold text-sm sm:text-base flex items-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:shadow-[0_0_35px_rgba(6,182,212,0.65)] active:scale-98 transition-all cursor-pointer"
+                  className="h-11 sm:h-12 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-white font-semibold text-sm sm:text-base flex items-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:shadow-[0_0_35px_rgba(6,182,212,0.65)] active:scale-98 transition-all cursor-pointer"
                 >
                   <span>Bắt đầu học ngay</span>
                   <span className="text-lg">🎓</span>
                 </button>
                 <a
                   href="#about-tinpath"
-                  className="h-12 px-5 rounded-xl bg-[#165084]/90 hover:bg-[#1a5e9a] border border-cyan-300/40 hover:border-cyan-200 text-white font-semibold text-sm sm:text-base flex items-center gap-2 active:scale-98 transition-all"
+                  className="h-11 sm:h-12 px-5 rounded-xl bg-[#165084]/90 hover:bg-[#1a5e9a] border border-cyan-300/40 hover:border-cyan-200 text-white font-semibold text-sm sm:text-base flex items-center gap-2 active:scale-98 transition-all"
                 >
                   <span>🧭</span>
                   <span>Khám phá môn học &amp; Đề thi</span>
@@ -214,11 +214,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Tech Stack Pills: Python, C++, HTML5/CSS3, Gemini AI */}
-              <div className="mb-8">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-cyan-200/90 mb-3 flex items-center gap-2">
+              <div className="mb-5 sm:mb-6">
+                <div className="text-[10.5px] font-bold uppercase tracking-wider text-cyan-200/90 mb-2.5 flex items-center gap-2">
                   <span>HỖ TRỢ TOÀN DIỆN CÔNG NGHỆ &amp; NGÔN NGỮ LẬP TRÌNH:</span>
                 </div>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5">
                   {/* Python */}
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18538a] border border-[#2e74b5] hover:border-amber-300/70 text-xs font-semibold text-slate-100 transition-colors">
                     <span className="text-base">🐍</span>
@@ -292,7 +292,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Floating Badge Top Left: binary_search.py */}
               <div className="animate-float-1 absolute top-2 left-0 sm:left-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-cyan-300/40 rounded-xl p-3 shadow-2xl max-w-[210px] sm:max-w-[230px] hover:scale-105 transition-transform duration-300 cursor-default">
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-300 font-semibold mb-1.5">
+                <div className="flex items-center gap-1.5 text-[11px] text-amber-300 font-semibold mb-1.5">
                   <span>🔸</span>
                   <span>binary_search.py</span>
                 </div>
@@ -383,7 +383,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Floating Badge Bottom Right: C++20 Standard */}
               <div className="animate-float-4 absolute bottom-0 right-0 sm:right-2 z-20 bg-[#175b98]/95 hover:bg-[#1d6bafe0] backdrop-blur-md border border-cyan-300/40 rounded-xl p-2.5 sm:p-3 shadow-2xl max-w-[190px] sm:max-w-[210px] hover:scale-105 transition-transform duration-300 cursor-default">
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-cyan-200 font-semibold mb-1">
+                <div className="flex items-center gap-1.5 text-[11px] text-cyan-200 font-semibold mb-1">
                   <span>⚙️</span>
                   <span>C++20 Standard</span>
                 </div>
@@ -397,14 +397,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           </div>
         </div>
+
+        {/* ── Scroll Down Indicator ── */}
+        <div className="w-full relative z-10 flex flex-col items-center justify-center pb-6 select-none">
+          <a
+            href="#about-tinpath"
+            className="flex flex-col items-center gap-2 hover:scale-105 transition-all duration-300 group cursor-pointer"
+          >
+            <span className="text-[12px] font-bold tracking-[0.2em] uppercase text-white/80 group-hover:text-white transition-colors drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">Cuộn xuống khám phá</span>
+            <div className="flex flex-col items-center gap-0.5 animate-bounce">
+              <svg className="w-6 h-6 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </a>
+        </div>
       </section>
 
       {/* ══════ 2. BODY SECTIONS CONTAINER (Sắc xanh biển tươi sáng, liền mạch & cân bằng) ══════ */}
-      <div className="w-full relative overflow-hidden bg-gradient-to-b from-[#2073bf] via-[#1b64a8] to-[#165590]">
-        {/* Subtle ambient light glows for balance & continuous immersion */}
-        <div className="absolute top-1/6 -left-32 w-[600px] h-[600px] bg-cyan-300/20 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute top-1/2 -right-32 w-[600px] h-[600px] bg-sky-300/20 rounded-full blur-[160px] pointer-events-none" />
-        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-blue-300/20 rounded-full blur-[160px] pointer-events-none" />
+      <div className="w-full relative overflow-hidden bg-gradient-to-b from-[#0f2d52] via-[#0c2444] to-[#081a32]">
+        {/* Subtle ambient light glows for depth & continuous immersion */}
+        <div className="absolute top-1/6 -left-32 w-[600px] h-[600px] bg-blue-500/15 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 -right-32 w-[600px] h-[600px] bg-cyan-500/12 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-blue-400/12 rounded-full blur-[160px] pointer-events-none" />
 
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 space-y-24 relative z-10">
 
@@ -635,13 +650,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="p-4 rounded-xl bg-[#0e3b65]/80 border border-cyan-300/25 flex flex-col gap-2.5">
               <span className="text-cyan-200 font-semibold text-xs">Cốt lõi công nghệ vận hành:</span>
               <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-medium">
                   <span className="material-symbols-outlined text-[14px]">bolt</span> Gemini 1.5 Pro
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-medium">
                   <span className="material-symbols-outlined text-[14px]">auto_stories</span> NotebookLM
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-mono">
+                <span className="px-3 py-1 rounded-lg bg-cyan-400/15 border border-cyan-300/30 text-cyan-100 text-xs flex items-center gap-1.5 font-medium">
                   <span className="material-symbols-outlined text-[14px]">cloud_done</span> Google Cloud Engine
                 </span>
               </div>
@@ -999,38 +1014,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* 10. FINAL CTA & FOOTER */}
           <section className="flex flex-col py-2 scroll-mt-28" id="cta-footer">
-            {/* Big CTA Card */}
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#236ea8] via-[#1c5c93] to-[#154e80] border border-cyan-300/40 shadow-2xl text-center flex flex-col items-center gap-4 mb-12 relative overflow-hidden">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-300/20 rounded-full blur-[80px] pointer-events-none" />
+            {/* Big CTA Card — deep sapphire navy */}
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#0e243f] via-[#0a1c33] to-[#071426] border border-blue-500/30 shadow-2xl text-center flex flex-col items-center gap-4 mb-12 relative overflow-hidden">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-64 h-64 bg-cyan-500/8 rounded-full blur-[80px] pointer-events-none" />
 
-              <div className="w-14 h-14 rounded-2xl bg-cyan-400/20 border border-cyan-300/35 flex items-center justify-center text-cyan-200 mb-1 shadow-lg">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 mb-1 shadow-lg">
                 <span className="material-symbols-outlined text-[32px]">stars</span>
               </div>
               <h3 className="text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold max-w-2xl">
                 Bắt đầu hành trình Tin học của bạn cùng TinPath.
               </h3>
-              <p className="text-blue-50/90 text-sm sm:text-base max-w-xl">
+              <p className="text-slate-300 text-sm sm:text-base max-w-xl">
                 Chủ động học tập, luyện tập có mục tiêu và từng bước củng cố kiến thức cho kỳ thi tốt nghiệp THPT.
               </p>
               <button
                 onClick={() => onNavigateTab('learning')}
-                className="h-13 px-8 mt-2 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] active:scale-98 transition-all cursor-pointer"
+                className="h-13 px-8 mt-2 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] active:scale-98 transition-all cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[20px]">flag</span>
                 <span>Bắt đầu học ngay miễn phí</span>
               </button>
             </div>
 
-            {/* Detailed Footer */}
-            <footer className="flex flex-col gap-8 pt-8 text-blue-100/90 border-t border-cyan-300/25">
+            {/* Detailed Footer — dark midnight navy */}
+            <footer className="flex flex-col gap-8 pt-8 text-slate-400 border-t border-slate-700/60">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <TinPathLogo size={32} textColor="text-white" subtextColor="text-cyan-300" />
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-300/35 font-code-inline text-[11px] text-cyan-200">
+                  <TinPathLogo size={32} textColor="text-white" subtextColor="text-slate-400" />
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-800/80 border border-slate-700/60 font-code-inline text-[11px] text-slate-300">
                     THPT Trần Quốc Tuấn
                   </span>
                 </div>
-                <p className="text-sm text-blue-100/85 max-w-xl mt-1 leading-relaxed">
+                <p className="text-sm text-slate-400 max-w-xl mt-1 leading-relaxed">
                   Chinh phục Tin học THPT cùng học sinh Quảng Ngãi. Nền tảng học tập số thông minh, cá nhân hóa theo
                   Chương trình GDPT 2018.
                 </p>
@@ -1038,68 +1054,68 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Học tập</span>
+                  <span className="text-slate-200 uppercase font-bold text-xs tracking-wider">Học tập</span>
                   <button
                     onClick={() => onNavigateTab('learning')}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Theo chủ đề lớp 12
                   </button>
                   <button
                     onClick={() => onNavigateTab('practice')}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Bộ đề thi thử 2025
                   </button>
                   <button
                     onClick={() => onNavigateTab('personalized_ai')}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     AI Study Mentor
                   </button>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Tài nguyên</span>
+                  <span className="text-slate-200 uppercase font-bold text-xs tracking-wider">Tài nguyên</span>
                   <button
                     onClick={() => onNavigateTab('learning')}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Tài liệu tham khảo
                   </button>
                   <button
                     onClick={() => onOpenAuth()}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Dành cho giáo viên
                   </button>
                   <button
                     onClick={() => onNavigateTab('home')}
-                    className="text-left text-blue-100/90 hover:text-cyan-200 transition-colors cursor-pointer"
+                    className="text-left text-slate-400 hover:text-white transition-colors cursor-pointer"
                   >
                     34 trường THPT
                   </button>
                 </div>
                 <div className="col-span-2 flex flex-col gap-2.5">
-                  <span className="text-cyan-300 uppercase font-bold text-xs tracking-wider">Hỗ trợ</span>
-                  <p className="text-xs text-blue-100/80 leading-relaxed">
+                  <span className="text-slate-200 uppercase font-bold text-xs tracking-wider">Hỗ trợ</span>
+                  <p className="text-xs text-slate-500 leading-relaxed">
                     Hệ thống hoạt động trực tuyến 24/7 phục vụ giáo viên và học sinh ôn thi THPT.
                   </p>
-                  <div className="inline-flex items-center gap-2 text-cyan-200 text-xs font-semibold">
+                  <div className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-xs font-semibold transition-colors">
                     <span className="material-symbols-outlined text-[16px]">mail</span>
                     <span>hotro@tinpath.edu.vn</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-[#113f6b]/80 border border-cyan-300/20 flex flex-col gap-1.5">
-                <span className="text-slate-100 font-semibold text-xs">Ghi chú học thuật &amp; Bản quyền:</span>
-                <p className="text-[11px] text-blue-100/80 leading-relaxed">
+              <div className="p-4 rounded-2xl bg-[#0b1424] border border-slate-800 flex flex-col gap-1.5">
+                <span className="text-slate-300 font-semibold text-xs">Ghi chú học thuật &amp; Bản quyền:</span>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
                   Nội dung kiến thức, câu hỏi trắc nghiệm và đề luyện được biên soạn, chọn lọc phục vụ mục đích học tập phi
                   thương mại cho cộng đồng học sinh, giáo viên tỉnh Quảng Ngãi.
                 </p>
               </div>
 
-              <div className="text-center text-[11px] text-blue-200/60 pt-2 pb-6">
+              <div className="text-center text-[11px] text-slate-600 pt-2 pb-6">
                 © 2025 TinPath Quảng Ngãi. Đồng hành cùng ước mơ số.
               </div>
             </footer>

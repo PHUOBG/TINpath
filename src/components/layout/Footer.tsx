@@ -42,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGoogleHub, onOpenPrivacy }
               Quyền riêng tư & Bảo mật
             </button>
             <span className="text-gray-600">·</span>
-            <span className="text-gray-400 font-mono">Bản quyền © 2025-2026 TinPath</span>
+            <span className="text-gray-400">Bản quyền © 2025-2026 TinPath</span>
           </div>
         </div>
       </div>

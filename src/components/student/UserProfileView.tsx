@@ -659,7 +659,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                 {displayName}
               </h2>
-              <div className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-mono">
+              <div className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 <span>@{username}</span>
                 <button
                   onClick={handleCopyUsername}
@@ -705,14 +705,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <span className="text-gray-500 flex items-center gap-1.5">
                 <GraduationCap className="w-4 h-4 text-[#2878C8]" /> Khối lớp:
               </span>
-              <strong className="font-mono text-gray-900 dark:text-white">Lớp {user.grade}</strong>
+              <strong className="text-gray-900 dark:text-white">Lớp {user.grade}</strong>
             </div>
 
             <div className="flex items-center justify-between py-1">
               <span className="text-gray-500 flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-emerald-600" /> Phân ban ôn thi:
               </span>
-              <strong className="font-mono px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-[#2878C8] font-bold">
+              <strong className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-[#2878C8] font-bold">
                 {user.track === 'CS' ? 'Khoa học máy tính (CS)' : 'Tin học ứng dụng (ICT)'}
               </strong>
             </div>
@@ -721,7 +721,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <span className="text-gray-500 flex items-center gap-1.5">
                 <Target className="w-4 h-4 text-amber-500" /> Mục tiêu điểm:
               </span>
-              <strong className="font-mono text-amber-600 dark:text-amber-400 font-bold text-sm">
+              <strong className="text-amber-600 dark:text-amber-400 font-bold text-sm">
                 {user.targetScore || 8.5}đ THPTQG
               </strong>
             </div>
@@ -730,7 +730,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <span className="text-gray-500 flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-purple-500" /> Thời gian tự học:
               </span>
-              <strong className="font-mono text-gray-900 dark:text-white">
+              <strong className="text-gray-900 dark:text-white">
                 {user.dailyStudyMinutes || 45} phút / ngày
               </strong>
             </div>
@@ -763,7 +763,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="font-bold uppercase tracking-wider text-[11px]">SỐ ĐỀ GIẢI ĐƯỢC</span>
                     <FileCheck className="w-4 h-4 text-[#2878C8]" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-gray-900 dark:text-white">
+                  <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tabular-nums">
                     {solvedExamsCount}
                   </div>
                   <div className="text-[11px] text-gray-500">
@@ -777,7 +777,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="font-bold uppercase tracking-wider text-[11px]">CHỦ ĐỀ ĐÃ HỌC</span>
                     <BookOpen className="w-4 h-4 text-[#22A06B]" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400">
+                  <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tabular-nums">
                     {completedTopicsCount}
                   </div>
                   <div className="text-[11px] text-gray-500">
@@ -791,7 +791,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="font-bold uppercase tracking-wider text-[11px]">SỐ BÌNH LUẬN</span>
                     <MessageSquare className="w-4 h-4 text-[#0284c7]" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-[#0284c7]">
+                  <div className="text-2xl sm:text-3xl font-black text-[#0284c7] tabular-nums">
                     {commentsCount}
                   </div>
                   <div className="text-[11px] text-gray-500">Trao đổi & thảo luận</div>
@@ -803,7 +803,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="font-bold uppercase tracking-wider text-[11px]">ĐIỂM TÍCH LŨY</span>
                     <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-amber-500">
+                  <div className="text-2xl sm:text-3xl font-black text-amber-500 tabular-nums">
                     {userXp.toLocaleString()}
                   </div>
                   <div className="text-[11px] text-gray-500">XP kinh nghiệm</div>
@@ -815,7 +815,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="font-bold uppercase tracking-wider text-[11px]">THỨ HẠNG</span>
                     <Trophy className="w-4 h-4 text-purple-500" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-purple-600 dark:text-purple-400">
+                  <div className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400 tabular-nums">
                     {userRank}
                   </div>
                   <div className="text-[11px] text-gray-500">Bảng thi đua tỉnh</div>
@@ -855,7 +855,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       Đo lường mức độ đều đặn giải đề thi, ôn luyện chủ đề và duy trì chuỗi học mỗi ngày
                     </p>
                   </div>
-                  <span className="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-[#252525] px-2.5 py-1 rounded-md self-start sm:self-auto font-mono">
+                  <span className="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-[#252525] px-2.5 py-1 rounded-md self-start sm:self-auto">
                     12 tháng gần nhất
                   </span>
                 </div>
@@ -864,7 +864,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 <div className="overflow-x-auto pb-2">
                   <div className="inline-flex gap-2">
                     {/* Days of week labels */}
-                    <div className="flex flex-col justify-between text-[10px] text-gray-400 font-mono py-1 pr-1 select-none">
+                    <div className="flex flex-col justify-between text-[10px] text-gray-400 py-1 pr-1 select-none">
                       <span>Th 2</span>
                       <span>Th 3</span>
                       <span>Th 4</span>
@@ -903,8 +903,8 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
                 {/* Legend Bottom Bar */}
                 <div className="pt-2 flex items-center justify-between text-xs text-gray-500">
-                  <span className="font-mono">{heatmapData.totalCount} lượt chuyên cần</span>
-                  <div className="flex items-center gap-1.5 font-mono text-[11px]">
+                  <span className="tabular-nums">{heatmapData.totalCount} lượt chuyên cần</span>
+                  <div className="flex items-center gap-1.5 text-[11px]">
                     <span>ÍT</span>
                     <div className="w-3 h-3 rounded-xs bg-gray-100 dark:bg-[#252525]" />
                     <div className="w-3 h-3 rounded-xs bg-[#bae6fd] dark:bg-[#0369a1]/50" />
@@ -1038,14 +1038,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       Tên người dùng (Username)
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3.5 top-2.5 text-gray-400 font-mono text-sm">@</span>
+                      <span className="absolute left-3.5 top-2.5 text-gray-400 text-sm">@</span>
                       <input
                         type="text"
                         required
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="fuongchuche"
-                        className="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] bg-white dark:bg-[#252525] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2878C8] font-mono text-sm"
+                        className="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] bg-white dark:bg-[#252525] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2878C8] text-sm"
                       />
                     </div>
                   </div>
@@ -1144,7 +1144,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       max="10"
                       value={targetScore}
                       onChange={(e) => setTargetScore(Number(e.target.value))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] bg-white dark:bg-[#252525] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2878C8] text-sm font-mono"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-[#444] bg-white dark:bg-[#252525] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2878C8] text-sm tabular-nums"
                     />
                   </div>
                 </div>
@@ -1259,7 +1259,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
                       Chọn một ảnh đại diện hoặc logo yêu thích:
                     </span>
-                    <span className="text-[11px] font-mono text-gray-400">
+                    <span className="text-[11px] text-gray-400">
                       {PRESET_AVATARS.length} ảnh có sẵn
                     </span>
                   </div>
